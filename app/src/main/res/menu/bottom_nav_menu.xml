@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Run"
+    <item
+        android:id="@+id/runFragment"
         android:icon="@drawable/ic_run"
-        android:id="@+id/run"/>
+        android:title="Run"/>
 
-    <item android:title="Profile"
+    <item
+        android:id="@+id/profileFragment"
         android:icon="@drawable/ic_profile"
-        android:id="@+id/profile"/>
+        android:title="Profile"/>
 
-    <item android:title="Train"
+    <item
+        android:id="@+id/trainFragment"
         android:icon="@drawable/ic_train"
-        android:id="@+id/alarm"/>
+        android:title="Train"/>
 
 </menu>
