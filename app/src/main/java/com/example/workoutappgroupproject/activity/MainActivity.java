@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -30,8 +31,11 @@ import android.widget.Toast;
 
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
+import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
+import com.example.workoutappgroupproject.fragment.CustomFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
+import com.example.workoutappgroupproject.fragment.SixpackFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
 import com.example.workoutappgroupproject.room.User;
 import com.example.workoutappgroupproject.room.UserViewModel;
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
     }
 
     private boolean isItFirestTime() {
@@ -175,5 +180,21 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    //On TrainFragment user can choose what exercise do to by having the fragment replaced
+    public void OnChosenExercise(View view){
+        String Exercise = view.getTag().toString();
+        switch (Exercise){
+            case "ArmsandChest":
+                replaceFragment(new ArmsandchestFragment());
+                break;
+            case "Sixpack":
+                replaceFragment(new SixpackFragment());
+                break;
+            case "Custom":
+                replaceFragment(new CustomFragment());
+                break;
+        }
     }
 }
