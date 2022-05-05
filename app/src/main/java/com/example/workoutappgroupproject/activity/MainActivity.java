@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
             float height = users.get(pos).getHeight();
             float weight = users.get(pos).getWeight();
             int age = users.get(pos).getAge();
-            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "first: "+first+
-                    "\n"+ "last: "+last+"\n"+ "height: "+height+"\n"+
+            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "first name: "+first+
+                    "\n"+ "last name: "+last+"\n"+ "height: "+height+"\n"+
                     "weight: "+weight+ "\n"+ "age: "+age+"\n");
             pos++;
         }
