@@ -9,6 +9,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+<<<<<<< HEAD
+=======
+import android.content.DialogInterface;
+import android.content.Intent;
+>>>>>>> master
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -153,8 +158,14 @@ public class MainActivity extends AppCompatActivity {
             float height = users.get(pos).getHeight();
             float weight = users.get(pos).getWeight();
             int age = users.get(pos).getAge();
+<<<<<<< HEAD
             System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "name: "+name +
                     "\n"+"height: "+height+"\n"+ "weight: "+weight+ "\n"+ "age: "+age+"\n");
+=======
+            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "first name: "+first+
+                    "\n"+ "last name: "+last+"\n"+ "height: "+height+"\n"+
+                    "weight: "+weight+ "\n"+ "age: "+age+"\n");
+>>>>>>> master
             pos++;
         }
         return pos > 0;
@@ -162,5 +173,21 @@ public class MainActivity extends AppCompatActivity {
 
     private LiveData<Boolean> isExists() {
         return userViewModel.getIsExists();
+    }
+
+    //On TrainFragment user can choose what exercise do to by having the fragment replaced
+    public void OnChosenExercise(View view){
+        String Exercise = view.getTag().toString();
+        switch (Exercise){
+            case "ArmsandChest":
+                replaceFragment(new ArmsandchestFragment());
+                break;
+            case "Sixpack":
+                replaceFragment(new SixpackFragment());
+                break;
+            case "Custom":
+                replaceFragment(new CustomFragment());
+                break;
+        }
     }
 }
