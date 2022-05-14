@@ -8,17 +8,15 @@ public class User {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private final String firstName;
-    private final String lastName;
+    private final String name;
     private final float height;
     private final float weight;
     private final int age;
 
-    public User(String firstName, String lastName, float weight, float height, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.weight = weight;
+    public User(String name, float height, float weight, int age) {
+        this.name = name;
         this.height = height;
+        this.weight = weight;
         this.age = age;
     }
 
@@ -30,12 +28,8 @@ public class User {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
     public float getHeight() {
