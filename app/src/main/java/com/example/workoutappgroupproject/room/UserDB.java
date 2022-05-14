@@ -10,7 +10,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {User.class},version = 1,exportSchema = false)
+@Database(entities = {User.class},version = 2,exportSchema = false)
 public abstract class UserDB extends RoomDatabase {
     private static final String DB_NAME = "user_db";
     private static UserDB instance;
@@ -41,7 +41,7 @@ public abstract class UserDB extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             // sample data
-            userDAO.insert(new User("First name","Last name",0f,0f,0));
+            //userDAO.insert(new User("First name","Last name",0f,0f,0));
             return null;
         }
     }

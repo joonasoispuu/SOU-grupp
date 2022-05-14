@@ -10,12 +10,18 @@
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/drawable/ic_profile.xml" value="0.3435" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/drawable/ic_run.xml" value="0.3435" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/drawable/ic_train.xml" value="0.3435" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout-land/fragment_profile.xml" value="0.303125" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/activity_main.xml" value="0.26842105263157895" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/dialog_layout.xml" value="0.33" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_add.xml" value="0.33" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_alarm.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_profile.xml" value="0.17147922998986828" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_armsandchest.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_custom.xml" value="0.2" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_run.xml" value="0.33" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_sixpack.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_train.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/layout_dialog.xml" value="0.1" />
         <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3148148148148148" />
       </map>
     </option>
