@@ -11,4 +11,24 @@
     <string name="btn_update">Update</string>
     <string name="btn_edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="title_activity_train">TrainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="new_exercise">Button for adding a new exercise</string>
+    <string name="time">time (seconds)</string>
+    <string name="exercise_placeholder_name">Exercise Name</string>
+    <string name="exercise_placeholder_quantity">Exercise Quantity</string>
+    <string name="exercise_placeholder_time">Exercise Time</string>
+    <string name="edit">Edit Exercise</string>
+    <string name="delete_all_exercises">Delete all exercises!</string>
+    <string name="exercise_name_missing">Please enter your exercises name!</string>
+    <string name="exercise_values_missing">Please enter either time or quantity!</string>
+    <string name="save_db">Exercise plan was added to list!</string>
+    <string name="save_err">Failed to save Exercise to list!</string>
+    <string name="exercises_deleted">All Exercises were deleted!</string>
+    <string name="exercise_deleted">Exercise was deleted</string>
+    <string name="exercise_err">Exercise could not be updated</string>
+    <string name="exercise_creator_closed">Exercise creator closed</string>
+    <string name="updated">Exercise updated</string>
 </resources>

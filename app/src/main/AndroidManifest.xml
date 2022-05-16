@@ -10,6 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkoutAppGroupProject">
         <activity
+            android:name=".AddExcericisesGroupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddExercisesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CustomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.TrainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_train"
+            android:theme="@style/Theme.WorkoutAppGroupProject.NoActionBar" />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
