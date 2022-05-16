@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,6 @@ import com.example.workoutappgroupproject.ExampleDialog;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
-import com.example.workoutappgroupproject.fragment.CustomFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
 import com.example.workoutappgroupproject.fragment.SixpackFragment;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout mainView;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedEditor;
-//    Button btnSaveProfile;
+    //    Button btnSaveProfile;
     int oldId;
     private Boolean isExists = false;
 
@@ -137,10 +137,10 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ArmsandchestFragment(),1,true);
                 break;
             case "Sixpack":
-                replaceFragment(new SixpackFragment(),1,true);
                 break;
             case "Custom":
-                replaceFragment(new CustomFragment(),1,true);
+                Intent intent  = new Intent(MainActivity.this, CustomActivity.class);
+                startActivity(intent);
                 break;
         }
     }
