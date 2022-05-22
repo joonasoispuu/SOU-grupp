@@ -1,9 +1,9 @@
 # SOU-grupp README
 > insert some description here
 
-This README consists of Project plan, Final App functionalities and Milestones
+This README consists of Project plan, Final App functionalities, Milestones and Open issues
 
-## Shortcuts
+## Links
 - [Final App functionalities](https://github.com/joonasoispuu/SOU-grupp/issues/19)
 - [Open issues](https://github.com/joonasoispuu/SOU-grupp/milestones/Final%20App%20functionalities)
 - [Milestones](https://github.com/joonasoispuu/SOU-grupp/milestones)
