@@ -64,8 +64,10 @@ public class AddExercisesActivity extends AppCompatActivity {
                     quantity = 0;
                 }
                 else{
+                    // TODO BUG: crashes when (quantity not 0)
                     quantity = Integer.parseInt(etQuantity.getText().toString());
                 }
+                // TODO: validation for quantity/time
                 int time = ntPicker.getValue();
                 Intent data = new Intent();
                 data.putExtra(EXTRA_NAME, name);
