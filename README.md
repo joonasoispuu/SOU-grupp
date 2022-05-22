@@ -10,8 +10,19 @@ This README consists of Project plan, Final App functionalities and Milestones
 
 
 ### Final App functionalities
-``
-like this
-``
+Exercise Schema:
+```
+@Entity(tableName = "exercise_table")
+public class Exercise {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private final String name;
+    private final int quantity;
+    private final int time;
+    TODO: private final String type;
+
+}
+```
 
 ### 
