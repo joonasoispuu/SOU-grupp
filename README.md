@@ -1,7 +1,7 @@
 # SOU-grupp README
-> README.md
+> insert some description here
 
-This README consists of a Project plan, Milestones and more
+This README consists of Project plan, Final App functionalities and Milestones
 
 ## Links
 - [Project plan](https://github.com/joonasoispuu/SOU-grupp/projects/1)
