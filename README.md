@@ -1,10 +1,8 @@
 # SOU-grupp README
-> A curated list of awesome READMEs
+> README.md
 
-Elements in beautiful READMEs include, but are not limited to: images, screenshots, GIFs, text formatting, etc.
+This README consists of a Project plan, Milestones and more
 
-## Final App functionalities
+## Links
 - [Final App functionalities](https://github.com/joonasoispuu/SOU-grupp/issues/19)
-
-## Milestones
 - [Milestone](https://github.com/joonasoispuu/SOU-grupp/milestones/Final%20App%20functionalities)
