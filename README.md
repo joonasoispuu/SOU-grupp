@@ -7,7 +7,7 @@ This README consists of Project plan, Final App functionalities and Milestones
 - [Project plan](https://github.com/joonasoispuu/SOU-grupp/projects/1)
 - [Final App functionalities](https://github.com/joonasoispuu/SOU-grupp/issues/19)
 - [Open issues](https://github.com/joonasoispuu/SOU-grupp/milestones/Final%20App%20functionalities)
-- - [Milestones](https://github.com/joonasoispuu/SOU-grupp/milestones)
+- [Milestones](https://github.com/joonasoispuu/SOU-grupp/milestones)
 
 
 ### Final App functionalities
