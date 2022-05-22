@@ -10,9 +10,8 @@ This README consists of Project plan, Final App functionalities and Milestones
 
 
 ### Final App functionalities
-> `describe all app functions here`
 ``
-
+like this
 ``
 
 ### 
