@@ -1,4 +1,4 @@
 # SOU-grupp
 
-### ref
-* https://github.com/joonasoispuu/SOU-grupp/issues/19
+### 
+[https://github.com/joonasoispuu/SOU-grupp/milestones/Final%20App%20functionalities](url)
