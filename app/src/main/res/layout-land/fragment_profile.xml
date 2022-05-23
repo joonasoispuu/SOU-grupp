@@ -8,6 +8,17 @@
     tools:context=".fragment.ProfileFragment">
 
     <TextView
+        android:id="@+id/BMI_Description"
+        android:layout_width="210dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BMI" />
+
+    <TextView
         android:id="@+id/Profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -98,7 +109,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/textInputHeight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textInputHeight"
-        app:layout_constraintTop_toBottomOf="@+id/textInputName">
+        app:layout_constraintTop_toBottomOf="@+id/textInputName"
+        app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtAge"
@@ -119,5 +131,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/BMI"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="36dp"
+        android:text="BMI"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputHeight" />
+
+    <TextView
+        android:id="@+id/BMI_Warning"
+        android:layout_width="193dp"
+        android:layout_height="57dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/BMI_Description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputAge"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
