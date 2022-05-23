@@ -11,11 +11,13 @@ public class Exercise {
     private final String name;
     private final int quantity;
     private final int time;
+    private final String type;
 
-    public Exercise(String name, int quantity, int time){
+    public Exercise(String name, int quantity, int time, String type){
         this.name = name;
         this.quantity = quantity;
         this.time = time;
+        this.type = type;
     }
 
     public void setId(int id) {
@@ -34,5 +36,9 @@ public class Exercise {
 
     public int getTime() {
         return time;
+    }
+
+    public String getType() {
+        return type;
     }
 }

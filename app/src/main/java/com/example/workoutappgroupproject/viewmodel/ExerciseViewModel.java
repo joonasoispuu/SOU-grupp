@@ -1,10 +1,13 @@
-package com.example.workoutappgroupproject.ExerciseDB;
+package com.example.workoutappgroupproject.viewmodel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.workoutappgroupproject.ExerciseDB.Exercise;
+import com.example.workoutappgroupproject.ExerciseDB.ExerciseRepository;
 
 import java.util.List;
 
@@ -22,8 +25,10 @@ public class ExerciseViewModel extends AndroidViewModel {
     public void update(Exercise exercise){repository.update(exercise);}
     public void delete(Exercise exercise){repository.delete(exercise);}
     public void deleteAllExercise(){repository.deleteAllExercise();}
+    public void deleteAllExerciseByType(String myType){repository.deleteAllExerciseByType(myType);}
 
     public LiveData<List<Exercise>> getAllExercises() {
         return allExercise;
     }
+    public LiveData<List<Exercise>> getAllExercisesByType(String myType) {return repository.getAllExercisesByType(myType);}
 }
