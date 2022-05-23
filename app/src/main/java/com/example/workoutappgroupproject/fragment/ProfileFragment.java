@@ -7,22 +7,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
+import android.service.autofill.FieldClassification;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.workoutappgroupproject.R;
-import com.example.workoutappgroupproject.room.User;
-import com.example.workoutappgroupproject.room.UserViewModel;
+import com.example.workoutappgroupproject.UserDB.User;
+import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import kotlin.text.Regex;
 
 public class ProfileFragment extends Fragment {
 
@@ -128,12 +130,12 @@ public class ProfileFragment extends Fragment {
                         // cancel
                         return;
                     }
-                    String name = textInputName.getEditText().getText().toString();
-                    float height = Float.parseFloat(textInputHeight.getEditText().getText().toString());
-                    float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString());
+                    String name = textInputName.getEditText().getText().toString().trim();
+                    float height = Float.parseFloat(textInputHeight.getEditText().getText().toString().trim());
+                    float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString().trim());
                     int age = 0;
                     try {
-                        age = Integer.parseInt(textInputAge.getEditText().getText().toString());
+                        age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
                     } catch (NumberFormatException nfe) {
                         textInputAge.getEditText().setError("ERROR");
                         System.out.println("NumberFormat Exception: invalid input string");
@@ -163,10 +165,10 @@ public class ProfileFragment extends Fragment {
                     } else {
                         if (!validateUpdate(0)) return;
                     }
-                    String name = textInputName.getEditText().getText().toString();
-                    float height = Float.parseFloat(textInputHeight.getEditText().getText().toString());
-                    float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString());
-                    int age = Integer.parseInt(textInputAge.getEditText().getText().toString());
+                    String name = textInputName.getEditText().getText().toString().trim();
+                    float height = Float.parseFloat(textInputHeight.getEditText().getText().toString().trim());
+                    float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString().trim());
+                    int age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
                     // save updated data to db ...
                     User user = new User(name,height,weight,age);
                     user.setId(1);
@@ -246,19 +248,31 @@ public class ProfileFragment extends Fragment {
         } else if (nameInput.length() > 20) {
             textInputName.setError("Field cannot contain more than 20 characters!");
             return false;
+        } else if (!isFullname(nameInput)) {
+            textInputName.setError("Name not formatted correctly!");
+            return false;
         } else {
             textInputName.setError(null);
             return true;
         }
     }
 
+    private boolean isFullname(String str) {
+        String expression = "^[-.a-zA-Z\\s]+";
+        return str.matches(expression);
+    }
+
     private boolean validateAge(View v) {
         String ageInput = textInputAge.getEditText().getText().toString().trim();
+        int age = Integer.parseInt(ageInput);
         if (ageInput.isEmpty()) {
             textInputAge.setError("Field cannot be empty!");
             return false;
         } else if (ageInput.length() > 3) {
             textInputAge.setError("Too large number!");
+            return false;
+        } else if (age < 12) {
+            textInputAge.setError("Age cannot be "+age+"! Min: 12!");
             return false;
         } else {
             textInputAge.setError(null);
@@ -279,16 +293,5 @@ public class ProfileFragment extends Fragment {
                     "\n"+"height: "+height+"\n"+ "weight: "+weight+ "\n"+ "age: "+age+"\n");
         }
         return (id != -1);
-//        int pos = 0;
-//        while (pos < users.size()){
-//            String name = users.get(pos).getName();
-//            float height = users.get(pos).getHeight();
-//            float weight = users.get(pos).getWeight();
-//            int age = users.get(pos).getAge();
-//            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "name: "+name +
-//                    "\n"+"height: "+height+"\n"+ "weight: "+weight+ "\n"+ "age: "+age+"\n");
-//            pos++;
-//        }
-//        return pos > 0;
     }
 }

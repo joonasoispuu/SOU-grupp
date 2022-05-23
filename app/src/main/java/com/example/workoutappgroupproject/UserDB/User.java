@@ -1,4 +1,4 @@
-package com.example.workoutappgroupproject.room;
+package com.example.workoutappgroupproject.UserDB;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

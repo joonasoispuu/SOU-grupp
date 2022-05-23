@@ -31,8 +31,12 @@ public class ExerciseRepository {
     public void deleteAllExercise() {
         new DeleteAllExerciseAsyncTask(exerciseDao).execute();
     }
+    public void deleteAllExerciseByType(String myType) {
+        new DeleteAllExerciseByTypeAsyncTask(exerciseDao,myType).execute();
+    }
 
     public LiveData<List<Exercise>> getAllExercises() {return allExercise;}
+    public LiveData<List<Exercise>> getAllExercisesByType(String myType) {return exerciseDao.getAllExercisesByType(myType);}
 
     private static class InsertExerciseAsyncTask extends AsyncTask<Exercise, Void, Void> {
         private final ExerciseDao exerciseDao;
@@ -80,6 +84,20 @@ public class ExerciseRepository {
         @Override
         protected Void doInBackground(Exercise... exercise) {
             exerciseDao.deleteAllExercise();
+            return null;
+        }
+    }
+
+    public static class DeleteAllExerciseByTypeAsyncTask extends AsyncTask<Exercise, Void, Void> {
+        private final ExerciseDao exerciseDao;
+        String myType;
+        public DeleteAllExerciseByTypeAsyncTask(ExerciseDao exerciseDao, String myType) {
+            this.exerciseDao = exerciseDao;
+            this.myType = myType;
+        }
+        @Override
+        protected Void doInBackground(Exercise... exercise) {
+            exerciseDao.deleteAllExerciseByType(myType);
             return null;
         }
     }

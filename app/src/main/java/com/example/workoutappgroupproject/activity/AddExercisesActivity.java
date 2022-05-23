@@ -39,7 +39,7 @@ public class AddExercisesActivity extends AppCompatActivity {
             if(intent.hasExtra(EXTRA_ID)){
                 setTitle(getString(R.string.edit));
                 etName.setText(intent.getStringExtra(EXTRA_NAME));
-                etQuantity.setText(intent.getIntExtra(EXTRA_QUANTITY, 1));
+                etQuantity.setText(intent.getIntExtra(EXTRA_QUANTITY, 1)); //TODO: crashes here
                 ntPicker.setValue(intent.getIntExtra(EXTRA_TIME, 1));
             }else{
                 setTitle("Create Exercise");
@@ -64,16 +64,15 @@ public class AddExercisesActivity extends AppCompatActivity {
                     quantity = 0;
                 }
                 else{
-                    // TODO BUG: crashes when (quantity not 0)
                     quantity = Integer.parseInt(etQuantity.getText().toString());
                 }
-                // TODO: validation for quantity/time
                 int time = ntPicker.getValue();
                 Intent data = new Intent();
                 data.putExtra(EXTRA_NAME, name);
                 data.putExtra(EXTRA_QUANTITY, quantity);
                 data.putExtra(EXTRA_TIME, time);
                 int id = getIntent().getIntExtra(EXTRA_ID, -1);
+                // got id from intent getIntExtra()
                 if (id != -1) {
                     data.putExtra(EXTRA_ID, id);
                     setResult(RESULT_EDIT, data);

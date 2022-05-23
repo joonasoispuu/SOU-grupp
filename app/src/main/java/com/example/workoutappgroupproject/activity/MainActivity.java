@@ -20,10 +20,9 @@ import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
-import com.example.workoutappgroupproject.fragment.SixpackFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
-import com.example.workoutappgroupproject.room.User;
-import com.example.workoutappgroupproject.room.UserViewModel;
+import com.example.workoutappgroupproject.UserDB.User;
+import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -34,9 +33,6 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ActivityMainBinding binding;
     ConstraintLayout mainView;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor sharedEditor;
-    //    Button btnSaveProfile;
     int oldId;
     private Boolean isExists = false;
 
@@ -51,21 +47,6 @@ public class MainActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getIsExists().observe(this, isExists -> { this.isExists = isExists; });
 
-        // check if app is on it's first run
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        sharedEditor = sharedPreferences.edit();
-        if (isItFirstTime()) {
-            System.out.println("First time");
-            // TODO: prompt user to enter data
-        } else {
-            System.out.println("Not First Time");
-            // get users data
-//            userViewModel.getAllUsers().observe(this, this::getUserData);
-        }
-
-
-
-        // TODO: ask user for name, height, weight
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // set navigation bar position to profileFragment by default
         bottomNavigationView.setSelectedItemId(R.id.profileFragment);
@@ -106,17 +87,6 @@ public class MainActivity extends AppCompatActivity {
     private void openDialog() {
         ExampleDialog exampleDialog = new ExampleDialog();
         exampleDialog.show(getSupportFragmentManager(),"example dialog");
-    }
-
-    private boolean isItFirstTime() {
-        if (sharedPreferences.getBoolean("firstTime", true)) {
-            sharedEditor.putBoolean("firstTime", false);
-            sharedEditor.commit();
-            sharedEditor.apply();
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){

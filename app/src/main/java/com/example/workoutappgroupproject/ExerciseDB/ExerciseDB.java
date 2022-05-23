@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Exercise.class},version = 1,exportSchema = false)
+@Database(entities = {Exercise.class},version = 2,exportSchema = false)
 public abstract class ExerciseDB extends RoomDatabase {
     private static final String DB_NAME = "exercise_db";
     private static ExerciseDB instance;
@@ -38,7 +38,11 @@ public abstract class ExerciseDB extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            exerciseDao.insert(new Exercise("Pushup",20,0));
+            exerciseDao.insert(new Exercise("Push-ups",20,0,"ArmsandChest"));
+            exerciseDao.insert(new Exercise("Reps",10,0,"ArmsandChest"));
+            exerciseDao.insert(new Exercise("V-ups",15,0,"Sixpack"));
+            exerciseDao.insert(new Exercise("Plank",2,20,"Sixpack"));
+            exerciseDao.insert(new Exercise("Squats",30,4,"Custom"));
             return null;
         }
     }

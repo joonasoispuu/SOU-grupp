@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myCoordinatorMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.CustomActivity">
@@ -12,11 +13,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:clickable="true"
-        android:focusable="true"
         android:contentDescription="@string/new_exercise"
+        android:focusable="true"
         android:src="@drawable/ic_add"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:tint="@color/white"
+        app:backgroundTint="@color/purple_500"
         app:layout_anchor="@+id/myConstraintLayoutMain"
-        app:layout_anchorGravity="bottom|end"/>
+        app:layout_anchorGravity="bottom|end"
+        app:tint="@color/white" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/myConstraintLayoutMain"
