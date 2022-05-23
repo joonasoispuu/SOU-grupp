@@ -7,11 +7,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.service.autofill.FieldClassification;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.workoutappgroupproject.R;
@@ -22,9 +23,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-
-import kotlin.text.Regex;
 
 public class ProfileFragment extends Fragment {
 
@@ -34,9 +32,11 @@ public class ProfileFragment extends Fragment {
     public static final int RESULT_EDIT = 200;
     private static final ArrayList<User> userArrayList = new ArrayList<>();
     private String dataStatus = "Empty";
+    private float BMI;
 
     TextInputLayout textInputName, textInputHeight, textInputWeight, textInputAge;
     Button btnSaveProfile;
+    TextView txtBMI, txtDescription, txtBMIWarning;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -70,6 +70,9 @@ public class ProfileFragment extends Fragment {
         textInputWeight = view.findViewById(R.id.textInputWeight);
         textInputAge = view.findViewById(R.id.textInputAge);
         btnSaveProfile = view.findViewById(R.id.btnSaveProfile);
+        txtBMI=view.findViewById(R.id.BMI);
+        txtDescription=view.findViewById(R.id.BMI_Description);
+        txtBMIWarning=view.findViewById(R.id.BMI_Warning);
 
         // init view model
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
@@ -107,6 +110,36 @@ public class ProfileFragment extends Fragment {
                             textInputAge.setEnabled(false);
                             btnSaveProfile.setText(R.string.btn_edit);
                             dataStatus = "Saved";
+                            float bmiheight = height/100;
+                            BMI=weight/(bmiheight*bmiheight);
+                            txtBMI.setText((String.format("BMI: "+BMI)));
+                            if(age<18){
+                                txtBMIWarning.setText(R.string.bmi_warning);
+                            }
+                            else{
+                                txtBMIWarning.setText("");
+                            }
+                            if(BMI<16){
+                                txtDescription.setText(getString(R.string.moderately_skinny));
+                            }
+                            else if(BMI<16.9 && BMI >16){
+                                txtDescription.setText(getString(R.string.moderately_skinny));
+                            }
+                            else if(BMI<18.4 && BMI >17){
+                                txtDescription.setText(getString(R.string.mildly_skinny));
+                            }
+                            else if(BMI<24.9 && BMI >18.5){
+                                txtDescription.setText(getString(R.string.normal));
+                            }
+                            else if(BMI<29.9 && BMI >25){
+                                txtDescription.setText(getString(R.string.overweight));
+                            }
+                            else if(BMI<34.9 && BMI >30){
+                                txtDescription.setText(getString(R.string.obese_class_I));
+                            }
+                            else{
+                                txtDescription.setText(getString(R.string.obese_class_II));
+                            }
                         }
                         System.out.println("current dataStatus: "+dataStatus);
                     }
