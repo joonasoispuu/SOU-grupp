@@ -1,5 +1,6 @@
 package com.example.workoutappgroupproject.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +114,12 @@ public class ProfileFragment extends Fragment {
                             dataStatus = "Saved";
                             float bmiheight = height/100;
                             BMI=weight/(bmiheight*bmiheight);
-                            txtBMI.setText((String.format("BMI: "+BMI)));
+                            Log.i("BMI: ",""+BMI);
+                            @SuppressLint("DefaultLocale")
+                            String bmiString = String.format("BMI: %.1f", BMI);
+                            txtBMI.setText(bmiString);
+                            // 61.6kg / 1.7²m = 21,3
+//                            BMI = 17;
                             if(age<18){
                                 txtBMIWarning.setText(R.string.bmi_warning);
                             }
@@ -122,19 +129,19 @@ public class ProfileFragment extends Fragment {
                             if(BMI<16){
                                 txtDescription.setText(getString(R.string.moderately_skinny));
                             }
-                            else if(BMI<16.9 && BMI >16){
+                            else if(BMI<16.9 && BMI>16){
                                 txtDescription.setText(getString(R.string.moderately_skinny));
                             }
-                            else if(BMI<18.4 && BMI >17){
+                            else if(BMI<18.4 && BMI>17){
                                 txtDescription.setText(getString(R.string.mildly_skinny));
                             }
-                            else if(BMI<24.9 && BMI >18.5){
+                            else if(BMI<24.9 && BMI>18.5){
                                 txtDescription.setText(getString(R.string.normal));
                             }
-                            else if(BMI<29.9 && BMI >25){
+                            else if(BMI<29.9 && BMI>25){
                                 txtDescription.setText(getString(R.string.overweight));
                             }
-                            else if(BMI<34.9 && BMI >30){
+                            else if(BMI<34.9 && BMI>30){
                                 txtDescription.setText(getString(R.string.obese_class_I));
                             }
                             else{
@@ -159,20 +166,14 @@ public class ProfileFragment extends Fragment {
         btnSaveProfile.setOnClickListener(view1 -> {
             switch (dataStatus) {
                 case "Empty": {
-                    if (!validateName(view) | !validateHeight(view) | !validateWeight(view) | !validateAge(view)){
+                    if (!validateName() | !validateHeight() | !validateWeight() | !validateAge()){
                         // cancel
                         return;
                     }
                     String name = textInputName.getEditText().getText().toString().trim();
                     float height = Float.parseFloat(textInputHeight.getEditText().getText().toString().trim());
                     float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString().trim());
-                    int age = 0;
-                    try {
-                        age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
-                    } catch (NumberFormatException nfe) {
-                        textInputAge.getEditText().setError("ERROR");
-                        System.out.println("NumberFormat Exception: invalid input string");
-                    }
+                    int age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
                     // save data to db ...
                     User user = new User(name,height,weight,age);
                     userViewModel.insert(user);
@@ -192,7 +193,7 @@ public class ProfileFragment extends Fragment {
                     break;
                 }
                 case "Editing": {
-                    if (!validateName(view) | !validateHeight(view) | !validateWeight(view) | !validateAge(view)){
+                    if (!validateName() | !validateHeight() | !validateWeight() | !validateAge()){
                         // cancel
                         return;
                     } else {
@@ -239,42 +240,41 @@ public class ProfileFragment extends Fragment {
         return true;
     }
 
-    private boolean validateWeight(View v) {
+    private boolean validateWeight() {
         String weightInput = textInputWeight.getEditText().getText().toString().trim();
 
         if (weightInput.isEmpty()) {
             textInputWeight.setError("Field cannot be empty!");
             return false;
-        } else {
-            float weight = Float.parseFloat(weightInput);
-            if (weight > 635) {
-                textInputWeight.setError("Too fat! Max: 635kg");
-                return false;
-            }
-            textInputWeight.setError(null);
-            return true;
         }
+        float weight = Float.parseFloat(weightInput);
+        if (weight > 635) {
+            textInputWeight.setError("Too fat! Max: 635kg");
+            return false;
+        }
+        textInputWeight.setError(null);
+        return true;
     }
 
-    private boolean validateHeight(View v) {
+    private boolean validateHeight() {
         String heightInput = textInputHeight.getEditText().getText().toString().trim();
 
         if (heightInput.isEmpty()) {
             textInputHeight.setError("Field cannot be empty!");
             return false;
-        } else {
-            float height = Float.parseFloat(heightInput);
-            if (height > 272) {
-                textInputHeight.setError("Too tall! Max: 272cm");
-                return false;
-            }
-            textInputHeight.setError(null);
-            return true;
         }
+        float height = Float.parseFloat(heightInput);
+        if (height > 272) {
+            textInputHeight.setError("Too tall! Max: 272cm");
+            return false;
+        }
+        textInputHeight.setError(null);
+        return true;
     }
 
-    private boolean validateName(View v) {
+    private boolean validateName() {
         String nameInput = textInputName.getEditText().getText().toString().trim();
+
         if (nameInput.isEmpty()) {
             textInputName.setError("Field cannot be empty!");
             return false;
@@ -295,13 +295,21 @@ public class ProfileFragment extends Fragment {
         return str.matches(expression);
     }
 
-    private boolean validateAge(View v) {
+    private boolean validateAge() {
         String ageInput = textInputAge.getEditText().getText().toString().trim();
-        int age = Integer.parseInt(ageInput);
+
         if (ageInput.isEmpty()) {
             textInputAge.setError("Field cannot be empty!");
             return false;
-        } else if (ageInput.length() > 3) {
+        }
+        int age = -1;
+        try {
+            age = Integer.parseInt(ageInput);;
+        } catch (NumberFormatException nfe) {
+            textInputAge.getEditText().setError("ERROR");
+            System.out.println("NumberFormat Exception: invalid input string");
+        }
+        if (ageInput.length() > 3) {
             textInputAge.setError("Too large number!");
             return false;
         } else if (age < 12) {

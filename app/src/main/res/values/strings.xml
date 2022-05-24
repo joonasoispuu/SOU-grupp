@@ -38,4 +38,5 @@
     <string name="obese_class_I">Obese</string>
     <string name="obese_class_II">Obese+2</string>
     <string name="bmi_warning">BMI is made for people over the age of 18 so it may be wrong in your case!</string>
+    <string name="create">Create Exercise</string>
 </resources>
