@@ -18,8 +18,10 @@ import com.example.workoutappgroupproject.ExampleDialog;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
+import com.example.workoutappgroupproject.fragment.CustomExerciseFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
+import com.example.workoutappgroupproject.fragment.SixpackFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
 import com.example.workoutappgroupproject.UserDB.User;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
@@ -107,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ArmsandchestFragment(),1,true);
                 break;
             case "Sixpack":
+                replaceFragment(new SixpackFragment(),1,true);
+                break;
+            case "CustomExercise":
+                replaceFragment(new CustomExerciseFragment(),1,true);
                 break;
             case "Custom":
                 Intent intent  = new Intent(MainActivity.this, CustomActivity.class);
