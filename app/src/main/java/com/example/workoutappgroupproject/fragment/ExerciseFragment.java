@@ -1,6 +1,8 @@
 package com.example.workoutappgroupproject.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,11 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
-import com.example.workoutappgroupproject.ExerciseDB.ExerciseParcelable;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.activity.ExerciseActivity;
 import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
@@ -27,11 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseFragment extends Fragment {
+    List<Exercise> exercisesList = new ArrayList<>();
     private static String type = null;
     private ExerciseActivity exerciseActivity;
     private ExerciseViewModel exerciseViewModel;
-    TextView txtName;
-    int ID = -1;
+    TextView txtName, txtQuantity, txtTime;
+    static int ID = -1;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public static final String EXERCISE_ID = "com.example.workoutappgroupproject.activity.EXERCISE_ID";
@@ -49,6 +53,7 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragment fragment = new ExerciseFragment();
         Bundle args = new Bundle();
         args.putInt(EXERCISE_ID, id);
+//        ID = id;
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,45 +70,61 @@ public class ExerciseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         exerciseViewModel = new ViewModelProvider(getActivity()).get(ExerciseViewModel.class);
-        List<Exercise> exercisesList = new ArrayList<>();
         exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
             exercisesList.addAll(exercises);
 
+//            for (int i = 0; i<exercisesList.size(); i++) {
+//                System.out.println(" "+exercisesList.get(i).getId() + " "+exercisesList.get(i).getName());
+//            }
+            System.out.println("INTENT ID: "+ID);
+            int id = 0;
             if (getArguments() != null) {
-                ID = getArguments().getInt(EXERCISE_ID);
-                // has exercises
-                System.out.println("EXERCISE ID: "+ID);
-                System.out.println("EXERCISE NAME: "+exercisesList.get(ID).getName());
+                // get data
+                id = getArguments().getInt(EXERCISE_ID, 0);
             } else {
-                // no exercises given
-                System.out.println("EXERCISE ID: no exercises found!");
+                // first time
             }
+            String name = exercisesList.get(id).getName();
+            int quantity = exercisesList.get(id).getQuantity();
+            int time = exercisesList.get(id).getTime();
+
+            txtName = view.findViewById(R.id.txtName);
+            txtName.setText(name);
+
+            txtQuantity = view.findViewById(R.id.txtQuantity);
+            if (quantity > 0) txtQuantity.setText(quantity+" "+getString(R.string.quantity_icon));
+            else txtQuantity.setText("");
+
+            txtTime = view.findViewById(R.id.txtTime);
+            if (time > 0) txtTime.setText(quantity+" "+getString(R.string.time_icon));
+            else txtTime.setText("");
+
+            System.out.println(" "+exercisesList.get(id).getId()+" "+name+" "+quantity+" "+time);
         });
 
-//        txtName = view.findViewById(R.id.txtName);
-//
-//        for (Exercise e:
-//                exercisesList) {
-//            System.out.println("ID: "+e.getId());
-//        }
-//        System.out.println("No exercises found for type: "+type);
         view.findViewById(R.id.btnDone).setOnClickListener(view1 -> {
-            if (getArguments() != null) {
-                // check if id matches
-                while (ID != exercisesList.get(ID-1).getId()) {
+            exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
+                if (ID < 0) {
+                    // check if all exercises done
+//                    System.out.println("MAX - ID: "+ID);
+                    return;
+                } else if (ID < exercises.size()-1) {
                     ID++;
+                } else {
+                    // cancel new instance creation
+                    Toast.makeText(getActivity(),"All exercises finished!",Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                    return;
                 }
                 ExerciseFragment newInstance = newInstance(ID);
                 replaceFragment(newInstance,2,false);
-            } else {
-                ExerciseFragment newInstance = newInstance(1);
-                replaceFragment(newInstance,2,false);
-            }
+            });
         });
     }
 

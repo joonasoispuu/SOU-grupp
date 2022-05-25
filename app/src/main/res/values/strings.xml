@@ -52,4 +52,6 @@
     <string name="title_here">Title here</string>
     <string name="gps">GPS</string>
     <string name="timer">Timer</string>
+    <string name="quantity_icon">X</string>
+    <string name="time_icon">sec</string>
 </resources>

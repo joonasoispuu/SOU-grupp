@@ -70,6 +70,7 @@ public class CustomActivity extends AppCompatActivity {
                     Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.exercise_creator_closed),
                             Snackbar.LENGTH_SHORT).show();
                 }
+                setTitle("Custom Exercises");
             }
     );
     @Override
