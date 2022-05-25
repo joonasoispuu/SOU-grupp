@@ -34,7 +34,7 @@
     <string name="moderately_skinny">Moderately Skinny</string>
     <string name="mildly_skinny">Mildly Skinny</string>
     <string name="normal">Healthy</string>
-    <string name="overweight">Fat!</string>
+    <string name="overweight">Overweight</string>
     <string name="obese_class_I">Obese</string>
     <string name="obese_class_II">Obese+2</string>
     <string name="bmi_warning">This app is made for people over the age of 18\nSome results may be incorrect.</string>
