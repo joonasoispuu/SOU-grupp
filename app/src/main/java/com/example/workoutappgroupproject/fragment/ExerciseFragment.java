@@ -77,7 +77,7 @@ public class ExerciseFragment extends Fragment {
 
         exerciseViewModel = new ViewModelProvider(getActivity()).get(ExerciseViewModel.class);
         exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
-            exercisesList.addAll(exercises);
+//            exercisesList.addAll(exercises);
 
 //            for (int i = 0; i<exercisesList.size(); i++) {
 //                System.out.println(" "+exercisesList.get(i).getId() + " "+exercisesList.get(i).getName());
@@ -90,29 +90,29 @@ public class ExerciseFragment extends Fragment {
             } else {
                 // first time
             }
-            String name = exercisesList.get(id).getName();
-            int quantity = exercisesList.get(id).getQuantity();
-            int time = exercisesList.get(id).getTime();
 
-            txtName = view.findViewById(R.id.txtName);
-            txtName.setText(name);
+            if (ID < exercises.size()) {
+                String name = exercises.get(id).getName();
+                int quantity = exercises.get(id).getQuantity();
+                int time = exercises.get(id).getTime();
+                System.out.println(" "+exercises.get(id).getId()+" "+name+" "+quantity+" "+time);
 
-            txtQuantity = view.findViewById(R.id.txtQuantity);
-            if (quantity > 0) txtQuantity.setText(quantity+" "+getString(R.string.quantity_icon));
-            else txtQuantity.setText("");
+                txtName = view.findViewById(R.id.txtName);
+                txtName.setText(name);
+                txtQuantity = view.findViewById(R.id.txtQuantity);
+                if (quantity > 0) txtQuantity.setText(quantity+" "+getString(R.string.quantity_icon));
+                else txtQuantity.setText("");
+                txtTime = view.findViewById(R.id.txtTime);
+                if (time > 0) txtTime.setText(quantity+" "+getString(R.string.time_icon));
+                else txtTime.setText("");
+            }
 
-            txtTime = view.findViewById(R.id.txtTime);
-            if (time > 0) txtTime.setText(quantity+" "+getString(R.string.time_icon));
-            else txtTime.setText("");
-
-            System.out.println(" "+exercisesList.get(id).getId()+" "+name+" "+quantity+" "+time);
         });
 
         view.findViewById(R.id.btnDone).setOnClickListener(view1 -> {
             exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
                 if (ID < 0) {
                     // check if all exercises done
-//                    System.out.println("MAX - ID: "+ID);
                     return;
                 } else if (ID < exercises.size()-1) {
                     ID++;
