@@ -18,5 +18,14 @@
         android:id="@+id/trainFragment"
         android:name="com.example.workoutappgroupproject.fragment.TrainFragment"
         android:label="fragment_train"
-        tools:layout="@layout/fragment_train" />
+        tools:layout="@layout/fragment_train" >
+        <action
+            android:id="@+id/action_trainFragment_to_exerciseFragment"
+            app:destination="@id/exerciseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseFragment"
+        android:name="com.example.workoutappgroupproject.fragment.ExerciseFragment"
+        android:label="fragment_exercise"
+        tools:layout="@layout/fragment_exercise" />
 </navigation>

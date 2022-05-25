@@ -10,19 +10,21 @@
     <EditText
         android:id="@+id/etExerciseName"
         android:layout_width="344dp"
-        android:layout_height="63dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ems="10"
-        android:hint="Exercise Name"
+        android:hint="@string/exercise_name"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintVertical_bias="0.029"
+        android:autofillHints="" />
 
     <NumberPicker
         android:id="@+id/ExerciseTimePicker"
         android:layout_width="53dp"
-        android:layout_height="67dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:scaleX="0.75"
@@ -37,10 +39,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="How many times?"
+        android:hint="@string/how_many_times"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ExerciseTimePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/ExerciseTimePicker"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btnNewExercise"
@@ -49,15 +52,16 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:onClick="OnDoneSaveExercise"
-        android:text="Done"
+        android:text="@string/done"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="UsingOnClickInXml" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Seconds"
+        android:text="@string/seconds"
         app:layout_constraintBottom_toTopOf="@+id/etExerciseQuantity"
         app:layout_constraintStart_toEndOf="@+id/ExerciseTimePicker"
         app:layout_constraintTop_toBottomOf="@+id/etExerciseName"

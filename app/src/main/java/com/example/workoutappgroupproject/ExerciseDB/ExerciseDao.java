@@ -24,9 +24,9 @@ public interface ExerciseDao {
     @Query("DELETE FROM exercise_table WHERE type = :myType")
     abstract void deleteAllExerciseByType(String myType);
 
-    @Query("SELECT * FROM exercise_table ORDER BY name")
+    @Query("SELECT * FROM exercise_table ORDER BY id")
     LiveData<List<Exercise>> getAllExercises();
 
-    @Query("SELECT * FROM exercise_table WHERE type == :mytype ORDER BY name")
+    @Query("SELECT * FROM exercise_table WHERE type == :mytype ORDER BY id")
     LiveData<List<Exercise>> getAllExercisesByType(String mytype);
 }

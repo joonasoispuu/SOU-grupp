@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkoutAppGroupProject">
         <activity
+            android:name=".activity.ExerciseActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddExcericisesGroupActivity"
             android:exported="false" />
         <activity

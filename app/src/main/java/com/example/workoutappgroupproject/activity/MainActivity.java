@@ -19,6 +19,7 @@ import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
 import com.example.workoutappgroupproject.fragment.CustomExerciseFragment;
+import com.example.workoutappgroupproject.fragment.ExerciseFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
 import com.example.workoutappgroupproject.fragment.SixpackFragment;
@@ -94,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){
         FragmentManager fragmentManager =getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (dir >= 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        else fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -105,38 +107,27 @@ public class MainActivity extends AppCompatActivity {
     public void OnChosenExercise(View view){
         String Exercise = view.getTag().toString();
         switch (Exercise){
-            case "ArmsandChest":
-                replaceFragment(new ArmsandchestFragment(),1,true);
-                break;
             case "Sixpack":
-                replaceFragment(new SixpackFragment(),1,true);
+//                replaceFragment(new ExerciseFragment(),2,true);
+                Intent activity1  = new Intent(MainActivity.this, ExerciseActivity.class);
+                activity1.putExtra("TYPE","Sixpack");
+                startActivity(activity1);
                 break;
-            case "CustomExercise":
-                replaceFragment(new CustomExerciseFragment(),1,true);
+            case "ArmsandChest":
+//                replaceFragment(new ArmsandchestFragment(),2,true);
+                Intent activity2  = new Intent(MainActivity.this, ExerciseActivity.class);
+                activity2.putExtra("TYPE","ArmsandChest");
+                startActivity(activity2);
                 break;
             case "Custom":
-                Intent intent  = new Intent(MainActivity.this, CustomActivity.class);
-                startActivity(intent);
+                Intent activity3  = new Intent(MainActivity.this, ExerciseActivity.class);
+                activity3.putExtra("TYPE","Custom");
+                startActivity(activity3);
+                break;
+            case "AddCustom":
+                Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
+                startActivity(customActivity);
                 break;
         }
-    }
-
-    private boolean hasUserData(List<User> users) {
-        int pos = 0;
-        // iterate users list
-        while (pos < users.size()){
-            String name = users.get(pos).getName();
-            float height = users.get(pos).getHeight();
-            float weight = users.get(pos).getWeight();
-            int age = users.get(pos).getAge();
-            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "name: "+name +
-                    "\n"+"height: "+height+"\n"+ "weight: "+weight+ "\n"+ "age: "+age+"\n");
-            pos++;
-        }
-        return pos > 0;
-    }
-
-    private LiveData<Boolean> isExists() {
-        return userViewModel.getIsExists();
     }
 }

@@ -33,7 +33,7 @@ public class ExerciseAdapter extends ListAdapter<Exercise,ExerciseAdapter.Exerci
     @NonNull
     @Override
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_train,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise,parent,false);
         return new ExerciseViewHolder(itemView);
     }
 

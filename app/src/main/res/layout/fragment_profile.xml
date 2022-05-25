@@ -16,6 +16,7 @@
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/profile"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -118,33 +119,45 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/BMI"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="100dp"
-        android:text="BMI"
+        android:id="@+id/BMI_Warning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.500"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputAge" />
 
     <TextView
-        android:id="@+id/BMI_Description"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
+        android:id="@+id/BMI"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.587"
+        app:layout_constraintHorizontal_bias="0.500"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BMI" />
+        app:layout_constraintTop_toBottomOf="@+id/BMI_Warning" />
 
     <TextView
-        android:id="@+id/BMI_Warning"
-        android:layout_width="274dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="56dp"
+        android:id="@+id/BMI_Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.587"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BMI" />
 
