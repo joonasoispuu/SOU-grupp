@@ -15,15 +15,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.workoutappgroupproject.ExampleDialog;
+import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
 import com.example.workoutappgroupproject.fragment.CustomExerciseFragment;
+import com.example.workoutappgroupproject.fragment.ExerciseFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
 import com.example.workoutappgroupproject.fragment.SixpackFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
 import com.example.workoutappgroupproject.UserDB.User;
+import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,6 +35,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private UserViewModel userViewModel;
+    private ExerciseViewModel exerciseViewModel;
     BottomNavigationView bottomNavigationView;
     ActivityMainBinding binding;
     ConstraintLayout mainView;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mainView = findViewById(R.id.mainView);
         // init view model
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         userViewModel.getIsExists().observe(this, isExists -> { this.isExists = isExists; });
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -94,8 +99,9 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){
         FragmentManager fragmentManager =getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (dir >= 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        else fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -104,39 +110,21 @@ public class MainActivity extends AppCompatActivity {
     //On TrainFragment user can choose what exercise do to by having the fragment replaced
     public void OnChosenExercise(View view){
         String Exercise = view.getTag().toString();
-        switch (Exercise){
-            case "ArmsandChest":
-                replaceFragment(new ArmsandchestFragment(),1,true);
-                break;
-            case "Sixpack":
-                replaceFragment(new SixpackFragment(),1,true);
-                break;
-            case "CustomExercise":
-                replaceFragment(new CustomExerciseFragment(),1,true);
-                break;
-            case "Custom":
-                Intent intent  = new Intent(MainActivity.this, CustomActivity.class);
-                startActivity(intent);
-                break;
-        }
-    }
+        if (!Exercise.equals("AddCustom")) {
+            Intent activity1 = new Intent(MainActivity.this, ExerciseActivity.class);
+            activity1.putExtra("TYPE", Exercise);
+            exerciseViewModel.getAllExercisesByType("ArmsandChest").observe(this,exercises -> {
+                int size = exercises.size();
+                if (size>=1) System.out.println("NAME: "+exercises.get(1).getName());
+                else System.out.println("NAME: "+exercises.get(1).getName());
 
-    private boolean hasUserData(List<User> users) {
-        int pos = 0;
-        // iterate users list
-        while (pos < users.size()){
-            String name = users.get(pos).getName();
-            float height = users.get(pos).getHeight();
-            float weight = users.get(pos).getWeight();
-            int age = users.get(pos).getAge();
-            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "name: "+name +
-                    "\n"+"height: "+height+"\n"+ "weight: "+weight+ "\n"+ "age: "+age+"\n");
-            pos++;
+            });
+            // check if id matches
+//            activity1.putExtra("TYPE", 2);
+//            startActivity(activity1);
+        } else {
+            Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
+            startActivity(customActivity);
         }
-        return pos > 0;
-    }
-
-    private LiveData<Boolean> isExists() {
-        return userViewModel.getIsExists();
     }
 }

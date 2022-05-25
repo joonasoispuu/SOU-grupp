@@ -11,8 +11,8 @@
 
         <TextView
             android:id="@+id/txtName"
-            android:layout_width="410dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/exercise_placeholder_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -24,8 +24,8 @@
 
         <TextView
             android:id="@+id/txtQuantity"
-            android:layout_width="410dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/exercise_placeholder_quantity"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,16 +33,15 @@
 
         <TextView
             android:id="@+id/txtTime"
-            android:layout_width="420dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/exercise_placeholder_time"
+            android:gravity=""
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1" />
+            app:layout_constraintTop_toBottomOf="@+id/txtQuantity" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

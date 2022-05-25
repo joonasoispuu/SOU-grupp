@@ -29,6 +29,7 @@ public class CustomActivity extends AppCompatActivity {
     private static final int RESULT_EDIT = 200;
     private ExerciseViewModel exerciseViewModel;
     public static final int RESULT_SAVE = 100;
+    public static final String myType = "Custom";
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -39,7 +40,7 @@ public class CustomActivity extends AppCompatActivity {
                         int quantity = resultData.getIntExtra(AddExercisesActivity.EXTRA_QUANTITY, 1);
                         int time = resultData.getIntExtra(AddExercisesActivity.EXTRA_TIME, 1);
 
-                        Exercise exercise = new Exercise(name, quantity, time, "Custom");
+                        Exercise exercise = new Exercise(name, quantity, time, myType);
                         exerciseViewModel.insert(exercise);
                         Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.save_db), Snackbar.LENGTH_SHORT).show();
 
@@ -57,7 +58,7 @@ public class CustomActivity extends AppCompatActivity {
                         String name = resultData.getStringExtra(AddExercisesActivity.EXTRA_NAME);
                         int quantity = resultData.getIntExtra(AddExercisesActivity.EXTRA_QUANTITY, 0);
                         int time = resultData.getIntExtra(AddExercisesActivity.EXTRA_TIME, 0);
-                        Exercise exercise = new Exercise(name,quantity,time,"Custom");
+                        Exercise exercise = new Exercise(name,quantity,time,myType);
                         exercise.setId(id);
                         exerciseViewModel.update(exercise);
 
@@ -88,24 +89,7 @@ public class CustomActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
-        // myType is the target type to query (has to match the actual type of Exercise instance)
-        // TODO: replace myType with the needed type
-        exerciseViewModel.getAllExercisesByType("Custom").observe(this, adapter::submitList);
-
-        // get all Exercises with type "Sixpack"
-        // TODO: you can remove line 96-110 if u don't need it (meant for testing)
-        exerciseViewModel.getAllExercisesByType("Custom").observe(this,exercises -> {
-            System.out.println("exerciseList of type count: "+exercises.size());
-            for (int i = 0; i<exercises.size(); i++) {
-                int id = exercises.get(i).getId();
-                String name = exercises.get(i).getName();
-                int quantity = exercises.get(i).getQuantity();
-                int time = exercises.get(i).getTime();
-                String type = exercises.get(i).getType();
-                Log.i("exerciseList: ","---EXERCISE---"+"\n"+ "id: "+id+"\n"+ "name: "+name +
-                        "\n"+"quantity: "+quantity+"\n"+ "time: "+time+ "\n"+ "type: "+type+"\n");
-            }
-        });
+        exerciseViewModel.getAllExercisesByType(myType).observe(this, adapter::submitList);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -136,7 +120,7 @@ public class CustomActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.delete_exercise){
 //            exerciseViewModel.deleteAllExercise();
-            exerciseViewModel.deleteAllExerciseByType("Custom");
+            exerciseViewModel.deleteAllExerciseByType(myType);
             Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.exercises_deleted), Snackbar.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

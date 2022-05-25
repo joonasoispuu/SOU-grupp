@@ -39,7 +39,7 @@ public class AddExercisesActivity extends AppCompatActivity {
             if(intent.hasExtra(EXTRA_ID)){
                 setTitle(getString(R.string.edit));
                 etName.setText(intent.getStringExtra(EXTRA_NAME));
-                etQuantity.setText(intent.getIntExtra(EXTRA_QUANTITY, 1)); //TODO: crashes here
+                etQuantity.setText(String.valueOf(intent.getIntExtra(EXTRA_QUANTITY, 1)));
                 ntPicker.setValue(intent.getIntExtra(EXTRA_TIME, 1));
             }else{
                 setTitle("Create Exercise");

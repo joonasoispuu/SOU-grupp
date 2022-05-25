@@ -37,5 +37,19 @@
     <string name="overweight">Fat!</string>
     <string name="obese_class_I">Obese</string>
     <string name="obese_class_II">Obese+2</string>
-    <string name="bmi_warning">BMI is made for people over the age of 18 so it may be wrong in your case!</string>
+    <string name="bmi_warning">This app is made for people over the age of 18\nSome results may be incorrect.</string>
+    <string name="exercise">Exercise</string>
+    <string name="_10_x">10 X</string>
+    <string name="done">Done</string>
+    <string name="_10_sec">10 sec</string>
+    <string name="exercise_name">Exercise Name</string>
+    <string name="how_many_times">How many times?</string>
+    <string name="seconds">Seconds</string>
+    <string name="custom_exercises">Custom Exercises</string>
+    <string name="add_custom_exercises">Add Custom Exercises</string>
+    <string name="sixpack_exercise">Sixpack Exercise</string>
+    <string name="armsandchest_exercise">ArmsandChest Exercise</string>
+    <string name="title_here">Title here</string>
+    <string name="gps">GPS</string>
+    <string name="timer">Timer</string>
 </resources>

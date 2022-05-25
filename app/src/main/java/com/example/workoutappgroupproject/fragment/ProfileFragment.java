@@ -112,7 +112,8 @@ public class ProfileFragment extends Fragment {
                             dataStatus = "Saved";
                             float bmiheight = height/100;
                             BMI=weight/(bmiheight*bmiheight);
-                            txtBMI.setText((String.format("BMI: "+BMI)));
+                            String bmiString = String.format("BMI: %.1f", BMI);
+                            txtBMI.setText(bmiString);
                             if(age<18){
                                 txtBMIWarning.setText(R.string.bmi_warning);
                             }
@@ -166,13 +167,7 @@ public class ProfileFragment extends Fragment {
                     String name = textInputName.getEditText().getText().toString().trim();
                     float height = Float.parseFloat(textInputHeight.getEditText().getText().toString().trim());
                     float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString().trim());
-                    int age = 0;
-                    try {
-                        age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
-                    } catch (NumberFormatException nfe) {
-                        textInputAge.getEditText().setError("ERROR");
-                        System.out.println("NumberFormat Exception: invalid input string");
-                    }
+                    int age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
                     // save data to db ...
                     User user = new User(name,height,weight,age);
                     userViewModel.insert(user);
@@ -297,7 +292,13 @@ public class ProfileFragment extends Fragment {
 
     private boolean validateAge(View v) {
         String ageInput = textInputAge.getEditText().getText().toString().trim();
-        int age = Integer.parseInt(ageInput);
+        int age = -1;
+        try {
+            age = Integer.parseInt(ageInput);;
+        } catch (NumberFormatException nfe) {
+            textInputAge.getEditText().setError("ERROR");
+            System.out.println("NumberFormat Exception: invalid input string");
+        }
         if (ageInput.isEmpty()) {
             textInputAge.setError("Field cannot be empty!");
             return false;
