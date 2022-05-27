@@ -103,6 +103,7 @@ public class ExerciseFragment extends Fragment {
 
         view.findViewById(R.id.btnDone).setOnClickListener(view1 -> {
             exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
+                boolean dirDown = true;
                 if (ID < 0) {
                     // check if all exercises done
                     return;
@@ -113,9 +114,20 @@ public class ExerciseFragment extends Fragment {
                     Toast.makeText(getActivity(),"All exercises finished!",Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                     return;
+
+                    // for reset btn
+//                    if (ID > 0) {
+//                        ID--;
+//                        dirDown = false;
+//                    }
+//                    else {
+//                        getActivity().finish();
+//                        return;
+//                    }
                 }
                 ExerciseFragment newInstance = newInstance(ID);
-                replaceFragment(newInstance,2,false);
+                if (dirDown) replaceFragment(newInstance,2,false);
+                else replaceFragment(newInstance,-2,false);
             });
         });
     }
@@ -127,6 +139,7 @@ public class ExerciseFragment extends Fragment {
         if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
+        else if (dir == -2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_top, R.anim.enter_from_top, R.anim.exit_to_bottom);
 
         exerciseActivity = (ExerciseActivity) getActivity();
         //Below is where you get a variable from the main activity
