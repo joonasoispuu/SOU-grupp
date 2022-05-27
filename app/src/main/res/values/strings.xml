@@ -54,4 +54,6 @@
     <string name="timer">Timer</string>
     <string name="quantity_icon">X</string>
     <string name="time_icon">sec</string>
+    <string name="reset_timer">reset timer</string>
+    <string name="pause">pause</string>
 </resources>
