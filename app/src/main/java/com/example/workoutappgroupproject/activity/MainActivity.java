@@ -5,30 +5,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.workoutappgroupproject.ExampleDialog;
+import com.example.workoutappgroupproject.CustomDialog;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
-import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
-import com.example.workoutappgroupproject.fragment.CustomExerciseFragment;
-import com.example.workoutappgroupproject.fragment.ExerciseFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
 import com.example.workoutappgroupproject.fragment.RunFragment;
-import com.example.workoutappgroupproject.fragment.SixpackFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
-import com.example.workoutappgroupproject.UserDB.User;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDialog() {
-        ExampleDialog exampleDialog = new ExampleDialog();
-        exampleDialog.show(getSupportFragmentManager(),"example dialog");
+        CustomDialog customDialog = new CustomDialog();
+        customDialog.show(getSupportFragmentManager(),"example dialog");
     }
 
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){

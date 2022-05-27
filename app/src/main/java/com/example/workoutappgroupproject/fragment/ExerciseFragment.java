@@ -77,18 +77,11 @@ public class ExerciseFragment extends Fragment {
 
         exerciseViewModel = new ViewModelProvider(getActivity()).get(ExerciseViewModel.class);
         exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
-//            exercisesList.addAll(exercises);
-
-//            for (int i = 0; i<exercisesList.size(); i++) {
-//                System.out.println(" "+exercisesList.get(i).getId() + " "+exercisesList.get(i).getName());
-//            }
             System.out.println("INTENT ID: "+ID);
             int id = 0;
             if (getArguments() != null) {
                 // get data
                 id = getArguments().getInt(EXERCISE_ID, 0);
-            } else {
-                // first time
             }
 
             if (ID < exercises.size()) {
@@ -106,7 +99,6 @@ public class ExerciseFragment extends Fragment {
                 if (time > 0) txtTime.setText(quantity+" "+getString(R.string.time_icon));
                 else txtTime.setText("");
             }
-
         });
 
         view.findViewById(R.id.btnDone).setOnClickListener(view1 -> {

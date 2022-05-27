@@ -123,16 +123,16 @@ public class ProfileFragment extends Fragment {
                             if(BMI<16){
                                 txtDescription.setText(getString(R.string.severely_skinny));
                             }
-                            else if(BMI<16.9 && BMI >=16){
+                            else if(BMI<17 && BMI >=16){
                                 txtDescription.setText(getString(R.string.moderately_skinny));
                             }
-                            else if(BMI<18.4 && BMI >=17){
+                            else if(BMI<18.5 && BMI >=17){
                                 txtDescription.setText(getString(R.string.mildly_skinny));
                             }
-                            else if(BMI<24.9 && BMI >=18.5){
+                            else if(BMI<25 && BMI >=18.5){
                                 txtDescription.setText(getString(R.string.normal));
                             }
-                            else if(BMI<29.9 && BMI >=25){
+                            else if(BMI<30 && BMI >=25){
                                 txtDescription.setText(getString(R.string.overweight));
                             }
                             else if(BMI<34.9 && BMI >=30){
