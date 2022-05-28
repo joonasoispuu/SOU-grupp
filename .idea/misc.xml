@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/activity_add_excericises_group.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/activity_add_exercises.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/activity_custom.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/activity_exercise.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/activity_main.xml" value="0.2212962962962963" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/activity_train.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/dialog_layout.xml" value="0.18489583333333334" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_alarm.xml" value="0.33796296296296297" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_armsandchest.xml" value="0.22" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_custom_exercise.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_exercise.xml" value="0.33" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_first.xml" value="0.14907407407407408" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_run.xml" value="0.33796296296296297" />

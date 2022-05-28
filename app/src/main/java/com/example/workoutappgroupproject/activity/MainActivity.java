@@ -1,15 +1,15 @@
 package com.example.workoutappgroupproject.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.workoutappgroupproject.CustomDialog;
 import com.example.workoutappgroupproject.R;
@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDialog() {
-        CustomDialog customDialog = new CustomDialog();
-        customDialog.show(getSupportFragmentManager(),"example dialog");
+        CustomDialog exampleDialog = new CustomDialog();
+        exampleDialog.show(getSupportFragmentManager(),"example dialog");
     }
 
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){
