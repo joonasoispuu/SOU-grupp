@@ -1,8 +1,6 @@
 package com.example.workoutappgroupproject.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,13 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
-import android.os.Parcelable;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.NumberPicker;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +25,20 @@ import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ExerciseFragment extends Fragment {
     List<Exercise> exercisesList = new ArrayList<>();
     private static String type = null;
     private ExerciseActivity exerciseActivity;
     private ExerciseViewModel exerciseViewModel;
+    private CountDownTimer countDownTimer;
+    private long mtimeStartinMilliseconds;
+    private long mEndTime;
+    private long mtimeLeftinMilliseconds;
+    private boolean timerRunning;
     TextView txtName, txtQuantity, txtTime;
+    Button btnDone, btnResetTime, btnPause;
     static int ID = -1;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,6 +74,14 @@ public class ExerciseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_exercise, container, false);
     }
 
+    @Override
+    public void onDestroyView() {
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+        }
+        super.onDestroyView();
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -77,11 +89,18 @@ public class ExerciseFragment extends Fragment {
 
         exerciseViewModel = new ViewModelProvider(getActivity()).get(ExerciseViewModel.class);
         exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
+//            exercisesList.addAll(exercises);
+
+//            for (int i = 0; i<exercisesList.size(); i++) {
+//                System.out.println(" "+exercisesList.get(i).getId() + " "+exercisesList.get(i).getName());
+//            }
             System.out.println("INTENT ID: "+ID);
             int id = 0;
             if (getArguments() != null) {
                 // get data
                 id = getArguments().getInt(EXERCISE_ID, 0);
+            } else {
+                // first time
             }
 
             if (ID < exercises.size()) {
@@ -89,46 +108,51 @@ public class ExerciseFragment extends Fragment {
                 int quantity = exercises.get(id).getQuantity();
                 int time = exercises.get(id).getTime();
                 System.out.println(" "+exercises.get(id).getId()+" "+name+" "+quantity+" "+time);
-
                 txtName = view.findViewById(R.id.txtName);
                 txtName.setText(name);
                 txtQuantity = view.findViewById(R.id.txtQuantity);
                 if (quantity > 0) txtQuantity.setText(quantity+" "+getString(R.string.quantity_icon));
                 else txtQuantity.setText("");
                 txtTime = view.findViewById(R.id.txtTime);
-                if (time > 0) txtTime.setText(quantity+" "+getString(R.string.time_icon));
-                else txtTime.setText("");
+                btnDone = view.findViewById(R.id.btnDone);
+                btnPause = view.findViewById(R.id.btnPauseTime);
+                btnResetTime = view.findViewById(R.id.btnResetTime);
+                if(time != 0){
+                    btnDone.setText("skip");
+                    long milliseconds = Long.parseLong(String.valueOf(time)) * 1000;
+                    setTime(milliseconds);
+                }
+                else{
+                    btnPause.setVisibility(view.GONE);
+                    btnResetTime.setVisibility(view.GONE);
+                }
             }
         });
+        view.findViewById(R.id.btnResetTime).setOnClickListener(view1 -> resetTimer());
 
-        view.findViewById(R.id.btnDone).setOnClickListener(view1 -> {
-            exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
-                boolean dirDown = true;
-                if (ID < 0) {
-                    // check if all exercises done
-                    return;
-                } else if (ID < exercises.size()-1) {
-                    ID++;
-                } else {
-                    // cancel new instance creation
-                    Toast.makeText(getActivity(),"All exercises finished!",Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
-                    return;
+        view.findViewById(R.id.btnPauseTime).setOnClickListener(view1 -> togglepause());
 
-                    // for reset btn
-//                    if (ID > 0) {
-//                        ID--;
-//                        dirDown = false;
-//                    }
-//                    else {
-//                        getActivity().finish();
-//                        return;
-//                    }
-                }
-                ExerciseFragment newInstance = newInstance(ID);
-                if (dirDown) replaceFragment(newInstance,2,false);
-                else replaceFragment(newInstance,-2,false);
-            });
+        view.findViewById(R.id.btnDone).setOnClickListener(view1 -> newexercise());
+    }
+
+    private void newexercise(){
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+        }
+        exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
+            if (ID < 0) {
+                // check if all exercises done
+                return;
+            } else if (ID < exercises.size()-1) {
+                ID++;
+            } else {
+                // cancel new instance creation
+                Toast.makeText(getActivity(),"All exercises finished!",Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+                return;
+            }
+            ExerciseFragment newInstance = newInstance(ID);
+            replaceFragment(newInstance,2,false);
         });
     }
 
@@ -139,8 +163,6 @@ public class ExerciseFragment extends Fragment {
         if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
-        else if (dir == -2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_top, R.anim.enter_from_top, R.anim.exit_to_bottom);
-
         exerciseActivity = (ExerciseActivity) getActivity();
         //Below is where you get a variable from the main activity
         int host = exerciseActivity.findViewById(R.id.mainView).getId();
@@ -148,5 +170,64 @@ public class ExerciseFragment extends Fragment {
         fragmentTransaction.replace(host, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public void togglepause(){
+        if(timerRunning){
+            pauseTimer();
+        }
+        else{
+            startTimer();
+        }
+    }
+
+    private void pauseTimer(){
+        countDownTimer.cancel();
+        timerRunning = false;
+        btnResetTime.setVisibility(View.VISIBLE);
+        btnPause.setText("start");
+    }
+
+    private void resetTimer(){
+        btnResetTime.setVisibility(View.INVISIBLE);
+        mtimeLeftinMilliseconds = mtimeStartinMilliseconds;
+        updateTimer();
+    }
+
+    public void setTime(long milliseconds){
+        mtimeStartinMilliseconds = milliseconds;
+        resetTimer();
+        startTimer();
+    }
+
+    private void startTimer() {
+        btnPause.setText("pause");
+        btnResetTime.setVisibility(View.INVISIBLE);
+        mEndTime = System.currentTimeMillis() + mtimeLeftinMilliseconds;
+
+        countDownTimer = new CountDownTimer(mtimeLeftinMilliseconds, 1000){
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mtimeLeftinMilliseconds = millisUntilFinished;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish(){
+                timerRunning = false;
+                newexercise();
+            }
+        }.start();
+
+        timerRunning = true;
+    }
+
+    private void updateTimer(){
+        int minutes = (int) (mtimeLeftinMilliseconds / 1000) / 60;
+        int seconds = (int) (mtimeLeftinMilliseconds / 1000) % 60;
+
+        String timeLeftText = String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds);
+
+        txtTime.setText(timeLeftText);
     }
 }
