@@ -33,9 +33,9 @@ public class ExerciseFragment extends Fragment {
     private ExerciseActivity exerciseActivity;
     private ExerciseViewModel exerciseViewModel;
     private CountDownTimer countDownTimer;
+    long timeVar;
     private long mtimeStartinMilliseconds;
-    private long mEndTime;
-    private long mtimeLeftinMilliseconds;
+    private long mtimeLeftinMilliseconds = -1;
     private boolean timerRunning;
     TextView txtName, txtQuantity, txtTime;
     Button btnDone, btnResetTime, btnPause;
@@ -57,6 +57,7 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragment.size = size;
         ExerciseFragment.count = count;
         ID = firstID;
+
     }
 
     public static ExerciseFragment newInstance(int id, int count) {
@@ -76,6 +77,17 @@ public class ExerciseFragment extends Fragment {
         System.out.println("---------------------------------------------------------");
         System.out.println("TOTAL COUNT: "+size);
         System.out.println("RELATIVE ID: "+ count);
+        if (savedInstanceState != null) {
+            System.out.println("TIME: "+ savedInstanceState.getLong("time"));
+        } else {
+            System.out.println("TIME: null");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("time",timeVar);
     }
 
     @Override
@@ -127,7 +139,13 @@ public class ExerciseFragment extends Fragment {
             if (ID < exercises.size()) {
                 String name = exercises.get(id).getName();
                 int quantity = exercises.get(id).getQuantity();
-                int time = exercises.get(id).getTime();
+                //int time;
+                long time;
+                if (savedInstanceState != null) {
+                    time = savedInstanceState.getLong("time");
+                } else {
+                    time = exercises.get(id).getTime();
+                }
                 System.out.println(" "+exercises.get(id).getId()+" "+name+" "+quantity+" "+time);
                 txtName.setText(name);
                 if (quantity > 0) txtQuantity.setText(quantity+" "+getString(R.string.quantity_icon));
@@ -135,7 +153,7 @@ public class ExerciseFragment extends Fragment {
 
                 if(time != 0){
                     btnDone.setText("skip");
-                    long milliseconds = Long.parseLong(String.valueOf(time)) * 1000;
+                    long milliseconds = time * 1000;
                     setTime(milliseconds);
                 }
                 else{
@@ -227,7 +245,6 @@ public class ExerciseFragment extends Fragment {
     private void startTimer() {
         btnPause.setText(R.string.pause);
         btnResetTime.setVisibility(View.INVISIBLE);
-        mEndTime = System.currentTimeMillis() + mtimeLeftinMilliseconds;
 
         countDownTimer = new CountDownTimer(mtimeLeftinMilliseconds, 1000){
             @Override
@@ -255,5 +272,6 @@ public class ExerciseFragment extends Fragment {
         if(txtTime != null) {
             txtTime.setText(timeLeftText);
         }
+        timeVar = (mtimeLeftinMilliseconds / 1000);
     }
 }
