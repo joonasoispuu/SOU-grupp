@@ -56,4 +56,8 @@
     <string name="time_icon">sec</string>
     <string name="pause">pause</string>
     <string name="reset_timer">reset timer</string>
+    <string name="sixpack">Sixpack</string>
+    <string name="armsandchest">ArmsandChest</string>
+    <string name="custom">Custom</string>
+    <string name="start">start</string>
 </resources>

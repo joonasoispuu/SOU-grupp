@@ -14,11 +14,13 @@ import java.util.List;
 public class ExerciseViewModel extends AndroidViewModel {
     private final ExerciseRepository repository;
     private final LiveData<List<Exercise>> allExercise;
+    private final LiveData<Boolean> isExists;
 
     public ExerciseViewModel(@NonNull Application application){
         super(application);
         repository = new ExerciseRepository(application);
         allExercise = repository.getAllExercises();
+        this.isExists = repository.getIsExists();
     }
 
     public void insert(Exercise exercise){repository.insert(exercise);}
@@ -31,4 +33,5 @@ public class ExerciseViewModel extends AndroidViewModel {
         return allExercise;
     }
     public LiveData<List<Exercise>> getAllExercisesByType(String myType) {return repository.getAllExercisesByType(myType);}
+    public LiveData<Boolean> getIsExists() { return isExists; }
 }

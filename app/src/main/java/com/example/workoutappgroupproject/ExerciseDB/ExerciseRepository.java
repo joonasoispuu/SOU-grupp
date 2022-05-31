@@ -10,11 +10,13 @@ import java.util.List;
 public class ExerciseRepository {
     private final ExerciseDao exerciseDao;
     private final LiveData<List<Exercise>> allExercise;
+    private final LiveData<Boolean> isExists;
 
     public ExerciseRepository(Application application) {
         ExerciseDB db = ExerciseDB.getInstance(application);
         exerciseDao = db.exerciseDao();
         allExercise = exerciseDao.getAllExercises();
+        isExists = exerciseDao.isExists();
     }
 
     public void insert(Exercise exercise) {
@@ -37,6 +39,7 @@ public class ExerciseRepository {
 
     public LiveData<List<Exercise>> getAllExercises() {return allExercise;}
     public LiveData<List<Exercise>> getAllExercisesByType(String myType) {return exerciseDao.getAllExercisesByType(myType);}
+    public LiveData<Boolean> getIsExists(){ return isExists; }
 
     private static class InsertExerciseAsyncTask extends AsyncTask<Exercise, Void, Void> {
         private final ExerciseDao exerciseDao;

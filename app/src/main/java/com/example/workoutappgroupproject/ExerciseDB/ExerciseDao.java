@@ -29,4 +29,7 @@ public interface ExerciseDao {
 
     @Query("SELECT * FROM exercise_table WHERE type == :mytype ORDER BY id")
     LiveData<List<Exercise>> getAllExercisesByType(String mytype);
+
+    @Query("SELECT EXISTS(SELECT * FROM exercise_table)")
+    LiveData<Boolean> isExists();
 }
