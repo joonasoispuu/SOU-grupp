@@ -26,8 +26,8 @@ import java.util.List;
 
 public class CustomActivity extends AppCompatActivity {
 
-    private static final int RESULT_EDIT = 200;
     private ExerciseViewModel exerciseViewModel;
+    private static final int RESULT_EDIT = 200;
     public static final int RESULT_SAVE = 100;
     public static final String myType = "Custom";
 

@@ -13,7 +13,6 @@ import com.example.workoutappgroupproject.R;
 
 public class AddExercisesActivity extends AppCompatActivity {
 
-    private static final int RESULT_EDIT = 200;
     private EditText etName, etQuantity;
     private NumberPicker ntPicker;
 
@@ -22,6 +21,7 @@ public class AddExercisesActivity extends AppCompatActivity {
     public static final String EXTRA_TIME = "com.example.workoutappgroupproject.activity.EXTRA_TIME";
     public static final String EXTRA_ID = "com.example.workoutappgroupproject.activity.EXTRA_ID";
 
+    private static final int RESULT_EDIT = 200;
     public static final int RESULT_SAVE = 100;
 
     @Override
@@ -77,7 +77,7 @@ public class AddExercisesActivity extends AppCompatActivity {
                     data.putExtra(EXTRA_ID, id);
                     setResult(RESULT_EDIT, data);
                 } else {
-                    setResult(RESULT_SAVE, data);
+                    setResult(RESULT_EDIT, data);
                 }
                 finish();
             }
