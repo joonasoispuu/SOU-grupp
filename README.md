@@ -1,5 +1,6 @@
 # SOU-grupp README
-> insert some description here
+> Projects are the final part of the course: you will form teams, come up with your own idea for an Android application, present your idea, implement it, write a report and finally present your solution.
+All documents are written in English.
 
 This README consists of Project plan, Final App functionalities, Milestones and Open issues
 
