@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        .....//your other items
+        <item name="preferenceTheme">@style/PrefTheme</item>
+    </style>
+
+    <style name="PrefTheme" parent="@style/PreferenceThemeOverlay">
+        <item name="preferenceCategoryStyle">@style/CategoryStyle</item>
+    </style>
+
+    <style name="CategoryStyle" parent="Preference.Category">
+        <item name="colorAccent">@color/purple_200</item>
+    </style>
+
+</resources>

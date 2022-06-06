@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/drawable/ic_baseline_data_usage_24.xml" value="0.3065" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/activity_main.xml" value="0.15942028985507245" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/item_exercise.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/layout_dialog.xml" value="0.17603850050658562" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/pref_category_view.xml" value="0.18591691995947315" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/xml/root_preferences.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>
