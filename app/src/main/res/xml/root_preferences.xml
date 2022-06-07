@@ -11,9 +11,20 @@
     <PreferenceCategory app:title="BMI Units"
         app:icon="@drawable/ic_baseline_info_24" />
 
+    <SwitchPreferenceCompat
+        app:title="Metric units"
+        app:summary="Show units in metrics"/>
+
+    <SwitchPreferenceCompat
+        app:title="US units"
+        app:summary="Show units in US"/>
+
+    <PreferenceCategory app:title="Feedback"
+        app:icon="@drawable/ic_baseline_feedback_24" />
+
     <Preference
-        app:key="Feedback"
         app:title="Send feedback"
         app:summary="Report technical issues or suggest new features"/>
+
 </PreferenceScreen>
 
