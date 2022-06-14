@@ -1,10 +1,13 @@
-package com.example.workoutappgroupproject.room;
+package com.example.workoutappgroupproject.viewmodel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.workoutappgroupproject.UserDB.User;
+import com.example.workoutappgroupproject.UserDB.UserRepository;
 
 import java.util.List;
 

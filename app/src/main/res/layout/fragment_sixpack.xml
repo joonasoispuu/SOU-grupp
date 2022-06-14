@@ -6,36 +6,4 @@
     android:layout_height="match_parent"
     tools:context=".fragment.SixpackFragment">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="117dp"
-        android:layout_height="36dp"
-        android:text="First exercise"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="117dp"
-        android:layout_height="36dp"
-        android:text="Second exercise"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="117dp"
-        android:layout_height="36dp"
-        android:text="Third exercise"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="117dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="36dp"
-        android:text="..."
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 </androidx.constraintlayout.widget.ConstraintLayout>

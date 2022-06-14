@@ -1,50 +1,77 @@
 package com.example.workoutappgroupproject.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Context;
-<<<<<<< HEAD
-=======
-import android.content.DialogInterface;
-import android.content.Intent;
->>>>>>> master
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.View;
-
-import com.example.workoutappgroupproject.ExampleDialog;
+import com.example.workoutappgroupproject.CustomDialog;
+import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
+import com.example.workoutappgroupproject.fragment.SettingsFragment;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
-import com.example.workoutappgroupproject.fragment.ArmsandchestFragment;
-import com.example.workoutappgroupproject.fragment.CustomFragment;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
-import com.example.workoutappgroupproject.fragment.RunFragment;
-import com.example.workoutappgroupproject.fragment.SixpackFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
-import com.example.workoutappgroupproject.room.User;
-import com.example.workoutappgroupproject.room.UserViewModel;
+import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
+import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UserViewModel userViewModel;
     BottomNavigationView bottomNavigationView;
     ActivityMainBinding binding;
     ConstraintLayout mainView;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor sharedEditor;
-//    Button btnSaveProfile;
     int oldId;
-    private Boolean isExists = false;
+    private Boolean user_isExists = false;
+    private Boolean exercise_isExists = false;
+    private List<Exercise> exercisesSixpack;
+    private List<Exercise> exercisesArmsandChest;
+    private List<Exercise> exercisesCustom;
 
+    private static final int RESULT_NOT_SUCCESS = 200;
+    public static final int RESULT_SUCCESS = 100;
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if(result.getResultCode() == RESULT_SUCCESS){
+                    Intent resultData = result.getData();
+                    if (resultData != null) {
+                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Exercise Session successful!",
+                                Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Did not get data!", Snackbar.LENGTH_SHORT).show();
+                    }
+
+                }else if(result.getResultCode() == RESULT_NOT_SUCCESS){
+                    Intent resultData = result.getData();
+                    if (resultData != null) {
+                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Exercise Session failed!",
+                                Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Did not get data!", Snackbar.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Snackbar.make(findViewById(R.id.myCoordinatorMain), "Exercise Session canceled!",
+                            Snackbar.LENGTH_SHORT).show();
+                }
+            }
+    );
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,49 +80,46 @@ public class MainActivity extends AppCompatActivity {
 
         mainView = findViewById(R.id.mainView);
         // init view model
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.getIsExists().observe(this, isExists -> { this.isExists = isExists; });
+        UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel.getIsExists().observe(this, isExists -> { this.user_isExists = isExists; });
+        ExerciseViewModel exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
+        exerciseViewModel.getIsExists().observe(this, isExists -> { this.exercise_isExists = isExists; });
+        // get Exercise List by Type -> save each list into List<Exercise> variable
+        exerciseViewModel.getAllExercisesByType(getString(R.string.sixpack)).observe(this, exercisesSixpack -> {
+            this.exercisesSixpack = exercisesSixpack;
+        });
+        exerciseViewModel.getAllExercisesByType(getString(R.string.armsandchest)).observe(this, exercisesArmsandChest -> {
+            this.exercisesArmsandChest = exercisesArmsandChest;
+        });
+        exerciseViewModel.getAllExercisesByType(getString(R.string.custom)).observe(this, exercisesCustom -> {
+            this.exercisesCustom = exercisesCustom;
+        });
 
-        // check if app is on it's first run
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        sharedEditor = sharedPreferences.edit();
-        if (isItFirstTime()) {
-            System.out.println("First time");
-            // TODO: prompt user to enter data
-        } else {
-            System.out.println("Not First Time");
-            // get users data
-//            userViewModel.getAllUsers().observe(this, this::getUserData);
-        }
-
-
-
-        // TODO: ask user for name, height, weight
+        // set BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // set navigation bar position to profileFragment by default
         bottomNavigationView.setSelectedItemId(R.id.profileFragment);
-        //replaceFragment(new ProfileFragment(),1,false);
 
         // bottom nav logic
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             // never select an already selected item from bottom navbar
             if (item.getItemId() == bottomNavigationView.getSelectedItemId()) return false;
             switch(item.getItemId()){
-                case R.id.runFragment:
+                case R.id.settingsFragment:
                     // check if user exists
-                    if (!isExists) {
-                        openDialog();
-                        return false;
-                    }
-                    replaceFragment(new RunFragment(),-1,false);
+//                    if (!user_isExists) {
+//                        openDialog();
+//                        return false;
+//                    }
+                    replaceFragment(new SettingsFragment(),-1,false);
                     break;
                 case R.id.profileFragment:
-                    if(oldId != R.id.runFragment) replaceFragment(new ProfileFragment(),-1,false);
+                    if(oldId != R.id.settingsFragment) replaceFragment(new ProfileFragment(),-1,false);
                     else replaceFragment(new ProfileFragment(),1,false);
                     break;
                 case R.id.trainFragment:
                     // check if user exists
-                    if (!isExists) {
+                    if (!user_isExists) {
                         openDialog();
                         return false;
                     }
@@ -105,30 +129,19 @@ public class MainActivity extends AppCompatActivity {
             oldId = item.getItemId();
             return true;
         });
-
     }
 
     private void openDialog() {
-        ExampleDialog exampleDialog = new ExampleDialog();
+        CustomDialog exampleDialog = new CustomDialog();
         exampleDialog.show(getSupportFragmentManager(),"example dialog");
-    }
-
-    private boolean isItFirstTime() {
-        if (sharedPreferences.getBoolean("firstTime", true)) {
-            sharedEditor.putBoolean("firstTime", false);
-            sharedEditor.commit();
-            sharedEditor.apply();
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){
         FragmentManager fragmentManager =getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (dir >= 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-        else fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -138,55 +151,48 @@ public class MainActivity extends AppCompatActivity {
     public void OnChosenExercise(View view){
         String Exercise = view.getTag().toString();
         switch (Exercise){
-            case "ArmsandChest":
-                replaceFragment(new ArmsandchestFragment(),1,true);
-                break;
             case "Sixpack":
-                replaceFragment(new SixpackFragment(),1,true);
+                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                if (exercisesSixpack.size() < 1) {
+                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent.putExtra("TYPE",getString(R.string.sixpack));
+                intent.putExtra("SIZE",exercisesSixpack.size());
+                intent.putExtra("MAX_TIME",exercisesSixpack.get(0).getTime());
+//                intent.putExtra("FIRST_ID",exercisesSixpack.get(0).getId());
+                activityResultLauncher.launch(intent);
+                break;
+            case "ArmsandChest":
+                Intent intent2 = new Intent(MainActivity.this, ExerciseActivity.class);
+                if (exercisesArmsandChest.size() < 1) {
+                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                intent2.putExtra("TYPE",getString(R.string.armsandchest));
+                intent2.putExtra("SIZE",exercisesArmsandChest.size());
+                intent2.putExtra("MAX_TIME",exercisesArmsandChest.get(0).getTime());
+//                intent2.putExtra("FIRST_ID",exercisesArmsandChest.get(0).getId());
+//                intent2.putExtra(exercisesArmsandChest)
+                activityResultLauncher.launch(intent2);
                 break;
             case "Custom":
-                replaceFragment(new CustomFragment(),1,true);
+                Intent intent3 = new Intent(MainActivity.this, ExerciseActivity.class);
+                if (exercisesCustom.size() < 1) {
+                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
+                    Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
+                    startActivity(customActivity);
+                    return;
+                }
+                intent3.putExtra("TYPE",getString(R.string.custom));
+                intent3.putExtra("SIZE",exercisesCustom.size());
+                intent3.putExtra("MAX_TIME",exercisesCustom.get(0).getTime());
+//                intent3.putExtra("FIRST_ID",exercisesCustom.get(0).getId());
+                activityResultLauncher.launch(intent3);
                 break;
-        }
-    }
-
-    private boolean hasUserData(List<User> users) {
-        int pos = 0;
-        // iterate users list
-        while (pos < users.size()){
-            String name = users.get(pos).getName();
-            float height = users.get(pos).getHeight();
-            float weight = users.get(pos).getWeight();
-            int age = users.get(pos).getAge();
-<<<<<<< HEAD
-            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "name: "+name +
-                    "\n"+"height: "+height+"\n"+ "weight: "+weight+ "\n"+ "age: "+age+"\n");
-=======
-            System.out.println("---USER---"+"\n"+ "id: "+pos+"\n"+ "first name: "+first+
-                    "\n"+ "last name: "+last+"\n"+ "height: "+height+"\n"+
-                    "weight: "+weight+ "\n"+ "age: "+age+"\n");
->>>>>>> master
-            pos++;
-        }
-        return pos > 0;
-    }
-
-    private LiveData<Boolean> isExists() {
-        return userViewModel.getIsExists();
-    }
-
-    //On TrainFragment user can choose what exercise do to by having the fragment replaced
-    public void OnChosenExercise(View view){
-        String Exercise = view.getTag().toString();
-        switch (Exercise){
-            case "ArmsandChest":
-                replaceFragment(new ArmsandchestFragment());
-                break;
-            case "Sixpack":
-                replaceFragment(new SixpackFragment());
-                break;
-            case "Custom":
-                replaceFragment(new CustomFragment());
+            case "AddCustom":
+                Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
+                startActivity(customActivity);
                 break;
         }
     }

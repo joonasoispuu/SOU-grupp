@@ -3,33 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_armsandchest.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_custom.xml" value="0.13796296296296295" />
-        <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_sixpack.xml" value="0.18541666666666667" />
-        <entry key="..\:/Users/Admin/SOU-grupp/app/src/main/res/layout/fragment_train.xml" value="0.13796296296296295" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/drawable/ic_profile.xml" value="0.3435" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/drawable/ic_run.xml" value="0.3435" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/drawable/ic_train.xml" value="0.3435" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout-land/fragment_profile.xml" value="0.303125" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/activity_main.xml" value="0.26842105263157895" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/dialog_layout.xml" value="0.33" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_add.xml" value="0.33" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_alarm.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_armsandchest.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_custom.xml" value="0.2" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_run.xml" value="0.33" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_sixpack.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/fragment_train.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/layout/layout_dialog.xml" value="0.1" />
-        <entry key="..\:/Users/Jinglex/AndroidStudioProjects/S-U-grupp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3148148148148148" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout-land/activity_exercise.xml" value="0.1" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/activity_add_exercises.xml" value="0.5" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/activity_break.xml" value="0.36666666666666664" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/activity_custom.xml" value="0.5" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/activity_exercise.xml" value="0.25" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/exercise.xml" value="0.33" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/fragment_armsandchest.xml" value="0.1" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/fragment_exercise.xml" value="0.33" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/fragment_profile.xml" value="0.3911368015414258" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/fragment_train.xml" value="0.1" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/item_exercise.xml" value="0.2462962962962963" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/pref_category_view.xml" value="0.13425925925925927" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/preferences_category.xml" value="0.5" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/preferences_category_bmi.xml" value="0.13425925925925927" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/preferences_category_bmi_units.xml" value="0.33" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/layout/preferences_compat_notifications.xml" value="0.365625" />
+        <entry key="..\:/SOU-grupp/app/src/main/res/xml/root_preferences.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/drawable/ic_baseline_data_usage_24.xml" value="0.3065" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/activity_main.xml" value="0.15942028985507245" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/item_exercise.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/layout_dialog.xml" value="0.17603850050658562" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/layout/pref_category_view.xml" value="0.18591691995947315" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/rasmu/SOU-grupp/app/src/main/res/xml/root_preferences.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
