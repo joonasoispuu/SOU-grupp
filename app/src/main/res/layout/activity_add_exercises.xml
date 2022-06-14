@@ -12,18 +12,19 @@
         android:layout_width="344dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/exercise_name"
         android:inputType="text"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.029"
-        android:autofillHints="" />
+        app:layout_constraintVertical_bias="0.029" />
 
     <NumberPicker
         android:id="@+id/ExerciseTimePicker"
-        android:layout_width="53dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -38,12 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/how_many_times"
         android:inputType="number"
+        android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ExerciseTimePicker"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/ExerciseTimePicker" />
 
     <Button
         android:id="@+id/btnNewExercise"

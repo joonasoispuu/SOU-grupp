@@ -20,4 +20,8 @@
         android:name="com.example.workoutappgroupproject.fragment.RunFragment"
         android:label="fragment_run"
         tools:layout="@layout/fragment_run" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.workoutappgroupproject.fragment.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

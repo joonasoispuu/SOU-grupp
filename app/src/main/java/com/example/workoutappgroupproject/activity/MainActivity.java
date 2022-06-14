@@ -18,9 +18,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.workoutappgroupproject.CustomDialog;
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
+import com.example.workoutappgroupproject.fragment.SettingsFragment;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
-import com.example.workoutappgroupproject.fragment.RunFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
 import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
@@ -105,16 +105,16 @@ public class MainActivity extends AppCompatActivity {
             // never select an already selected item from bottom navbar
             if (item.getItemId() == bottomNavigationView.getSelectedItemId()) return false;
             switch(item.getItemId()){
-                case R.id.runFragment:
+                case R.id.settingsFragment:
                     // check if user exists
-                    if (!user_isExists) {
-                        openDialog();
-                        return false;
-                    }
-                    replaceFragment(new RunFragment(),-1,false);
+//                    if (!user_isExists) {
+//                        openDialog();
+//                        return false;
+//                    }
+                    replaceFragment(new SettingsFragment(),-1,false);
                     break;
                 case R.id.profileFragment:
-                    if(oldId != R.id.runFragment) replaceFragment(new ProfileFragment(),-1,false);
+                    if(oldId != R.id.settingsFragment) replaceFragment(new ProfileFragment(),-1,false);
                     else replaceFragment(new ProfileFragment(),1,false);
                     break;
                 case R.id.trainFragment:
@@ -153,20 +153,41 @@ public class MainActivity extends AppCompatActivity {
         switch (Exercise){
             case "Sixpack":
                 Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                if (exercisesSixpack.size() < 1) {
+                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 intent.putExtra("TYPE",getString(R.string.sixpack));
                 intent.putExtra("SIZE",exercisesSixpack.size());
+                intent.putExtra("MAX_TIME",exercisesSixpack.get(0).getTime());
+//                intent.putExtra("FIRST_ID",exercisesSixpack.get(0).getId());
                 activityResultLauncher.launch(intent);
                 break;
             case "ArmsandChest":
                 Intent intent2 = new Intent(MainActivity.this, ExerciseActivity.class);
+                if (exercisesArmsandChest.size() < 1) {
+                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 intent2.putExtra("TYPE",getString(R.string.armsandchest));
                 intent2.putExtra("SIZE",exercisesArmsandChest.size());
+                intent2.putExtra("MAX_TIME",exercisesArmsandChest.get(0).getTime());
+//                intent2.putExtra("FIRST_ID",exercisesArmsandChest.get(0).getId());
+//                intent2.putExtra(exercisesArmsandChest)
                 activityResultLauncher.launch(intent2);
                 break;
             case "Custom":
                 Intent intent3 = new Intent(MainActivity.this, ExerciseActivity.class);
+                if (exercisesCustom.size() < 1) {
+                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
+                    Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
+                    startActivity(customActivity);
+                    return;
+                }
                 intent3.putExtra("TYPE",getString(R.string.custom));
                 intent3.putExtra("SIZE",exercisesCustom.size());
+                intent3.putExtra("MAX_TIME",exercisesCustom.get(0).getTime());
+//                intent3.putExtra("FIRST_ID",exercisesCustom.get(0).getId());
                 activityResultLauncher.launch(intent3);
                 break;
             case "AddCustom":

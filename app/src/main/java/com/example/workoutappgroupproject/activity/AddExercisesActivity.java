@@ -35,16 +35,16 @@ public class AddExercisesActivity extends AppCompatActivity {
         ntPicker.setMaxValue(300);
         if(getSupportActionBar() != null){
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-            Intent intent = getIntent();
-            if(intent.hasExtra(EXTRA_ID)){
-                setTitle(getString(R.string.edit));
-                etName.setText(intent.getStringExtra(EXTRA_NAME));
-                etQuantity.setText(String.valueOf(intent.getIntExtra(EXTRA_QUANTITY, 1)));
-                ntPicker.setValue(intent.getIntExtra(EXTRA_TIME, 1));
-            }else{
-                setTitle("Create Exercise");
-            }
+//            setTitle(getString(R.string.save));
+        }
+        Intent intent = getIntent();
+        if(intent.hasExtra(EXTRA_ID)){
             setTitle(getString(R.string.edit));
+            etName.setText(intent.getStringExtra(EXTRA_NAME));
+            etQuantity.setText(String.valueOf(intent.getIntExtra(EXTRA_QUANTITY, 1)));
+            ntPicker.setValue(intent.getIntExtra(EXTRA_TIME, 1));
+        }else{
+            setTitle(getString(R.string.create));
         }
     }
 
@@ -53,33 +53,53 @@ public class AddExercisesActivity extends AppCompatActivity {
     }
 
     private void saveExercise(){
-            if (etName.getText().toString().isEmpty()){
-                Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_name_missing), Toast.LENGTH_SHORT).show(); }
-            else if (etQuantity.getText().toString().isEmpty() && ntPicker.getValue()==0){
-                Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_values_missing), Toast.LENGTH_SHORT).show(); }
-            else {
-                String name = etName.getText().toString().trim();
-                int quantity;
-                if(etQuantity.getText().toString().isEmpty()){
-                    quantity = 0;
-                }
-                else{
-                    quantity = Integer.parseInt(etQuantity.getText().toString());
-                }
-                int time = ntPicker.getValue();
-                Intent data = new Intent();
-                data.putExtra(EXTRA_NAME, name);
-                data.putExtra(EXTRA_QUANTITY, quantity);
-                data.putExtra(EXTRA_TIME, time);
-                int id = getIntent().getIntExtra(EXTRA_ID, -1);
-                // got id from intent getIntExtra()
-                if (id != -1) {
-                    data.putExtra(EXTRA_ID, id);
-                    setResult(RESULT_EDIT, data);
-                } else {
-                    setResult(RESULT_EDIT, data);
-                }
-                finish();
-            }
+        if (!validateName() | !validateQuantityTime()){
+            // cancel
+            return;
+        }
+        String name = etName.getText().toString().trim();
+        int quantity;
+        if(etQuantity.getText().toString().isEmpty()){
+            quantity = 0;
+        }
+        else{
+            quantity = Integer.parseInt(etQuantity.getText().toString());
+        }
+        int time = ntPicker.getValue();
+        Intent data = new Intent();
+        data.putExtra(EXTRA_NAME, name);
+        data.putExtra(EXTRA_QUANTITY, quantity);
+        data.putExtra(EXTRA_TIME, time);
+        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+        // got id from intent getIntExtra()
+        if (id != -1) {
+            data.putExtra(EXTRA_ID, id);
+            setResult(RESULT_EDIT, data);
+        } else {
+            setResult(RESULT_SAVE, data);
+        }
+        finish();
+    }
+
+    private boolean validateQuantityTime() {
+        if (etQuantity.getText().toString().isEmpty() && ntPicker.getValue()==0){
+            Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_values_missing), Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean validateName() {
+        String nameInput = etName.getText().toString().trim();
+        if (nameInput.isEmpty()) {
+            Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_name_missing), Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (nameInput.length() > 20) {
+            Toast.makeText(AddExercisesActivity.this, "Exercise name cannot contain more than 20 characters!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 }
