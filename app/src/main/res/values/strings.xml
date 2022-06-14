@@ -1,16 +1,15 @@
 <resources>
     <string name="app_name">Workout app</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--  Profile Fragment  -->
     <string name="name">Name</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
     <string name="age">Age</string>
     <string name="save">Save</string>
     <string name="profile">Profile</string>
-    <string name="btn_update">Update</string>
+    <string name="btn_update">Save</string>
     <string name="btn_edit">Edit</string>
-    <string name="remove">Remove</string>
-    <string name="title_activity_train">TrainActivity</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -21,7 +20,7 @@
     <string name="exercise_placeholder_time">Exercise Time</string>
     <string name="edit">Edit Exercise</string>
     <string name="delete_all_exercises">Delete all exercises!</string>
-    <string name="exercise_name_missing">Please enter your exercises name!</string>
+    <string name="exercise_name_missing">Please enter your exercise name!</string>
     <string name="exercise_values_missing">Please enter either time or quantity!</string>
     <string name="save_db">Exercise plan was added to list!</string>
     <string name="save_err">Failed to save Exercise to list!</string>
@@ -40,7 +39,6 @@
     <string name="bmi_warning">This app is made for people over the age of 18\nSome results may be incorrect.</string>
     <string name="exercise">Exercise</string>
     <string name="_10_x">10 X</string>
-    <string name="done">Done</string>
     <string name="_10_sec">10 sec</string>
     <string name="exercise_name">Exercise Name</string>
     <string name="how_many_times">How many times?</string>
@@ -54,10 +52,37 @@
     <string name="timer">Timer</string>
     <string name="quantity_icon">X</string>
     <string name="time_icon">sec</string>
-    <string name="pause">pause</string>
-    <string name="reset_timer">reset timer</string>
+
+    <!--  fragment_exercise buttons  -->
+    <string name="done">Done</string>
+    <string name="pause">Pause</string>
+    <string name="reset_timer">Reset</string>
+
+    <!--  Train Fragment buttons  -->
     <string name="sixpack">Sixpack</string>
     <string name="armsandchest">ArmsandChest</string>
     <string name="custom">Custom</string>
+
+    <!--  other  -->
     <string name="start">start</string>
+    <string name="quantity_format">%1$d X</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="create">Create Exercise</string>
+    <string name="cancel">Cancel</string>
+    <string name="empty">empty</string>
+    <string name="skip">skip</string>
 </resources>

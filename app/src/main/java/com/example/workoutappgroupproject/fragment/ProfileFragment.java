@@ -93,6 +93,10 @@ public class ProfileFragment extends Fragment {
                     boolean gotUsers = hasUserData(users);
                     if (gotUsers) {
                         if (!dataStatus.equals("Editing")) {
+                            txtBMIWarning.setVisibility(View.VISIBLE);
+                            txtBMI.setVisibility(View.VISIBLE);
+                            txtDescription.setVisibility(View.VISIBLE);
+
                             int id = 0; // <-- first User object in list
                             String name = users.get(id).getName();
                             textInputName.getEditText().setText(name);
@@ -176,6 +180,10 @@ public class ProfileFragment extends Fragment {
                     break;
                 }
                 case "Saved": {
+                    txtBMIWarning.setVisibility(View.GONE);
+                    txtBMI.setVisibility(View.GONE);
+                    txtDescription.setVisibility(View.GONE);
+
                     textInputName.setCounterEnabled(true);
                     textInputName.setEnabled(true);
                     textInputHeight.setEnabled(true);
