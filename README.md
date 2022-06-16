@@ -14,7 +14,6 @@ This README consists of Project plan, Final App functionalities, Milestones and 
 ### 
 
 ## Sixpack exercises
-
 - Jumping Jacks - 30sec
 - Heel touch pole sensorid -30x
 - V-up sensorid 16
@@ -28,8 +27,7 @@ This README consists of Project plan, Final App functionalities, Milestones and 
 - Seated abs counterclockwise circles sensorid jalge all 16x
 - Plank - 60 sec
 
-Arms & Chest exercises
-
+## Arms & Chest exercises
 - Jumping Jacks 30 sec
 - Arm Circles Clockwise 30 sec
 - Arm Circles CounterClockWise 30 sec
