@@ -3,33 +3,49 @@ package com.example.workoutappgroupproject.activity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.ExerciseDB.ExerciseAdapter;
 import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomActivity extends AppCompatActivity {
 
+    ActionBar actionBar;
+    private void setActionBarColor(int color) {
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable
+                = new ColorDrawable(color);
+        // Set BackgroundDrawable
+        assert actionBar != null;
+        actionBar.setBackgroundDrawable(colorDrawable);
+    }
+
     private ExerciseViewModel exerciseViewModel;
     private static final int RESULT_EDIT = 200;
     public static final int RESULT_SAVE = 100;
-    public static final String myType = "Custom";
+    public static final String myType = "custom";
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -73,10 +89,23 @@ public class CustomActivity extends AppCompatActivity {
                 setTitle("Custom Exercises");
             }
     );
+    List<Exercise> myList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom);
+
+        // set up toolbar
+        // MaterialToolbar toolbar = findViewById(R.id.materialToolbar);
+        // toolbar.setTitle(R.string.exercises);
+        // toolbar.setSubtitle(R.string.custom_exercises);
+        // setSupportActionBar(toolbar);
+        setTitle(getString(R.string.custom_exercises));
+
+        actionBar = getSupportActionBar();
+        int color = getResources().getColor(R.color.purple_500);
+        setActionBarColor(color);
 
         findViewById(R.id.fabNewExercise).setOnClickListener(view ->{
             Intent intent = new Intent(CustomActivity.this, AddExercisesActivity.class);
@@ -91,6 +120,12 @@ public class CustomActivity extends AppCompatActivity {
 
         exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         exerciseViewModel.getAllExercisesByType(myType).observe(this, adapter::submitList);
+        exerciseViewModel.getAllExercisesByType(myType).observe(this, exercises -> {
+            if (exercises.size() < 1) {
+                // empty
+            }
+            this.myList = exercises;
+        });
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -102,6 +137,7 @@ public class CustomActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 exerciseViewModel.delete(adapter.getExercisePosition(viewHolder.getAbsoluteAdapterPosition()));
                 Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.exercise_deleted), Snackbar.LENGTH_SHORT).show();
+                invalidateOptionsMenu();
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -120,16 +156,44 @@ public class CustomActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.delete_exercise){
-//            exerciseViewModel.deleteAllExercise();
-            exerciseViewModel.deleteAllExerciseByType(myType);
-            Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.exercises_deleted), Snackbar.LENGTH_SHORT).show();
+            deleteExercises();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void deleteExercises() {
+        // check if exercise db is not empty
+        if (myList.size() < 1) {
+            Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.err_deleteall), Snackbar.LENGTH_SHORT).show();
+        } else {
+            exerciseViewModel.deleteAllExerciseByType(myType);
+            Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.exercises_deleted), Snackbar.LENGTH_SHORT).show();
+//            new Thread(new Runnable() {
+//                public void run() {
+//                    if (stopThread){
+//                        stopThread = false;
+//                        return;
+//                    }
+//                    try {
+//                        Thread.sleep(3000);
+//                    } catch (Exception e) {
+//                        stopThread = true;
+//                        e.printStackTrace();
+//                    }
+////                    exerciseViewModel.deleteAllExerciseByType(myType);
+//                    Snackbar.make(findViewById(R.id.myCoordinatorMain), getString(R.string.exercises_deleted), Snackbar.LENGTH_SHORT).show();
+////                    progressDialog.dismiss();
+//                }
+//            }).start();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.delete_all_exercises, menu);
+        exerciseViewModel.getAllExercisesByType(myType).observe(this, exercises -> {
+            if (exercises.size() < 1) return;
+            getMenuInflater().inflate(R.menu.delete_all_exercises, menu);
+        });
         return true;
     }
 }

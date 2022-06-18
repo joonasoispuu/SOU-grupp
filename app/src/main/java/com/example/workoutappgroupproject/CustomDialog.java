@@ -20,15 +20,15 @@ public class CustomDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog,null);
         builder.setView(view)
-                .setTitle("Hold up")
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.dialog_holdup)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                     }
                 });
         TextView dialogText = view.findViewById(R.id.dialogText);
-        dialogText.setText("You must enter your profile info before using the app!");
+        dialogText.setText(getString(R.string.warning_fill_fields));
         return builder.create();
     }
 }

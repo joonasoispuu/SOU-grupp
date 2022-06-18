@@ -3,6 +3,13 @@ package com.example.workoutappgroupproject.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -14,34 +21,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.activity.BreakActivity;
-import com.example.workoutappgroupproject.activity.ExerciseActivity;
 import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 public class ExerciseFragment extends Fragment {
+    private static int ID = -1;
     private static String type = null;
     private static int size = 0;
     private static int maxTime = 0;
-    private ExerciseActivity exerciseActivity;
     private ExerciseViewModel exerciseViewModel;
     private CountDownTimer countDownTimer;
     long time = -1;
@@ -52,9 +45,8 @@ public class ExerciseFragment extends Fragment {
     private boolean timerRunning;
     TextView txtName, txtQuantity, txtTime;
     Button btnDone, btnResetTime, btnPause;
-    static int ID = -1;
     static int count = 0;
-    long defaultTime;
+    private List<Exercise> exercises;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public static final String EXERCISE_ID = "com.example.workoutappgroupproject.activity.EXERCISE_ID";
@@ -72,15 +64,15 @@ public class ExerciseFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public ExerciseFragment(String type, int size, int count, int firstID, int maxTime) {
+    public ExerciseFragment(String type, int size, int count, int ID, int maxTime) {
         ExerciseFragment.type = type;
         ExerciseFragment.size = size;
         ExerciseFragment.count = count;
         ExerciseFragment.maxTime = maxTime;
-        ID = firstID;
+        ExerciseFragment.ID = ID;
     }
 
-    public static ExerciseFragment newInstance(int id, int count, int maxTime) {
+    public static ExerciseFragment newInstance(int id, int maxTime) {
         ExerciseFragment fragment = new ExerciseFragment();
         Bundle args = new Bundle();
         args.putInt(EXERCISE_ID, id);
@@ -95,9 +87,6 @@ public class ExerciseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mySavedInstanceState = savedInstanceState;
 
-//        System.out.println("TOTAL COUNT: "+size);
-//        System.out.println("RELATIVE ID: "+ count);
-
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -105,8 +94,7 @@ public class ExerciseFragment extends Fragment {
 
                 // cancel timer
                 cancelTimer();
-
-                requireActivity().finish();
+                backToMain(true);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -135,16 +123,40 @@ public class ExerciseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        Log.i("ExerciseFragment","onCreateView!");
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_exercise, container, false);
+    }
+
+    @Override
+    public void onPause() {
+        System.out.println("onPause!");
+//        if () pauseTimer(true);
+        cancelTimer();
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+//        startTimer();
+        super.onStart();
     }
 
     @Override
     public void onDestroyView() {
         // cancel timer
+        System.out.println("on destroy view!");
         cancelTimer();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!timerRunning) {
+            if (time>0) {
+                btnResetTime.setVisibility(View.VISIBLE);
+            }
+            btnPause.setText(R.string.start);
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -152,30 +164,35 @@ public class ExerciseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(false);
+
         activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result -> {
                     if(result.getResultCode() == RESULT_SUCCESS){
                         Intent resultData = result.getData();
                         if (resultData != null) {
-                            Toast.makeText(requireContext(),"Break over!",Toast.LENGTH_SHORT).show();
-                            restoreData(resultData,view);
+//                            Toast.makeText(requireContext(), getString(R.string.break_success),Toast.LENGTH_SHORT).show();
+                            restoreData(resultData);
                         } else {
-                            Toast.makeText(requireContext(),"Did not get data!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), getString(R.string.no_data),Toast.LENGTH_SHORT).show();
                         }
 
                     }else if(result.getResultCode() == RESULT_NOT_SUCCESS){
                         Intent resultData = result.getData();
                         if (resultData != null) {
-                            Toast.makeText(requireContext(),"Break failed!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), getString(R.string.break_failed),Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(requireContext(),"Did not get data!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(),getString(R.string.no_data),Toast.LENGTH_SHORT).show();
                         }
 
                     }else{
-                        Toast.makeText(requireContext(),"Break cancelled!",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(requireContext(), getString(R.string.break_canceled),Toast.LENGTH_SHORT).show();
                         Intent resultData = result.getData();
                         if (resultData != null) {
-                            restoreData(resultData,view);
+                            restoreData(resultData);
                         }
                     }
                 }
@@ -193,7 +210,7 @@ public class ExerciseFragment extends Fragment {
 
         initExerciseViewModel(view);
 
-        view.findViewById(R.id.btnResetTime).setOnClickListener(view1 -> resetTimer());
+        view.findViewById(R.id.btnResetTime).setOnClickListener(view1 -> resetTimer(true));
         view.findViewById(R.id.btnPauseTime).setOnClickListener(view1 -> togglepause());
         view.findViewById(R.id.btnDone).setOnClickListener(view1 -> newExercise());
     }
@@ -201,17 +218,17 @@ public class ExerciseFragment extends Fragment {
     private void initExerciseViewModel(View view) {
         System.out.println("Exercise: INIT");
 
-        int id = 0;
+        int id = ID;
         if (getArguments() != null) {
             // get argument data
             id = getArguments().getInt(EXERCISE_ID, 0);
             count = getArguments().getInt(EXERCISE_COUNT, 0);
             maxTime = getArguments().getInt(EXERCISE_MAX_TIME,0);
         }
-
         int finalId = id;
 
         exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(), exercises -> {
+            this.exercises = exercises;
             if (size < 1) {
                 txtName.setText(R.string.empty);
                 btnPause.setVisibility(View.GONE);
@@ -220,55 +237,12 @@ public class ExerciseFragment extends Fragment {
                 return;
             }
 
-            if (ID < exercises.size()-1) {
-                nextId = exercises.get(count+1).getId();
-                System.out.println("next ID: "+nextId);
-            } else {
-                System.out.println("next ID: null");
-            }
-//            System.out.println("Name: "+array[0].getName());
-
-//            int a = exercises.indexOf(finalId);
-//            System.out.println(a);
-
-//            for (int i=count; i<array.length-1; i++) {
-////                System.out.println("ID: "+array[i].getId());
-////                System.out.println("Name: "+array[i].getName());
-//                nextId = array[i+1].getId();
-//                break;
-//            }
-
-//            for (Exercise e:
-//                 array) {
-//                System.out.println("Name: "+e.getName());
-//            }
-
-//            for (int i = list.size(); i>-1; i--) {
-//                int current_id = exercises.get(i).getId();
-//                int actual_id = exercises.get(finalId).getId();
-//                if (current_id == actual_id) {
-//                    Iterator<Exercise> iterator = list.iterator();
-//                    Exercise nextExercise = iterator.next();
-//                }
-//            }
-
-//            for (Iterator<Exercise> iterator = list.iterator(); iterator.hasNext(); ) {
-//                Exercise e = iterator.next();
-//                nextId = e.getId();
-//            }
-//            for (Exercise e : exerciseList) {
-//                if (e.getId() == exercises.get(finalId).getId()){
-//                    System.out.println(
-//                            "Exercise: {" +
-//                                    " id: " + e.getId() + "," +
-//                                    " name: " + e.getName() + "," +
-//                                    " time: " + e.getTime() + "," +
-//                                    " quantity: " + e.getQuantity() +
-//                                    " type: " + e.getType() +
-//                                    " }"
-//                    );
-//                    System.out.println(nextId);
-//                }
+//            if (ID < exercises.size()-1) {
+//                nextId = exercises.get(ID+1).getId();
+////                nextId = exercises.get(count+1).getId();
+//                System.out.println("next ID: "+nextId);
+//            } else {
+//                System.out.println("next ID: null");
 //            }
             if (ID < exercises.size()) {
                 // get data
@@ -278,19 +252,20 @@ public class ExerciseFragment extends Fragment {
 
                 // set the values to display for user
                 if (mySavedInstanceState == null) {
-                    // get values from db
+                    // get values from db (reset to default)
                     time = exercise_time;
                     quantity = exercise_quantity;
                 }
 
                 // display stuff
                 txtName.setText(exercise_name);
-                if (quantity > 0) txtQuantity.setText(String.format("%d %s", quantity, getString(R.string.quantity_icon)));
-                else txtQuantity.setText("");
-
-                mtimeLeftinMilliseconds = time * 1000;
-                updateTimer();
-//                resetTimer();
+                if (quantity > 0) {
+                    txtQuantity.setText(String.format(Locale.getDefault(), "%d %s", quantity, getString(R.string.quantity_icon)));
+                }
+                else {
+                    txtQuantity.setText("");
+                }
+                if (time>0) updateTimer();
                 setupTimer();
 
                 // has quantity, cancel listener
@@ -308,34 +283,54 @@ public class ExerciseFragment extends Fragment {
                 // check if all exercises done
                 return;
             } else if (ID < exercises.size()-1) {
+                // next exercise selection (by ID & count)
+                maxTime = exercises.get(ID+1).getTime();
                 ID++;
-                maxTime = exercises.get(count+1).getTime();
+//                maxTime = exercises.get(count+1).getTime();
                 count++;
             } else {
-                // cancel new instance creation (complete)
-                Intent data = new Intent();
-                // got id from intent getIntExtra()
-                if (count == size-1) {
-                    requireActivity().setResult(RESULT_SUCCESS, data);
-                } else if (count < size-1) {
-                    requireActivity().setResult(RESULT_NOT_SUCCESS, data);
-                }
-                requireActivity().finish();
+//                // cancel new instance creation (complete)
+//                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+//                fragmentManager.popBackStack();
+//                requireActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+//                replaceFragment(new ProfileFragment(),-1,false);
+                backToMain(false);
                 return;
             }
-
-            ExerciseFragment newInstance = newInstance(ID, count, maxTime);
-//            Bundle args = new Bundle();
-//            args.putInt(EXERCISE_MAX_TIME, maxTime);
-//            newInstance.setArguments(args);
+            ExerciseFragment newInstance = newInstance(ID, maxTime);
             replaceFragment(newInstance,2,false);
         });
+    }
+
+    // back to home
+    private void backToMain(boolean backPressed) {
+        ProfileFragment mFrag = new ProfileFragment();
+        Bundle bundle = new Bundle();
+
+        exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
+            // set activity result
+            if (!backPressed){
+                if (ID == size-1) {
+                    bundle.putInt("session_result", RESULT_SUCCESS);
+                } else if (ID < size-1) {
+                    bundle.putInt("session_result", RESULT_NOT_SUCCESS);
+                }
+            } else {
+                bundle.putInt("session_result", 300);
+            }
+        });
+        mFrag.setArguments(bundle);
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.profileFragment);
+        replaceFragment(mFrag,-1,false);
     }
 
     private void cancelTimer() {
         if(countDownTimer!=null){
             System.out.println("killed timer task!");
             countDownTimer.cancel();
+            timerRunning = false;
         } else {
             System.out.println("can't kill timer task!");
         }
@@ -356,18 +351,18 @@ public class ExerciseFragment extends Fragment {
         }
     }
 
-    private void restoreData(Intent data, View view) {
+    private void restoreData(Intent data) {
         System.out.println("restoreData!");
-        if (data != null) {
-            Bundle b = data.getExtras();
-        }
+//        if (data != null) {
+//            Bundle b = data.getExtras();
+//        }
         newExercise();
     }
 
     private void decreaseQuantity() {
         // check quantity value
         quantity -= 1;
-        String text = String.format(getString(R.string.quantity_format), quantity);
+        String text = String.format(Locale.getDefault(), getString(R.string.quantity_format), quantity);
         if (quantity > 0) {
             if (time != 0) {
                 txtQuantity.setText(text);
@@ -380,62 +375,82 @@ public class ExerciseFragment extends Fragment {
                 mySavedInstanceState = null;
             }
         } else {
-//            if ()
-            text = String.format(getString(R.string.quantity_format), 0);
+            text = String.format(Locale.getDefault(), getString(R.string.quantity_format), 0);
             txtQuantity.setText(text);
             // new intent for BreakActivity
-            Intent intent = new Intent(requireActivity(), BreakActivity.class);
-            Bundle b = new Bundle();
-            maxTime = 5;
-             b.putLong("time_data", maxTime);
-            // b.putInt("quantity_data", quantity);
-            intent.putExtras(b);
-            Toast.makeText(requireContext(),maxTime+" second Break!",Toast.LENGTH_SHORT).show();
-            activityResultLauncher.launch(intent);
+            if (exercises != null) {
+                if (ID < exercises.size()-1){
+                    System.out.println("last exercise: false");
+                    Intent intent = new Intent(requireActivity(), BreakActivity.class);
+                    Bundle b = new Bundle();
+//                    maxTime = 5;
+                    int breakDuration = 3;
+                    b.putLong("time_data", breakDuration);
+                    intent.putExtras(b);
+                    Toast.makeText(requireContext(),breakDuration+" second Break!",Toast.LENGTH_SHORT).show();
+                    activityResultLauncher.launch(intent);
+                } else {
+                    System.out.println("last exercise: true");
+                    restoreData(null);
+                }
+            }
         }
     }
+
     public void togglepause(){
         if (timeVar < 1) return;
         if(timerRunning){
-            pauseTimer();
+            pauseTimer(true);
         }
         else{
             startTimer();
         }
     }
-    private void pauseTimer(){
+
+    private void pauseTimer(boolean enabled){
+        if (!enabled) return;
+
         cancelTimer();
         timerRunning = false;
-        btnResetTime.setVisibility(View.VISIBLE);
+        if (time>0) {
+            btnResetTime.setVisibility(View.VISIBLE);
+        }
         btnPause.setText(R.string.start);
         System.out.println("paused timer!");
     }
-    private void resetTimer(){
+
+    private void resetTimer(boolean onClick){
         if (btnResetTime != null) {
             btnResetTime.setVisibility(View.INVISIBLE);
         }
+
+        // set time from memory
         mtimeLeftinMilliseconds = mtimeStartinMilliseconds;
+
+        // reset time to default
+        long milliseconds = (maxTime) * 1000;
+        if (onClick) mtimeLeftinMilliseconds = milliseconds;
+        System.out.println("maxTime (TIME): "+time);
+        System.out.println("maxTime (DEFAULT): "+maxTime);
         updateTimer();
     }
+
     public void setTime(long milliseconds){
         mtimeStartinMilliseconds = milliseconds;
-        resetTimer();
+        resetTimer(false);
         startTimer();
     }
+
     private void startTimer() {
         System.out.println("start timer!");
         btnPause.setText(R.string.pause);
         btnResetTime.setVisibility(View.INVISIBLE);
-
-
 
         countDownTimer = new CountDownTimer(mtimeLeftinMilliseconds, 1000){
             @Override
             public void onTick(long millisUntilFinished) {
                 mtimeLeftinMilliseconds = millisUntilFinished;
                 updateTimer();
-                // update time display
-//                System.out.println("update timer!");
             }
 
             @Override
@@ -450,45 +465,13 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void updateTimer(){
-//        mtimeLeftinMilliseconds = ((mtimeLeftinMilliseconds / 1000)+0)*1000;
         int minutes = (int) (mtimeLeftinMilliseconds / 1000) / 60;
         int seconds = (int) (mtimeLeftinMilliseconds / 1000) % 60;
 
-        String timeLeftText = String.format(Locale.getDefault(),"%02d:%02d", minutes, seconds);
+        String timeLeftText = String.format(Locale.getDefault(),getString(R.string.timer_format), minutes, seconds);
 
         txtTime.setText(timeLeftText);
         timeVar = (mtimeLeftinMilliseconds / 1000);
-
-//        if(timeVar < 1) {
-//            decreaseQuantity();
-//        }
-    }
-
-    private void exerciseTimerDone() {
-        // cancel timer
-        cancelTimer();
-
-//        System.out.println("quantity: "+quantity);
-
-//        Toast.makeText(requireContext(),"Good job! "+10+" second break",Toast.LENGTH_SHORT).show();
-
-//        activityResultLauncher.launch(intent);
-
-//        if (quantity < 1) {
-////            System.out.println("exercises done: "+quantity);
-//        } else {
-//            Toast.makeText(requireContext(),"Good job! "+30+" second break",Toast.LENGTH_SHORT).show();
-//            // new intent for BreakActivity
-//            Intent intent = new Intent(requireActivity(), BreakActivity.class);
-//            Bundle b = new Bundle();
-//            b.putLong("time_data", maxTime);
-//            b.putInt("quantity_data", quantity);
-//            intent.putExtras(b);
-//            decreaseQuantity();
-//
-////            setupTimer();
-////            restoreData(intent,getView());
-//        }
     }
 
     private void replaceFragment(Fragment fragment, int dir, boolean backStack){
@@ -498,11 +481,8 @@ public class ExerciseFragment extends Fragment {
         if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
         else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
         else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
-        exerciseActivity = (ExerciseActivity) requireActivity();
-        //Below is where you get a variable from the main activity
-        int host = exerciseActivity.findViewById(R.id.mainView).getId();
 
-        fragmentTransaction.replace(host, fragment);
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <!--    <androidx.fragment.app.FragmentContainerView-->
+    <!--        android:id="@+id/fragmentContainerView"-->
+    <!--        android:name="com.example.workoutappgroupproject.fragment.MainFragment"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
@@ -14,7 +24,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:name="com.example.workoutappgroupproject.fragment.ProfileFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:defaultNavHost="true"
@@ -28,7 +38,7 @@
             android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#fff"
+            android:background="@color/primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
