@@ -1,7 +1,11 @@
 package com.example.workoutappgroupproject.activity;
 
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +16,17 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.workoutappgroupproject.CustomDialog;
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
@@ -39,22 +46,33 @@ public class MainActivity extends AppCompatActivity {
 
     ActionBar actionBar;
     private void setActionBarColor(int color) {
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
-        ColorDrawable colorDrawable
-                = new ColorDrawable(color);
-        // Set BackgroundDrawable
-        assert actionBar != null;
-        actionBar.setBackgroundDrawable(colorDrawable);
+        if (actionBar != null) {
+            ColorDrawable colorDrawable
+                    = new ColorDrawable(color);
+            assert actionBar != null;
+            actionBar.setBackgroundDrawable(colorDrawable);
+        }
     }
 
     BottomNavigationView bottomNavigationView;
 
     ActivityMainBinding binding;
     ConstraintLayout mainView;
-    int oldId;
+    int oldId = 0;
     private Boolean user_isExists = false;
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("oldId",oldId);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        oldId = savedInstanceState.getInt("oldId");
+        System.out.println("SAVED oldId: "+oldId);
+    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -63,9 +81,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        updateTheme();
+
         actionBar = getSupportActionBar();
-        int color = getResources().getColor(R.color.purple_500);
-        setActionBarColor(color);
+//        int color = getResources().getColor(R.color.purple_500);
+//        setActionBarColor(color);
 
         mainView = findViewById(R.id.mainView);
         // init view model
@@ -101,6 +121,19 @@ public class MainActivity extends AppCompatActivity {
             oldId = item.getItemId();
             return true;
         });
+    }
+
+    public void updateTheme() {
+        boolean theme;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        theme = sharedPreferences.getBoolean(getString(R.string.pref_key_theme),false);
+        if (theme) {
+            if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES) return;
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
+        } else {
+            if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_FOLLOW_SYSTEM) return;
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM);
+        }
     }
 
     private void openDialog() {

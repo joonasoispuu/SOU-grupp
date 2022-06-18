@@ -17,13 +17,8 @@ public class AddExercisesActivity extends AppCompatActivity {
 
     ActionBar actionBar;
     private void setActionBarColor(int color) {
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
         ColorDrawable colorDrawable
                 = new ColorDrawable(color);
-        // Set BackgroundDrawable
-        assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
     }
 
@@ -44,8 +39,10 @@ public class AddExercisesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_exercises);
 
         actionBar = getSupportActionBar();
-        int color = getResources().getColor(R.color.purple_500);
-        setActionBarColor(color);
+        if (actionBar != null) {
+            int color = getResources().getColor(R.color.purple_500);
+            setActionBarColor(color);
+        }
 
         etName = findViewById(R.id.etExerciseName);
         etQuantity = findViewById(R.id.etExerciseQuantity);
@@ -114,7 +111,7 @@ public class AddExercisesActivity extends AppCompatActivity {
             Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_name_missing), Toast.LENGTH_SHORT).show();
             return false;
         } else if (nameInput.length() > 20) {
-            Toast.makeText(AddExercisesActivity.this, "Exercise name cannot contain more than 20 characters!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_too_long), Toast.LENGTH_SHORT).show();
             return false;
         } else {
             return true;

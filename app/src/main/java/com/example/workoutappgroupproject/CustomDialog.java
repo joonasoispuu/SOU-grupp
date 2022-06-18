@@ -29,6 +29,7 @@ public class CustomDialog extends AppCompatDialogFragment {
                 });
         TextView dialogText = view.findViewById(R.id.dialogText);
         dialogText.setText(getString(R.string.warning_fill_fields));
+        dialogText.setPadding(8,0,8,0);
         return builder.create();
     }
 }

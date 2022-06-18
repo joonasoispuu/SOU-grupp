@@ -19,13 +19,8 @@ public class BreakActivity extends AppCompatActivity {
 
     ActionBar actionBar;
     private void setActionBarColor(int color) {
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
         ColorDrawable colorDrawable
                 = new ColorDrawable(color);
-        // Set BackgroundDrawable
-        assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
     }
 
@@ -54,8 +49,10 @@ public class BreakActivity extends AppCompatActivity {
         setContentView(R.layout.activity_break);
 
         actionBar = getSupportActionBar();
-        int color = getResources().getColor(R.color.purple_500);
-        setActionBarColor(color);
+        if (actionBar != null) {
+            int color = getResources().getColor(R.color.purple_500);
+            setActionBarColor(color);
+        }
 
         if (savedInstanceState != null) {
             time = savedInstanceState.getLong("time");

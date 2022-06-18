@@ -215,10 +215,6 @@ public class ProfileFragment extends Fragment {
                 setup_TextInput(true);
             }
         });
-        listenForInput(textInputHeight);
-        listenForInput(textInputWeight);
-        listenForInput(textInputName);
-        listenForInput(textInputAge);
     }
 
     // get fragment result from arguments
@@ -466,6 +462,11 @@ public class ProfileFragment extends Fragment {
 
     // validate & save to db
     private void onSave() {
+        listenForInput(textInputHeight);
+        listenForInput(textInputWeight);
+        listenForInput(textInputName);
+        listenForInput(textInputAge);
+
         // save button click listener
         switch (profileStatus) {
             case "Empty": {

@@ -70,6 +70,14 @@
     <string name="pref_notifications">Enable message notifications</string>
     <string name="pref_notifications_title">Notifications</string>
     <string name="pref_feedback_title">Send feedback</string>
+    <string name="pref_key_units">units</string>
+    <string name="pref_key_theme">theme_night</string>
+    <string name="pref_key_clear">data_clear</string>
+    <string name="pref_theme_title">App Theme</string>
+    <string name="pref_clear_title">Delete app data</string>
+    <string name="pref_clear">Clear all stored data</string>
+    <string name="pref_theme_on">Dark mode On</string>
+    <string name="pref_theme_off">Dark mode Off</string>
 
     <!-- Titles -->
     <string name="title_here">Title here</string>
@@ -77,7 +85,7 @@
     <string name="train">Train</string>
     <string name="exercises">Exercises</string>
     <string name="custom_exercises">Custom Exercises</string>
-    <string name="add_custom_exercises">Add Custom Exercises</string>
+    <string name="add_custom_exercises">Show Exercises</string>
     <string name="sixpack_exercise">Sixpack Exercise</string>
     <string name="armsandchest_exercise">ArmsandChest Exercise</string>
 
@@ -127,5 +135,6 @@
     <!-- Success -->
     <string name="user_update_success">"Profile updated successfully!</string>
     <string name="user_create_success">User created successfully!</string>
+    <string name="exercise_too_long">Exercise name cannot contain more than 20 characters!</string>
 
 </resources>
