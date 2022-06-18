@@ -2,12 +2,18 @@ package com.example.workoutappgroupproject.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -31,45 +37,24 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    ActionBar actionBar;
+    private void setActionBarColor(int color) {
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable
+                = new ColorDrawable(color);
+        // Set BackgroundDrawable
+        assert actionBar != null;
+        actionBar.setBackgroundDrawable(colorDrawable);
+    }
+
     BottomNavigationView bottomNavigationView;
+
     ActivityMainBinding binding;
     ConstraintLayout mainView;
     int oldId;
     private Boolean user_isExists = false;
-    private Boolean exercise_isExists = false;
-    private List<Exercise> exercisesSixpack;
-    private List<Exercise> exercisesArmsandChest;
-    private List<Exercise> exercisesCustom;
-
-    private static final int RESULT_NOT_SUCCESS = 200;
-    public static final int RESULT_SUCCESS = 100;
-
-    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-                if(result.getResultCode() == RESULT_SUCCESS){
-                    Intent resultData = result.getData();
-                    if (resultData != null) {
-                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Exercise Session successful!",
-                                Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Did not get data!", Snackbar.LENGTH_SHORT).show();
-                    }
-
-                }else if(result.getResultCode() == RESULT_NOT_SUCCESS){
-                    Intent resultData = result.getData();
-                    if (resultData != null) {
-                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Exercise Session failed!",
-                                Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        Snackbar.make(findViewById(R.id.myCoordinatorMain), "Did not get data!", Snackbar.LENGTH_SHORT).show();
-                    }
-
-                }else{
-                    Snackbar.make(findViewById(R.id.myCoordinatorMain), "Exercise Session canceled!",
-                            Snackbar.LENGTH_SHORT).show();
-                }
-            }
-    );
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -78,22 +63,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        actionBar = getSupportActionBar();
+        int color = getResources().getColor(R.color.purple_500);
+        setActionBarColor(color);
+
         mainView = findViewById(R.id.mainView);
         // init view model
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getIsExists().observe(this, isExists -> { this.user_isExists = isExists; });
-        ExerciseViewModel exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
-        exerciseViewModel.getIsExists().observe(this, isExists -> { this.exercise_isExists = isExists; });
-        // get Exercise List by Type -> save each list into List<Exercise> variable
-        exerciseViewModel.getAllExercisesByType(getString(R.string.sixpack)).observe(this, exercisesSixpack -> {
-            this.exercisesSixpack = exercisesSixpack;
-        });
-        exerciseViewModel.getAllExercisesByType(getString(R.string.armsandchest)).observe(this, exercisesArmsandChest -> {
-            this.exercisesArmsandChest = exercisesArmsandChest;
-        });
-        exerciseViewModel.getAllExercisesByType(getString(R.string.custom)).observe(this, exercisesCustom -> {
-            this.exercisesCustom = exercisesCustom;
-        });
 
         // set BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -106,11 +83,6 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == bottomNavigationView.getSelectedItemId()) return false;
             switch(item.getItemId()){
                 case R.id.settingsFragment:
-                    // check if user exists
-//                    if (!user_isExists) {
-//                        openDialog();
-//                        return false;
-//                    }
                     replaceFragment(new SettingsFragment(),-1,false);
                     break;
                 case R.id.profileFragment:
@@ -132,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openDialog() {
+        bottomNavigationView.setSelectedItemId(R.id.profileFragment);
         CustomDialog exampleDialog = new CustomDialog();
         exampleDialog.show(getSupportFragmentManager(),"example dialog");
     }
@@ -147,53 +120,4 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    //On TrainFragment user can choose what exercise do to by having the fragment replaced
-    public void OnChosenExercise(View view){
-        String Exercise = view.getTag().toString();
-        switch (Exercise){
-            case "Sixpack":
-                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-                if (exercisesSixpack.size() < 1) {
-                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                intent.putExtra("TYPE",getString(R.string.sixpack));
-                intent.putExtra("SIZE",exercisesSixpack.size());
-                intent.putExtra("MAX_TIME",exercisesSixpack.get(0).getTime());
-//                intent.putExtra("FIRST_ID",exercisesSixpack.get(0).getId());
-                activityResultLauncher.launch(intent);
-                break;
-            case "ArmsandChest":
-                Intent intent2 = new Intent(MainActivity.this, ExerciseActivity.class);
-                if (exercisesArmsandChest.size() < 1) {
-                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                intent2.putExtra("TYPE",getString(R.string.armsandchest));
-                intent2.putExtra("SIZE",exercisesArmsandChest.size());
-                intent2.putExtra("MAX_TIME",exercisesArmsandChest.get(0).getTime());
-//                intent2.putExtra("FIRST_ID",exercisesArmsandChest.get(0).getId());
-//                intent2.putExtra(exercisesArmsandChest)
-                activityResultLauncher.launch(intent2);
-                break;
-            case "Custom":
-                Intent intent3 = new Intent(MainActivity.this, ExerciseActivity.class);
-                if (exercisesCustom.size() < 1) {
-                    Toast.makeText(this,"Session empty",Toast.LENGTH_SHORT).show();
-                    Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
-                    startActivity(customActivity);
-                    return;
-                }
-                intent3.putExtra("TYPE",getString(R.string.custom));
-                intent3.putExtra("SIZE",exercisesCustom.size());
-                intent3.putExtra("MAX_TIME",exercisesCustom.get(0).getTime());
-//                intent3.putExtra("FIRST_ID",exercisesCustom.get(0).getId());
-                activityResultLauncher.launch(intent3);
-                break;
-            case "AddCustom":
-                Intent customActivity  = new Intent(MainActivity.this, CustomActivity.class);
-                startActivity(customActivity);
-                break;
-        }
-    }
 }

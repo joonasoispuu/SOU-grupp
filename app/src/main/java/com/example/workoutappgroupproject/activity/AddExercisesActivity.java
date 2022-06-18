@@ -1,8 +1,10 @@
 package com.example.workoutappgroupproject.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +14,18 @@ import android.widget.Toast;
 import com.example.workoutappgroupproject.R;
 
 public class AddExercisesActivity extends AppCompatActivity {
+
+    ActionBar actionBar;
+    private void setActionBarColor(int color) {
+        // Define ColorDrawable object and parse color
+        // using parseColor method
+        // with color hash code as its parameter
+        ColorDrawable colorDrawable
+                = new ColorDrawable(color);
+        // Set BackgroundDrawable
+        assert actionBar != null;
+        actionBar.setBackgroundDrawable(colorDrawable);
+    }
 
     private EditText etName, etQuantity;
     private NumberPicker ntPicker;
@@ -28,6 +42,11 @@ public class AddExercisesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercises);
+
+        actionBar = getSupportActionBar();
+        int color = getResources().getColor(R.color.purple_500);
+        setActionBarColor(color);
+
         etName = findViewById(R.id.etExerciseName);
         etQuantity = findViewById(R.id.etExerciseQuantity);
         ntPicker = findViewById(R.id.ExerciseTimePicker);
@@ -35,11 +54,10 @@ public class AddExercisesActivity extends AppCompatActivity {
         ntPicker.setMaxValue(300);
         if(getSupportActionBar() != null){
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-//            setTitle(getString(R.string.save));
         }
         Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_ID)){
-            setTitle(getString(R.string.edit));
+            setTitle(getString(R.string.edit_exercise));
             etName.setText(intent.getStringExtra(EXTRA_NAME));
             etQuantity.setText(String.valueOf(intent.getIntExtra(EXTRA_QUANTITY, 1)));
             ntPicker.setValue(intent.getIntExtra(EXTRA_TIME, 1));
@@ -53,7 +71,7 @@ public class AddExercisesActivity extends AppCompatActivity {
     }
 
     private void saveExercise(){
-        if (!validateName() | !validateQuantityTime()){
+        if (!validateName() || !validateQuantityTime()){
             // cancel
             return;
         }

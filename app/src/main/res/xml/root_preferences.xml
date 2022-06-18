@@ -2,31 +2,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:title="Notifications"
+        app:title="@string/pref_notifications_title"
         app:icon="@drawable/ic_baseline_notifications_24"/>
 
     <SwitchPreferenceCompat
         app:key="notifications"
-        app:title="Enable message notifications"
-        android:defaultValue="true" />
+        app:title="@string/pref_notifications"
+        android:defaultValue="false" />
 
     <PreferenceCategory
-        app:title="BMI Units"
+        app:title="@string/pref_BMI_title"
         app:icon="@drawable/ic_baseline_info_24" />
 
     <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Units"
-        app:summaryOn="Metric"
-        android:summaryOff="US"
+        app:key="units"
+        app:title="@string/pref_units"
+        app:summaryOn="@string/pref_units_on"
+        android:summaryOff="@string/pref_units_off"
         app:shouldDisableView="false"
-        android:defaultValue="true"/>
+        android:defaultValue="false"/>
 
     <Preference
-        app:key="Feedback"
-        app:title="Send feedback"
-        app:summary="Report technical issues or suggest new features"/>
-
+        app:key="feedback"
+        app:title="@string/pref_feedback_title"
+        app:summary="@string/pref_feedback"/>
 
 </PreferenceScreen>
 

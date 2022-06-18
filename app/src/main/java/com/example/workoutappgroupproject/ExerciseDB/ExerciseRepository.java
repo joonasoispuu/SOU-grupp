@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
@@ -11,12 +12,14 @@ public class ExerciseRepository {
     private final ExerciseDao exerciseDao;
     private final LiveData<List<Exercise>> allExercise;
     private final LiveData<Boolean> isExists;
+    private final MutableLiveData<Boolean> exercisesDeleted;
 
     public ExerciseRepository(Application application) {
         ExerciseDB db = ExerciseDB.getInstance(application);
         exerciseDao = db.exerciseDao();
         allExercise = exerciseDao.getAllExercises();
         isExists = exerciseDao.isExists();
+        exercisesDeleted = new MutableLiveData<>();
     }
 
     public void insert(Exercise exercise) {

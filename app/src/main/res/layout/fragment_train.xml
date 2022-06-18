@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.TrainFragment">
@@ -10,8 +11,8 @@
         android:id="@+id/gridLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10sp"
         android:layout_marginStart="10sp"
+        android:layout_marginTop="10sp"
         android:layout_marginEnd="10sp"
         android:layout_marginBottom="16dp"
         android:columnCount="3"
@@ -22,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/txtSixpack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -29,38 +31,32 @@
             android:clickable="true"
             android:focusable="true"
             android:minHeight="48dp"
-            android:onClick="OnChosenExercise"
-            android:tag="Sixpack"
-            android:text="@string/sixpack_exercise"
-            tools:ignore="UsingOnClickInXml" />
+            android:text="@string/sixpack_exercise" />
 
         <TextView
+            android:id="@+id/txtArmsandChest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="0"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:clickable="true"
             android:focusable="true"
             android:minHeight="48dp"
-            android:onClick="OnChosenExercise"
-            android:tag="ArmsandChest"
-            android:text="@string/armsandchest_exercise"
-            tools:ignore="UsingOnClickInXml" />
+            android:text="@string/armsandchest_exercise" />
 
         <TextView
+            android:id="@+id/txtCustom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_column="0"
             android:layout_gravity="bottom"
             android:minHeight="48dp"
-            android:onClick="OnChosenExercise"
-            android:tag="Custom"
-            android:text="@string/custom_exercises"
-            tools:ignore="UsingOnClickInXml" />
+            android:text="@string/custom_exercises" />
 
         <TextView
+            android:id="@+id/txtAddCustom"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -70,10 +66,7 @@
             android:clickable="true"
             android:focusable="true"
             android:minHeight="48dp"
-            android:onClick="OnChosenExercise"
-            android:tag="AddCustom"
-            android:text="@string/add_custom_exercises"
-            tools:ignore="UsingOnClickInXml" />
+            android:text="@string/add_custom_exercises" />
 
     </GridLayout>
 

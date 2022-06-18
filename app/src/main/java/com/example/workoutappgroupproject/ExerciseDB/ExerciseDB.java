@@ -38,11 +38,15 @@ public abstract class ExerciseDB extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            exerciseDao.insert(new Exercise("Push-ups",20,0,"ArmsandChest"));
-            exerciseDao.insert(new Exercise("Reps",10,0,"ArmsandChest"));
-            exerciseDao.insert(new Exercise("V-ups",15,0,"Sixpack"));
-            exerciseDao.insert(new Exercise("Plank",2,20,"Sixpack"));
-            exerciseDao.insert(new Exercise("Squats",30,4,"Custom"));
+            exerciseDao.insert(new Exercise("Push-ups",20,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Reps",10,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("V-ups",15,0,"sixpack"));
+            exerciseDao.insert(new Exercise("Plank",2,20,"sixpack"));
+            exerciseDao.insert(new Exercise("Sit-ups",8,0,"sixpack"));
+            exerciseDao.insert(new Exercise("Heel touch",8,0,"armsandchest"));
+            for (int i = 0; i<2; i++) {
+                exerciseDao.insert(new Exercise("Squats",3,2,"custom"));
+            }
             return null;
         }
     }
