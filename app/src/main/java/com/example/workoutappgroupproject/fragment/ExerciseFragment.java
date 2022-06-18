@@ -16,6 +16,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -163,6 +165,12 @@ public class ExerciseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //reset the menu at top
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("SESSION..");
+        }
 
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         bottomNavigationView.getMenu().getItem(0).setEnabled(false);
@@ -361,7 +369,11 @@ public class ExerciseFragment extends Fragment {
 
     private void decreaseQuantity() {
         // check quantity value
-        quantity -= 1;
+        if (quantity > 0) {
+            quantity -= 1;
+        } else {
+            return;
+        }
         String text = String.format(Locale.getDefault(), getString(R.string.quantity_format), quantity);
         if (quantity > 0) {
             if (time != 0) {

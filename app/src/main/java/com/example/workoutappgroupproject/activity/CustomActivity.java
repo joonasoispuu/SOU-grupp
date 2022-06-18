@@ -32,20 +32,15 @@ public class CustomActivity extends AppCompatActivity {
 
     ActionBar actionBar;
     private void setActionBarColor(int color) {
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
         ColorDrawable colorDrawable
                 = new ColorDrawable(color);
-        // Set BackgroundDrawable
-        assert actionBar != null;
         actionBar.setBackgroundDrawable(colorDrawable);
     }
 
     private ExerciseViewModel exerciseViewModel;
     private static final int RESULT_EDIT = 200;
     public static final int RESULT_SAVE = 100;
-    public static final String myType = "custom";
+    public static final String myType = "";
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -104,8 +99,10 @@ public class CustomActivity extends AppCompatActivity {
         setTitle(getString(R.string.custom_exercises));
 
         actionBar = getSupportActionBar();
-        int color = getResources().getColor(R.color.purple_500);
-        setActionBarColor(color);
+        if (actionBar != null) {
+            int color = getResources().getColor(R.color.purple_500);
+            setActionBarColor(color);
+        }
 
         findViewById(R.id.fabNewExercise).setOnClickListener(view ->{
             Intent intent = new Intent(CustomActivity.this, AddExercisesActivity.class);
