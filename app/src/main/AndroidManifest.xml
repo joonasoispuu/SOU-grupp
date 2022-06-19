@@ -15,9 +15,6 @@
             android:name=".activity.BreakActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ExerciseActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.AddExercisesActivity"
             android:exported="false" />
         <activity

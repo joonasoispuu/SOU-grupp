@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -43,12 +44,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import android.content.res.Resources;
 import java.util.Locale;
+import android.content.Context;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     ActionBar actionBar;
+    Context context;
+    Resources resources;
     private void setActionBarColor(int color) {
         if (actionBar != null) {
             ColorDrawable colorDrawable
@@ -85,14 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        String languageToLoad  = "ee"; // your language
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
 
         updateTheme();
 
@@ -149,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void openDialog() {
         bottomNavigationView.setSelectedItemId(R.id.profileFragment);
         CustomDialog exampleDialog = new CustomDialog();
@@ -165,5 +163,4 @@ public class MainActivity extends AppCompatActivity {
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
 }

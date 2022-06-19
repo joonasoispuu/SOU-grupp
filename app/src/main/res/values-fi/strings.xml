@@ -3,17 +3,17 @@
     <string name="app_name">Treenigu Abistaja</string>
 
     <string-array name="Language_names">
-        <item>English (en)</item>
-        <item>Estonian (ee)</item>
-        <item>Finnish (fi)</item>
+        <item>English</item>
+        <item>Estonian</item>
+        <item>Finnish</item>
     </string-array>
 
     <string-array name="Language_values">
         <item>en</item>
-        <item>ee</item>
+        <item>et</item>
         <item>fi</item>
     </string-array>
-    <string name="current_language">Eesti keel</string>
+    <string name="current_language">Suomi keel</string>
 
     <!--  Profile Fragment  -->
     <string name="name">Nimi</string>
@@ -59,6 +59,7 @@
     <string name="timer">Ajastin</string>
     <string name="quantity_icon">X</string>
     <string name="time_icon">sekuntia</string>
+    <string name="change_language">Vaihda kieltä</string>
 
     <!--  Exercise Fragment  -->
     <string name="done">Valmis</string>
@@ -90,6 +91,9 @@
     <string name="create">Valmista harjoitus</string>
     <string name="train">Kouluttaa</string>
     <string name="exercises">Harjoitukset</string>
+    <string name="Settings">asetukset</string>
+    <string name="Train">Kouluttaa</string>
+    <string name="Profile">Profiili</string>
     <string name="custom_exercises">Sinun luomia harjoituksia</string>
     <string name="add_custom_exercises">Lisää omia harjoituksiasi</string>
     <string name="sixpack_exercise">Vatsan harjoitus</string>

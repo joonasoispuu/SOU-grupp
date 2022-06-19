@@ -53,13 +53,7 @@
         android:entryValues="@array/Language_values"
         android:icon="@drawable/ic__language"
         android:key="@string/pref_key_language"
-        android:summary="@string/current_language"
-        android:title="Change language" />
-
-    <!--    <Preference-->
-<!--        app:key="feedback"-->
-<!--        app:title="@string/pref_feedback_title"-->
-<!--        app:summary="@string/pref_feedback"/>-->
+        android:title="@string/change_language" />
 
 </PreferenceScreen>
 

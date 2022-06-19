@@ -3,14 +3,14 @@
 
     <string-array name="Language_names">
         <item>English (en)</item>
-        <item>Estonian (ee)</item>
+        <item>Estonian (et)</item>
         <item>Finnish (fi)</item>
 
     </string-array>
 
     <string-array name="Language_values">
         <item>en</item>
-        <item>ee</item>
+        <item>et</item>
         <item>fi</item>
     </string-array>
     <string name="current_language">English</string>
@@ -59,6 +59,7 @@
     <string name="timer">Timer</string>
     <string name="quantity_icon">X</string>
     <string name="time_icon">sec</string>
+    <string name="change_language">Change language</string>
 
     <!--  Exercise Fragment  -->
     <string name="done">Done</string>
@@ -96,6 +97,9 @@
 
     <!-- Titles -->
     <string name="title_here">Title here</string>
+    <string name="Settings">Settings</string>
+    <string name="Train">Train</string>
+    <string name="Profile">Profile</string>
     <string name="create">Create Exercise</string>
     <string name="train">Train</string>
     <string name="exercises">Exercises</string>

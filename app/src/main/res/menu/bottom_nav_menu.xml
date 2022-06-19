@@ -4,16 +4,16 @@
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Settings"/>
+        android:title="@string/Settings"/>
 
     <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"/>
+        android:title="@string/Profile"/>
 
     <item
         android:id="@+id/trainFragment"
         android:icon="@drawable/ic_train"
-        android:title="Train"/>
+        android:title="@string/Train"/>
 
 </menu>

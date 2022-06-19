@@ -1,6 +1,7 @@
 package com.example.workoutappgroupproject.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.example.workoutappgroupproject.activity.MainActivity;
 import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
+
+    Context context;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -53,22 +56,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
                 // Change language
                 Locale locale;
-                if (selectedLanguage.equals("Estonian (ee)")) {
-                    locale = new Locale("ee");
+                if (selectedLanguage.equals("et")) {
+                    locale = new Locale("et");
                 }
-                else if(selectedLanguage.equals("Finnish (fi)")){
+                else if(selectedLanguage.equals("fi")){
                     locale = new Locale("fi");
                 }
                 else {
                     locale = new Locale("en");
                 }
-
                 Locale.setDefault(locale);
-                Resources resources = getContext().getResources();
-                Configuration config = resources.getConfiguration();
-                config.setLocale(locale);
-                resources.updateConfiguration(config, resources.getDisplayMetrics());
-
+                Configuration config = new Configuration();
+                config.locale = locale;
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
                 return true;
             }
         });

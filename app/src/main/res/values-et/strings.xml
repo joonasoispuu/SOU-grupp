@@ -4,13 +4,13 @@
 
     <string-array name="Language_names">
         <item>English (en)</item>
-        <item>Estonian (ee)</item>
+        <item>Estonian (et)</item>
         <item>Finnish (fi)</item>
     </string-array>
 
     <string-array name="Language_values">
         <item>en</item>
-        <item>ee</item>
+        <item>et</item>
         <item>fi</item>
     </string-array>
     <string name="current_language">Eesti keel</string>
@@ -18,7 +18,7 @@
     <!--  Profile Fragment  -->
     <string name="name">Nimi</string>
     <string name="height">Pikkus</string>
-    <string name="weight">kehakaal</string>
+    <string name="weight">Kehakaal</string>
     <string name="age">Vanus</string>
     <string name="save">Salvesta</string>
     <string name="profile">Profiil</string>
@@ -59,6 +59,7 @@
     <string name="timer">Taimer</string>
     <string name="quantity_icon">X</string>
     <string name="time_icon">sekundit</string>
+    <string name="change_language">Vaheta keelt</string>
 
     <!--  Exercise Fragment  -->
     <string name="done">Lõpetatud</string>
@@ -85,10 +86,14 @@
     <string name="pref_notifications_title">Teatised</string>
     <string name="pref_feedback_title">Saada tagasisidet!</string>
 
+
     <!-- Titles -->
     <string name="title_here">Treenigu Abistaja</string>
     <string name="create">Valmista harjutus</string>
     <string name="train">Treeni</string>
+    <string name="Settings">Seaded</string>
+    <string name="Train">Treening</string>
+    <string name="Profile">Profiil</string>
     <string name="exercises">Harjutused</string>
     <string name="custom_exercises">Sinu poolt loodud harjutused</string>
     <string name="add_custom_exercises">Lisa enda harjutused</string>
