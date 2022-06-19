@@ -150,7 +150,8 @@ public class ProfileFragment extends Fragment {
             } else {
                 // users exist in db
                 userViewModel.getAllUsers().observe(getViewLifecycleOwner(),users -> {
-                    boolean gotUsers = hasUserData(users);
+//                    boolean gotUsers = hasUserData(users);
+                    boolean gotUsers = true;
                     if (gotUsers) {
                         // TODO: check current BMI (from SharedPreferences)
 
@@ -209,6 +210,12 @@ public class ProfileFragment extends Fragment {
                             else{
                                 txtDescription.setText(getString(R.string.obese_class_II));
                             }
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            textInputName.setVisibility(View.VISIBLE);
+                            textInputHeight.setVisibility(View.VISIBLE);
+                            textInputWeight.setVisibility(View.VISIBLE);
+                            textInputAge.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -472,10 +479,10 @@ public class ProfileFragment extends Fragment {
 
     // validate & save to db
     private void onSave() {
-        listenForInput(textInputHeight);
-        listenForInput(textInputWeight);
-        listenForInput(textInputName);
-        listenForInput(textInputAge);
+//        listenForInput(textInputHeight);
+//        listenForInput(textInputWeight);
+//        listenForInput(textInputName);
+//        listenForInput(textInputAge);
 
         // save button click listener
         switch (profileStatus) {
