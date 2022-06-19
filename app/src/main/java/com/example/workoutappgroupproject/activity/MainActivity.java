@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    String selectedLanguage = "et";
+    setLocale(selectedLanguage);
+
     BottomNavigationView bottomNavigationView;
+
+    String selectedLanguage = newValue.toString();
+    preference.setSummary(selectedLanguage);
 
     ActivityMainBinding binding;
     ConstraintLayout mainView;
@@ -162,5 +168,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    private void setLocale(String selectedLanguage){
+        Resources resources = getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = new Locale(selectedLanguage);
+        resources.updateConfiguration(configuration,displayMetrics);
+        onConfigurationChanged(configuration);
     }
 }
