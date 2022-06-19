@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">Workout app</string>
 
+    <string-array name="Language_names">
+        <item>English (en)</item>
+        <item>Estonian (ee)</item>
+        <item>Finnish (fi)</item>
+
+    </string-array>
+
+    <string-array name="Language_values">
+        <item>en</item>
+        <item>ee</item>
+        <item>fi</item>
+    </string-array>
+    <string name="current_language">English</string>
+
     <!--  Profile Fragment  -->
     <string name="name">Name</string>
     <string name="height">Height</string>
@@ -72,6 +86,7 @@
     <string name="pref_feedback_title">Send feedback</string>
     <string name="pref_key_units">units</string>
     <string name="pref_key_theme">theme_night</string>
+    <string name="pref_key_language">language</string>
     <string name="pref_key_clear">data_clear</string>
     <string name="pref_theme_title">App Theme</string>
     <string name="pref_clear_title">Delete app data</string>
@@ -131,10 +146,10 @@
     <string name="err_get_data">Did not get data!</string>
     <string name="err_session_empty">Session empty</string>
     <string name="err_deleteall">Nothing to delete!</string>
+    <string name="exercise_too_long">Exercise name cannot contain more than 20 characters!</string>
 
     <!-- Success -->
     <string name="user_update_success">"Profile updated successfully!</string>
     <string name="user_create_success">User created successfully!</string>
-    <string name="exercise_too_long">Exercise name cannot contain more than 20 characters!</string>
 
 </resources>

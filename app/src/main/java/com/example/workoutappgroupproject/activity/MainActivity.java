@@ -6,8 +6,10 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -39,6 +41,8 @@ import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import android.content.res.Resources;
+import java.util.Locale;
 
 import java.util.List;
 
@@ -78,8 +82,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        String languageToLoad  = "ee"; // your language
+        Locale locale = new Locale(languageToLoad);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
 
         updateTheme();
 
