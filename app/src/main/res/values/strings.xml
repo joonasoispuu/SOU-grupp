@@ -136,5 +136,7 @@
     <string name="user_update_success">"Profile updated successfully!</string>
     <string name="user_create_success">User created successfully!</string>
     <string name="exercise_too_long">Exercise name cannot contain more than 20 characters!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

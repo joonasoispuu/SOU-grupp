@@ -235,7 +235,7 @@ public class ExerciseFragment extends Fragment {
         }
         int finalId = id;
 
-        exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(), exercises -> {
+        exerciseViewModel.getAllExercisesByType(type.toLowerCase()).observe(getViewLifecycleOwner(), exercises -> {
             this.exercises = exercises;
             if (size < 1) {
                 txtName.setText(R.string.empty);
@@ -286,7 +286,7 @@ public class ExerciseFragment extends Fragment {
     private void newExercise(){
         // cancel timer
         cancelTimer();
-        exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
+        exerciseViewModel.getAllExercisesByType(type.toLowerCase()).observe(getViewLifecycleOwner(),exercises -> {
             if (ID < 0) {
                 // check if all exercises done
                 return;
@@ -312,26 +312,35 @@ public class ExerciseFragment extends Fragment {
 
     // back to home
     private void backToMain(boolean backPressed) {
-        ProfileFragment mFrag = new ProfileFragment();
-        Bundle bundle = new Bundle();
-
-        exerciseViewModel.getAllExercisesByType(type).observe(getViewLifecycleOwner(),exercises -> {
-            // set activity result
-            if (!backPressed){
-                if (ID == size-1) {
-                    bundle.putInt("session_result", RESULT_SUCCESS);
-                } else if (ID < size-1) {
-                    bundle.putInt("session_result", RESULT_NOT_SUCCESS);
-                }
-            } else {
-                bundle.putInt("session_result", 300);
-            }
-        });
-        mFrag.setArguments(bundle);
-
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.profileFragment);
-        replaceFragment(mFrag,-1,false);
+        SettingsFragment settingsFragment = new SettingsFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
+        TrainFragment trainFragment = new TrainFragment();
+        Bundle bundle = new Bundle();
+//        exerciseViewModel.getAllExercisesByType(type.toLowerCase()).observe(getViewLifecycleOwner(),exercises -> {
+//        });
+        // set activity result
+        if (!backPressed){
+            if (ID == size-1) {
+                bundle.putInt("session_result", RESULT_SUCCESS);
+            } else if (ID < size-1) {
+                bundle.putInt("session_result", RESULT_NOT_SUCCESS);
+            }
+        } else {
+            bundle.putInt("session_result", 300);
+        }
+
+        if (bundle.getInt("session_result") == RESULT_SUCCESS) {
+            bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+            bottomNavigationView.getMenu().getItem(2).setEnabled(true);
+            bottomNavigationView.setSelectedItemId(R.id.profileFragment);
+            profileFragment.setArguments(bundle);
+            replaceFragment(profileFragment,-1,false);
+        } else {
+            trainFragment.setArguments(bundle);
+            replaceFragment(trainFragment,-1,false);
+        }
     }
 
     private void cancelTimer() {
@@ -410,7 +419,6 @@ public class ExerciseFragment extends Fragment {
     }
 
     public void togglepause(){
-        if (timeVar < 1) return;
         if(timerRunning){
             pauseTimer(true);
         }

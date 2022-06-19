@@ -51,6 +51,8 @@ public class TrainFragment extends Fragment {
             R.id.txtCustom,
             R.id.txtAddCustom,
     };
+    private static final int RESULT_NOT_SUCCESS = 200;
+    public static final int RESULT_SUCCESS = 100;
 
     public TrainFragment() {
         // Required empty public constructor
@@ -69,6 +71,11 @@ public class TrainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
+
         ExerciseViewModel exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         // get Exercise List by Type -> save each list into variable
         exerciseViewModel.getAllExercisesByType(getString(R.string.sixpack)).observe(getViewLifecycleOwner(), exercisesSixpack -> {
@@ -86,14 +93,43 @@ public class TrainFragment extends Fragment {
         if (actionBar != null) {
             setHasOptionsMenu(true);
             actionBar.setTitle(R.string.train);
+            actionBar.setDisplayHomeAsUpEnabled(false);
         }
 
-        mainView = view.findViewById(R.id.mainView);
+        mainView = binding.mainView;
+        onFragmentResult();
 
         for (int i=0; i<VIEW_IDS.length; i++){
             TextView textView = binding.gridLayout.findViewById(VIEW_IDS[i]);
             textView.setTag(TAGS[i]);
             textView.setOnClickListener(this::onChosenExercise);
+        }
+    }
+
+    // get fragment result from arguments
+    private void onFragmentResult() {
+        int result;
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Snackbar snackbar = null;
+            if (bundle.containsKey("session_result")){
+                result = getArguments().getInt("session_result");
+                if(result == RESULT_SUCCESS){
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_success),
+                            Snackbar.LENGTH_SHORT);
+                }else if(result == RESULT_NOT_SUCCESS){
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_fail),
+                            Snackbar.LENGTH_SHORT);
+                }else{
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_cancel),
+                            Snackbar.LENGTH_SHORT);
+                }
+                getArguments().clear();
+            }
+            if (snackbar != null) {
+                snackbar.setAnchorView(requireActivity().findViewById(R.id.bottomNavigationView));
+                snackbar.show();
+            }
         }
     }
 
@@ -111,8 +147,8 @@ public class TrainFragment extends Fragment {
             return;
         }
         // add custom
-        Intent customActivity  = new Intent(requireContext(), CustomActivity.class);
-        startActivity(customActivity);
+        CustomFragment customFragment = new CustomFragment("ArmsandChest");
+        replaceFragment(customFragment, 1, true);
     }
 
     // select exercise session
@@ -121,12 +157,12 @@ public class TrainFragment extends Fragment {
         if (myList.size() < 1) { // list empty
             Toast.makeText(requireContext(), R.string.err_session_empty,Toast.LENGTH_SHORT).show();
             // add custom
-            Intent customActivity  = new Intent(requireContext(), CustomActivity.class);
-            startActivity(customActivity);
+            CustomFragment customFragment = new CustomFragment("Custom");
+            replaceFragment(customFragment, 1, true);
             return;
         }
         int ID = id;
-        String type = tag;
+        String type = tag.toLowerCase();
         int size = myList.size();
         int maxTime = myList.get(ID).getTime();
 
