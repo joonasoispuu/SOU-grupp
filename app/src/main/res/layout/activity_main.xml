@@ -34,6 +34,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/nav_graph" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/snackBarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"

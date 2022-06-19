@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -37,6 +38,7 @@ import java.util.Locale;
 public class ProfileFragment extends Fragment {
 
     FragmentProfileBinding binding;
+    ConstraintLayout mainView;
     ActionBar actionBar;
     ProgressBar progressBar;
     private UserViewModel userViewModel;
@@ -95,8 +97,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        onFragmentResult();
-
         //reset the menu at top
         actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
@@ -104,6 +104,9 @@ public class ProfileFragment extends Fragment {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //            actionBar.setDisplayShowHomeEnabled(true);
         }
+
+        mainView = binding.mainView;
+        onFragmentResult();
 
         textInputName = binding.textInputName;
         textInputHeight = binding.textInputHeight;
@@ -122,10 +125,10 @@ public class ProfileFragment extends Fragment {
         txtBMI.setVisibility(View.GONE);
         txtDescription.setVisibility(View.GONE);
 
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
+//        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+//        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+//        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+//        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
 
         // init view model
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
@@ -149,6 +152,8 @@ public class ProfileFragment extends Fragment {
                 userViewModel.getAllUsers().observe(getViewLifecycleOwner(),users -> {
                     boolean gotUsers = hasUserData(users);
                     if (gotUsers) {
+                        // TODO: check current BMI (from SharedPreferences)
+
                         if (!profileStatus.equals("Editing")) {
                             txtBMIWarning.setVisibility(View.VISIBLE);
                             txtBMI.setVisibility(View.VISIBLE);
@@ -219,22 +224,27 @@ public class ProfileFragment extends Fragment {
 
     // get fragment result from arguments
     private void onFragmentResult() {
-        int result = -999;
+        int result;
         Bundle bundle = getArguments();
         if (bundle != null) {
+            Snackbar snackbar = null;
             if (bundle.containsKey("session_result")){
                 result = getArguments().getInt("session_result");
                 if(result == RESULT_SUCCESS){
-                    Snackbar.make(binding.mainView, getString(R.string.ex_session_success),
-                            Snackbar.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_success),
+                            Snackbar.LENGTH_SHORT);
                 }else if(result == RESULT_NOT_SUCCESS){
-                    Snackbar.make(binding.mainView, getString(R.string.ex_session_fail),
-                            Snackbar.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_fail),
+                            Snackbar.LENGTH_SHORT);
                 }else{
-                    Snackbar.make(binding.mainView, getString(R.string.ex_session_cancel),
-                            Snackbar.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_cancel),
+                            Snackbar.LENGTH_SHORT);
                 }
                 getArguments().clear();
+            }
+            if (snackbar != null) {
+                snackbar.setAnchorView(requireActivity().findViewById(R.id.bottomNavigationView));
+                snackbar.show();
             }
         }
     }

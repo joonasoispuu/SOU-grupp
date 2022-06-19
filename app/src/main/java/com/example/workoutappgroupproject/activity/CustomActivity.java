@@ -40,7 +40,7 @@ public class CustomActivity extends AppCompatActivity {
     private ExerciseViewModel exerciseViewModel;
     private static final int RESULT_EDIT = 200;
     public static final int RESULT_SAVE = 100;
-    public static final String myType = "";
+    public static final String myType = "custom";
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -144,7 +144,7 @@ public class CustomActivity extends AppCompatActivity {
             intent.putExtra(AddExercisesActivity.EXTRA_TIME, exercise.getTime());
             intent.putExtra(AddExercisesActivity.EXTRA_QUANTITY, exercise.getQuantity());
             intent.putExtra(AddExercisesActivity.EXTRA_ID, exercise.getId());
-            setResult(RESULT_EDIT, intent);
+//            setResult(RESULT_EDIT, intent);
             activityResultLauncher.launch(intent);
         });
 
@@ -156,6 +156,15 @@ public class CustomActivity extends AppCompatActivity {
             deleteExercises();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        exerciseViewModel.getAllExercisesByType(myType).observe(this, exercises -> {
+            if (exercises.size() < 1) return;
+            getMenuInflater().inflate(R.menu.delete_all_exercises, menu);
+        });
+        return true;
     }
 
     private void deleteExercises() {
@@ -183,14 +192,5 @@ public class CustomActivity extends AppCompatActivity {
 //                }
 //            }).start();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        exerciseViewModel.getAllExercisesByType(myType).observe(this, exercises -> {
-            if (exercises.size() < 1) return;
-            getMenuInflater().inflate(R.menu.delete_all_exercises, menu);
-        });
-        return true;
     }
 }
