@@ -1,7 +1,11 @@
 package com.example.workoutappgroupproject.fragment;
 
+import static android.content.Context.SENSOR_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -26,6 +30,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.activity.BreakActivity;
+import com.example.workoutappgroupproject.sensor.ProximityListener;
 import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -60,6 +65,8 @@ public class ExerciseFragment extends Fragment {
     ActivityResultLauncher<Intent> activityResultLauncher;
     Bundle mySavedInstanceState = null;
 
+    ProximityListener proximityListener;
+
     private int nextId;
 
     public ExerciseFragment() {
@@ -92,10 +99,6 @@ public class ExerciseFragment extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
-
-                // cancel timer
-                cancelTimer();
                 backToMain(true);
             }
         };
@@ -138,6 +141,7 @@ public class ExerciseFragment extends Fragment {
 
     @Override
     public void onStart() {
+        System.out.println("onStart!");
 //        startTimer();
         super.onStart();
     }
@@ -152,6 +156,8 @@ public class ExerciseFragment extends Fragment {
 
     @Override
     public void onResume() {
+        System.out.println("onResume!");
+        registerSensors();
         super.onResume();
         if (!timerRunning) {
             if (time>0) {
@@ -159,6 +165,20 @@ public class ExerciseFragment extends Fragment {
             }
             btnPause.setText(R.string.start);
         }
+    }
+
+    @Override
+    public void onStop() {
+        System.out.println("onStop!");
+        unregisterSensors();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        System.out.println("onDestroy!");
+        unregisterSensors();
+        super.onDestroy();
     }
 
     @SuppressLint("SetTextI18n")
@@ -245,13 +265,6 @@ public class ExerciseFragment extends Fragment {
                 return;
             }
 
-//            if (ID < exercises.size()-1) {
-//                nextId = exercises.get(ID+1).getId();
-////                nextId = exercises.get(count+1).getId();
-//                System.out.println("next ID: "+nextId);
-//            } else {
-//                System.out.println("next ID: null");
-//            }
             if (ID < exercises.size()) {
                 // get data
                 String exercise_name = exercises.get(finalId).getName();
@@ -277,10 +290,44 @@ public class ExerciseFragment extends Fragment {
                 setupTimer();
 
                 // has quantity, cancel listener
-                if (time != 0) return;
-                view.findViewById(R.id.mainView).setOnClickListener(view1 -> decreaseQuantity());
+                registerSensors();
             }
         });
+    }
+
+    // register sensors
+    private void registerSensors() {
+        // cancel if time 0
+        if (time != 0) return;
+
+        SensorManager sensorManager = (SensorManager)requireActivity().getSystemService(SENSOR_SERVICE);
+        Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        if (proximityListener == null) {
+            proximityListener = new ProximityListener(
+                    requireActivity(),
+                    requireActivity().findViewById(android.R.id.content).getRootView(),
+                    proximitySensor);
+
+            sensorManager.registerListener(proximityListener,proximitySensor,
+                    1000 * 1000);
+        }
+        // listener for each sensor tick
+        if (proximityListener != null) {
+            proximityListener.setListener(() -> {
+                System.out.println("ProximityListener: onTick()");
+                decreaseQuantity();
+            });
+        }
+    }
+
+    // unregister sensors
+    private void unregisterSensors() {
+        SensorManager sensorManager = (SensorManager)requireActivity().getSystemService(SENSOR_SERVICE);
+        if (proximityListener != null) {
+            sensorManager.unregisterListener(proximityListener);
+            proximityListener.stopSelf();
+            proximityListener = null;
+        }
     }
 
     private void newExercise(){
@@ -312,30 +359,35 @@ public class ExerciseFragment extends Fragment {
 
     // back to home
     private void backToMain(boolean backPressed) {
+        cancelTimer();
+        unregisterSensors();
+
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         SettingsFragment settingsFragment = new SettingsFragment();
         ProfileFragment profileFragment = new ProfileFragment();
         TrainFragment trainFragment = new TrainFragment();
         Bundle bundle = new Bundle();
-//        exerciseViewModel.getAllExercisesByType(type.toLowerCase()).observe(getViewLifecycleOwner(),exercises -> {
-//        });
-        // set activity result
+
+        // set result
         if (!backPressed){
             if (ID == size-1) {
+                // session successful
                 bundle.putInt("session_result", RESULT_SUCCESS);
             } else if (ID < size-1) {
+                // session failed
                 bundle.putInt("session_result", RESULT_NOT_SUCCESS);
             }
         } else {
+            // session canceled
             bundle.putInt("session_result", 300);
         }
-
+        // set session result for fragment
         if (bundle.getInt("session_result") == RESULT_SUCCESS) {
             bottomNavigationView.getMenu().getItem(0).setEnabled(true);
             bottomNavigationView.getMenu().getItem(1).setEnabled(true);
             bottomNavigationView.getMenu().getItem(2).setEnabled(true);
-            bottomNavigationView.setSelectedItemId(R.id.profileFragment);
-            profileFragment.setArguments(bundle);
+            bottomNavigationView.setSelectedItemId(R.id.profileFragment); // select bottom nav bar item
+            profileFragment.setArguments(bundle); // set arguments
             replaceFragment(profileFragment,-1,false);
         } else {
             trainFragment.setArguments(bundle);

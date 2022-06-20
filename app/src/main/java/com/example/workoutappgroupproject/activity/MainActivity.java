@@ -4,20 +4,11 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.GridLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -29,18 +20,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.example.workoutappgroupproject.CustomDialog;
-import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
-import com.example.workoutappgroupproject.fragment.SettingsFragment;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
+import com.example.workoutappgroupproject.fragment.SettingsFragment;
 import com.example.workoutappgroupproject.fragment.TrainFragment;
-import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

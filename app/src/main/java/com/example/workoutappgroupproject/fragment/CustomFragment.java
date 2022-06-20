@@ -44,7 +44,7 @@ public class CustomFragment extends Fragment {
     CoordinatorLayout myCoordinatorMain;
     private static final int RESULT_EDIT = 200;
     public static final int RESULT_SAVE = 100;
-    public static String myType = "CUSTOM";
+    public static String myType = "";
     List<Exercise> myList;
 
     public CustomFragment() {
@@ -81,7 +81,7 @@ public class CustomFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
             setHasOptionsMenu(true);
-            actionBar.setTitle(myType+" Exercises");
+            actionBar.setTitle(String.format(getString(R.string.title_custom_exercise),myType));
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
