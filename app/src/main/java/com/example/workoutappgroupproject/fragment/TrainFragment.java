@@ -147,7 +147,7 @@ public class TrainFragment extends Fragment {
             return;
         }
         // add custom
-        CustomFragment customFragment = new CustomFragment("ArmsandChest");
+        CustomFragment customFragment = new CustomFragment("Custom");
         replaceFragment(customFragment, 1, true);
     }
 
