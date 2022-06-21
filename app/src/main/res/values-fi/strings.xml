@@ -142,5 +142,7 @@
     <string name="user_create_success">Käyttäjän luominen onnistui!</string>
 
     <string name="x_sec_break">%1d sekuntia lomaa!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="ex_session_incomplete">Jätit muutaman harjoituksen väliin!</string>
 
 </resources>

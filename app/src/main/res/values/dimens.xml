@@ -1,3 +1,19 @@
 <resources>
+
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="common_margin">32dp</dimen>
+    <dimen name="common_margin_24dp">24dp</dimen>
+    <dimen name="common_margin2">16dp</dimen>
+    <dimen name="common_margin3">8dp</dimen>
+    <dimen name="common_margin4">4dp</dimen>
+
+    <dimen name="common_txt_size2">16sp</dimen>
+
+    <dimen name="break_txt_200sp">200sp</dimen>
+    <dimen name="common_txt_40sp">40sp</dimen>
+    <dimen name="common_txt_50sp">50sp</dimen>
+    <dimen name="common_txt_60sp">60sp</dimen>
+    <dimen name="train_layout_dims">40dp</dimen>
+    <dimen name="train_layout_dims_min">48dp</dimen>
+
 </resources>

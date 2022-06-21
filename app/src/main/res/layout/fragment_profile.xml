@@ -7,20 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ProfileFragment">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/Profile"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="8dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="8dp"-->
-    <!--        android:gravity="center"-->
-    <!--        android:text="@string/profile"-->
-    <!--        android:textSize="20sp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
@@ -49,9 +35,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginTop="@dimen/common_margin2"
+                    android:layout_marginEnd="@dimen/common_margin3"
                     android:hint="@string/name"
                     app:counterEnabled="false"
                     app:counterMaxLength="20"
@@ -73,9 +59,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginTop="@dimen/common_margin2"
+                    android:layout_marginEnd="@dimen/common_margin3"
                     android:hint="@string/height"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,9 +80,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginTop="@dimen/common_margin2"
+                    android:layout_marginEnd="@dimen/common_margin3"
                     android:hint="@string/weight"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -115,9 +101,9 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginTop="@dimen/common_margin2"
+                    android:layout_marginEnd="@dimen/common_margin3"
                     android:hint="@string/age"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -135,9 +121,9 @@
                     android:id="@+id/BMI"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginTop="@dimen/common_margin"
+                    android:layout_marginEnd="@dimen/common_margin3"
                     android:gravity="center_horizontal"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -148,10 +134,10 @@
                     android:id="@+id/BMIDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="@dimen/common_margin2"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginEnd="@dimen/common_margin3"
+                    android:layout_marginBottom="@dimen/common_margin2"
                     android:gravity="center_horizontal"
                     android:textSize="25sp"
                     android:textStyle="bold"
@@ -163,10 +149,10 @@
                     android:id="@+id/BMIWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="@dimen/common_margin"
+                    android:layout_marginStart="@dimen/common_margin3"
+                    android:layout_marginEnd="@dimen/common_margin3"
+                    android:layout_marginBottom="@dimen/common_margin2"
                     android:gravity="center_horizontal"
                     android:textStyle="italic"
                     app:layout_constraintBottom_toBottomOf="parent"

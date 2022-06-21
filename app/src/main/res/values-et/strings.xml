@@ -141,5 +141,7 @@
     <string name="user_create_success">Kasutaja loomine õnnestus!</string>
 
     <string name="x_sec_break">%1d sekundit puhkust!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="ex_session_incomplete">Jätsid mõned harjutused vahele!</string>
 
 </resources>

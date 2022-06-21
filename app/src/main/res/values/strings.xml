@@ -164,7 +164,6 @@
 
     <string name="x_sec_break">%1d second break!</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ex_session_incomplete">You skipped some exercises!</string>
 
 </resources>
