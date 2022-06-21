@@ -12,12 +12,14 @@ public class User {
     private final float height;
     private final float weight;
     private final int age;
+    private final String units;
 
-    public User(String name, float height, float weight, int age) {
+    public User(String name, float height, float weight, int age, String units) {
         this.name = name;
         this.height = height;
         this.weight = weight;
         this.age = age;
+        this.units = units;
     }
 
     public void setId(int id) {
@@ -42,5 +44,9 @@ public class User {
 
     public int getAge() {
         return age;
+    }
+
+    public String getUnits() {
+        return units;
     }
 }

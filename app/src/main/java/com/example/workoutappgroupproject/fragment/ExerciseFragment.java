@@ -53,12 +53,17 @@ public class ExerciseFragment extends Fragment {
     TextView txtName, txtQuantity, txtTime;
     Button btnDone, btnResetTime, btnPause;
     static int count = 0;
+    static int countSuccess = 0;
+    boolean canCountSuccess;
     private List<Exercise> exercises;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public static final String EXERCISE_ID = "com.example.workoutappgroupproject.activity.EXERCISE_ID";
     private static final String EXERCISE_COUNT = "com.example.workoutappgroupproject.activity.EXERCISE_COUNT";
     private static final String EXERCISE_MAX_TIME = "com.example.workoutappgroupproject.activity.EXERCISE_MAX_TIME";
+    private static final String EXERCISE_COUNT_SUCCESS = "com.example.workoutappgroupproject.activity.EXERCISE_COUNT_SUCCESS";
+    private static final int RESULT_INCOMPLETE = 400;
+    private static final int RESULT_CANCELED = 300;
     private static final int RESULT_NOT_SUCCESS = 200;
     public static final int RESULT_SUCCESS = 100;
 
@@ -79,14 +84,16 @@ public class ExerciseFragment extends Fragment {
         ExerciseFragment.count = count;
         ExerciseFragment.maxTime = maxTime;
         ExerciseFragment.ID = ID;
+        countSuccess = count;
     }
 
-    public static ExerciseFragment newInstance(int id, int maxTime) {
+    public static ExerciseFragment newInstance(int id, int maxTime, int countSuccess) {
         ExerciseFragment fragment = new ExerciseFragment();
         Bundle args = new Bundle();
         args.putInt(EXERCISE_ID, id);
         args.putInt(EXERCISE_COUNT, count);
         args.putInt(EXERCISE_MAX_TIME, maxTime);
+        args.putInt(EXERCISE_COUNT_SUCCESS, countSuccess);
         fragment.setArguments(args);
         return fragment;
     }
@@ -186,11 +193,7 @@ public class ExerciseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //reset the menu at top
-        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("SESSION..");
-        }
+        canCountSuccess = true;
 
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         bottomNavigationView.getMenu().getItem(0).setEnabled(false);
@@ -240,7 +243,10 @@ public class ExerciseFragment extends Fragment {
 
         view.findViewById(R.id.btnResetTime).setOnClickListener(view1 -> resetTimer(true));
         view.findViewById(R.id.btnPauseTime).setOnClickListener(view1 -> togglepause());
-        view.findViewById(R.id.btnDone).setOnClickListener(view1 -> newExercise());
+        view.findViewById(R.id.btnDone).setOnClickListener(view1 -> {
+            canCountSuccess = false;
+            newExercise();
+        });
     }
 
     private void initExerciseViewModel(View view) {
@@ -252,8 +258,11 @@ public class ExerciseFragment extends Fragment {
             id = getArguments().getInt(EXERCISE_ID, 0);
             count = getArguments().getInt(EXERCISE_COUNT, 0);
             maxTime = getArguments().getInt(EXERCISE_MAX_TIME,0);
+            countSuccess = getArguments().getInt(EXERCISE_COUNT_SUCCESS, 0);
         }
         int finalId = id;
+
+        System.out.println("EXERCISE_COUNT_SUCCESS: "+countSuccess);
 
         exerciseViewModel.getAllExercisesByType(type.toLowerCase()).observe(getViewLifecycleOwner(), exercises -> {
             this.exercises = exercises;
@@ -292,30 +301,55 @@ public class ExerciseFragment extends Fragment {
                 // has quantity, cancel listener
                 registerSensors();
             }
+
+            //reset the menu at top
+            ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+            if (actionBar != null) {
+                String title = "";
+                switch (type) {
+                    case "sixpack":
+                        title = getString(R.string.sixpack_exercises);
+                        break;
+                    case "armsandchest":
+                        title = getString(R.string.armsandchest_exercises);
+                        break;
+                    case "custom":
+                        title = getString(R.string.custom_exercises);
+                        break;
+                }
+                int current = count+1;
+                int max = 0;
+                max = exercises.size();
+                actionBar.setTitle(title+" "+current+"/"+max);
+            }
         });
     }
 
     // register sensors
     private void registerSensors() {
         // cancel if time 0
+//        boolean usesSensors = true;
         if (time != 0) return;
 
         SensorManager sensorManager = (SensorManager)requireActivity().getSystemService(SENSOR_SERVICE);
         Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         if (proximityListener == null) {
             proximityListener = new ProximityListener(
-                    requireActivity(),
-                    requireActivity().findViewById(android.R.id.content).getRootView(),
-                    proximitySensor);
+                        requireActivity(),
+                        requireActivity().findViewById(android.R.id.content).getRootView(),
+                        proximitySensor);
 
             sensorManager.registerListener(proximityListener,proximitySensor,
                     1000 * 1000);
         }
         // listener for each sensor tick
         if (proximityListener != null) {
-            proximityListener.setListener(() -> {
-                System.out.println("ProximityListener: onTick()");
-                decreaseQuantity();
+            proximityListener.setListener(new ProximityListener.Listener() {
+                @Override
+                public void onTick() {
+                    System.out.println("ProximityListener: onTick()");
+                    decreaseQuantity();
+                }
             });
         }
     }
@@ -334,6 +368,7 @@ public class ExerciseFragment extends Fragment {
         // cancel timer
         cancelTimer();
         exerciseViewModel.getAllExercisesByType(type.toLowerCase()).observe(getViewLifecycleOwner(),exercises -> {
+            if (canCountSuccess) countSuccess++;
             if (ID < 0) {
                 // check if all exercises done
                 return;
@@ -352,7 +387,7 @@ public class ExerciseFragment extends Fragment {
                 backToMain(false);
                 return;
             }
-            ExerciseFragment newInstance = newInstance(ID, maxTime);
+            ExerciseFragment newInstance = newInstance(ID, maxTime, countSuccess);
             replaceFragment(newInstance,2,false);
         });
     }
@@ -370,25 +405,31 @@ public class ExerciseFragment extends Fragment {
 
         // set result
         if (!backPressed){
+            bundle.putInt("session_result", RESULT_INCOMPLETE);
             if (ID == size-1) {
                 // session successful
-                bundle.putInt("session_result", RESULT_SUCCESS);
+                if (exercises != null) {
+                    if (countSuccess >= exercises.size()){
+                        bundle.putInt("session_result", RESULT_SUCCESS);
+                    }
+                }
             } else if (ID < size-1) {
                 // session failed
                 bundle.putInt("session_result", RESULT_NOT_SUCCESS);
             }
         } else {
             // session canceled
-            bundle.putInt("session_result", 300);
+            bundle.putInt("session_result", RESULT_CANCELED);
         }
         // set session result for fragment
-        if (bundle.getInt("session_result") == RESULT_SUCCESS) {
-            bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-            bottomNavigationView.getMenu().getItem(2).setEnabled(true);
-            bottomNavigationView.setSelectedItemId(R.id.profileFragment); // select bottom nav bar item
+        int result = bundle.getInt("session_result");
+        if (result == RESULT_SUCCESS || result == RESULT_INCOMPLETE) {
             profileFragment.setArguments(bundle); // set arguments
             replaceFragment(profileFragment,-1,false);
+            bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+//            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+            bottomNavigationView.getMenu().getItem(2).setEnabled(true);
+            bottomNavigationView.setSelectedItemId(R.id.profileFragment); // select bottom nav bar item
         } else {
             trainFragment.setArguments(bundle);
             replaceFragment(trainFragment,-1,false);
@@ -457,10 +498,10 @@ public class ExerciseFragment extends Fragment {
                     Intent intent = new Intent(requireActivity(), BreakActivity.class);
                     Bundle b = new Bundle();
 //                    maxTime = 5;
-                    int breakDuration = 3;
+                    int breakDuration = 10;
                     b.putLong("time_data", breakDuration);
                     intent.putExtras(b);
-                    Toast.makeText(requireContext(),breakDuration+" second Break!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(),String.format(getString(R.string.x_sec_break),breakDuration),Toast.LENGTH_SHORT).show();
                     activityResultLauncher.launch(intent);
                 } else {
                     System.out.println("last exercise: true");

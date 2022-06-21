@@ -2,7 +2,7 @@ package com.example.workoutappgroupproject.fragment;
 
 import static androidx.core.app.ActivityCompat.invalidateOptionsMenu;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.UserDB.User;
@@ -46,15 +48,17 @@ public class ProfileFragment extends Fragment {
     private float BMI;
 
     TextInputLayout textInputName, textInputHeight, textInputWeight, textInputAge;
-//    Button btnSaveProfile;
     TextView txtBMI, txtDescription, txtBMIWarning;
 
     private static final int USER_ID = 0;
     public static final int RESULT_SAVE = 100;
     public static final int RESULT_EDIT = 200;
 
+    private static final int RESULT_INCOMPLETE = 400;
+    private static final int RESULT_CANCELED = 300;
     private static final int RESULT_NOT_SUCCESS = 200;
     public static final int RESULT_SUCCESS = 100;
+    List<User> users;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -81,12 +85,27 @@ public class ProfileFragment extends Fragment {
 //                System.out.println("RESULT_NULL");
 //                break;
 //        }
-
         setHasOptionsMenu(true);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                if (profileStatus.equals("Editing")) {
+                    if (users != null) {
+                        profileStatus = "Saved";
+                        displayUserData(users);
+                    }
+                } else {
+                    requireActivity().finish();
+                }
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater,container,false);
@@ -100,7 +119,7 @@ public class ProfileFragment extends Fragment {
         //reset the menu at top
         actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.profile);
+            actionBar.setTitle(R.string.menu_profile);
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //            actionBar.setDisplayShowHomeEnabled(true);
         }
@@ -125,13 +144,16 @@ public class ProfileFragment extends Fragment {
         txtBMI.setVisibility(View.GONE);
         txtDescription.setVisibility(View.GONE);
 
-//        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-//        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-//        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-//        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
-
         // init view model
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
+            this.users = users;
+        });
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
 
         // save profileStatus to savedInstanceState key value set
         if (savedInstanceState != null) {
@@ -139,6 +161,7 @@ public class ProfileFragment extends Fragment {
         }
 
         // check if data already there
+
         userViewModel.getIsExists().observe(getViewLifecycleOwner(), isExists -> {
             if (!isExists) {
                 // no users in db
@@ -149,76 +172,7 @@ public class ProfileFragment extends Fragment {
                 textInputAge.setVisibility(View.VISIBLE);
             } else {
                 // users exist in db
-                userViewModel.getAllUsers().observe(getViewLifecycleOwner(),users -> {
-//                    boolean gotUsers = hasUserData(users);
-                    boolean gotUsers = true;
-                    if (gotUsers) {
-                        // TODO: check current BMI (from SharedPreferences)
-
-                        if (!profileStatus.equals("Editing")) {
-                            txtBMIWarning.setVisibility(View.VISIBLE);
-                            txtBMI.setVisibility(View.VISIBLE);
-                            txtDescription.setVisibility(View.VISIBLE);
-
-                            int id = USER_ID; // <-- first User object in list
-                            String name = users.get(id).getName();
-                            textInputName.getEditText().setText(name);
-                            float height = users.get(id).getHeight();
-                            textInputHeight.getEditText().setText(String.valueOf(height));
-                            float weight = users.get(id).getWeight();
-                            textInputWeight.getEditText().setText(String.valueOf(weight));
-                            int age = users.get(id).getAge();
-                            textInputAge.getEditText().setText(String.valueOf(age));
-
-                            progressBar.setVisibility(View.GONE);
-                            textInputName.setVisibility(View.VISIBLE);
-                            textInputHeight.setVisibility(View.VISIBLE);
-                            textInputWeight.setVisibility(View.VISIBLE);
-                            textInputAge.setVisibility(View.VISIBLE);
-
-                            // refresh inputs
-                            setup_TextInput(false);
-                            profileStatus = "Saved";
-                            float bmiheight = height/100;
-                            BMI=weight/(bmiheight*bmiheight);
-                            String bmiString = String.format(Locale.getDefault(),getString(R.string.BMI_format), BMI);
-                            txtBMI.setText(bmiString);
-                            if(age<18){
-                                txtBMIWarning.setText(R.string.bmi_warning);
-                            }
-                            else{
-                                txtBMIWarning.setText("");
-                            }
-                            if(BMI<16){
-                                txtDescription.setText(getString(R.string.severely_skinny));
-                            }
-                            else if(BMI<17){
-                                txtDescription.setText(getString(R.string.moderately_skinny));
-                            }
-                            else if(BMI<18.5 && BMI >=17){
-                                txtDescription.setText(getString(R.string.mildly_skinny));
-                            }
-                            else if(BMI<25 && BMI >=18.5){
-                                txtDescription.setText(getString(R.string.normal));
-                            }
-                            else if(BMI<30 && BMI >=25){
-                                txtDescription.setText(getString(R.string.overweight));
-                            }
-                            else if(BMI<34.9 && BMI >=30){
-                                txtDescription.setText(getString(R.string.obese_class_I));
-                            }
-                            else{
-                                txtDescription.setText(getString(R.string.obese_class_II));
-                            }
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            textInputName.setVisibility(View.VISIBLE);
-                            textInputHeight.setVisibility(View.VISIBLE);
-                            textInputWeight.setVisibility(View.VISIBLE);
-                            textInputAge.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
+                userViewModel.getAllUsers().observe(getViewLifecycleOwner(), this::displayUserData);
             }
             System.out.println("current profileStatus: "+ profileStatus);
             // when editing profile
@@ -229,6 +183,141 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    // load data from db
+    private void displayUserData(List<User> users) {
+        boolean gotData = hasUserData(users);
+        if (gotData) {
+            if (!profileStatus.equals("Editing")) {
+                txtBMIWarning.setVisibility(View.VISIBLE);
+                txtBMI.setVisibility(View.VISIBLE);
+                txtDescription.setVisibility(View.VISIBLE);
+
+                int id = USER_ID; // <-- first User object in list
+                String name = users.get(id).getName();
+                textInputName.getEditText().setText(name);
+                float height = users.get(id).getHeight();
+                textInputHeight.getEditText().setText(String.valueOf(height));
+                float weight = users.get(id).getWeight();
+                textInputWeight.getEditText().setText(String.valueOf(weight));
+                int age = users.get(id).getAge();
+                textInputAge.getEditText().setText(String.valueOf(age));
+
+                progressBar.setVisibility(View.GONE);
+                textInputName.setVisibility(View.VISIBLE);
+                textInputHeight.setVisibility(View.VISIBLE);
+                textInputWeight.setVisibility(View.VISIBLE);
+                textInputAge.setVisibility(View.VISIBLE);
+
+                // refresh inputs
+                setup_TextInput(false);
+                profileStatus = "Saved";
+
+                // reload all BMI stuff
+//                String units_db = users.get(id).getUnits();
+                boolean units_pending = getPrefUnitsPending();
+                if (units_pending){
+                    Toast.makeText(requireContext(),"units recalculated!",Toast.LENGTH_SHORT).show();
+//                    System.out.println("BMI: different - recalculate BMI");
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    sharedPreferences.edit().putBoolean("units_pending", false).apply();
+                    units_pending = false;
+//
+                    String units = getPrefUnits();
+                    reCalculateBMI(units,name,height,weight,age);
+//                    Toast.makeText(requireContext(),"units recalculated!",Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    calculateBMI(weight,height,age);
+                }
+
+            } else {
+                progressBar.setVisibility(View.GONE);
+                textInputName.setVisibility(View.VISIBLE);
+                textInputHeight.setVisibility(View.VISIBLE);
+                textInputWeight.setVisibility(View.VISIBLE);
+                textInputAge.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void reCalculateBMI(String units, String name, float height, float weight, int age) {
+//        // re-calculate BMI
+////        BMI = weight/(bmiheight*bmiheight);
+//
+//        float new_height = 0;
+//        float new_weight = 0;
+//        if (units.equals("metric")){
+//
+//            // metric -> us
+//            float bmiheight = height/100; // meters
+//
+//            float inch_height = (float) (bmiheight / 0.0254); // inches
+//            new_weight = (float) (weight / 0.45359237); // kg -> lb
+//            new_height = (float) ((inch_height*inch_height)); // '2
+//
+//            BMI = (new_weight / new_height) * 703;
+//
+//        } else {
+//
+//            // us -> metric
+//            float bmiheight = height; // inches
+//            float meters_height = (float) (bmiheight * 0.0254); // inches
+//            new_weight = (float) (weight * 0.45359237); // lb -> kg
+//            new_height = (float) ((meters_height*meters_height)); // '2
+//
+//            BMI = (new_weight / new_height) / 703;
+//
+//        }
+//        System.out.println("BMI: "+BMI);
+//        displayBMI(age);
+//
+////        // set initial Units for User
+////        String units = getPrefUnits();
+//
+        // save updated data to db ...
+        User user = new User(name,height,weight,age,units);
+        user.setId(USER_ID+1);
+        userViewModel.update(user);
+    }
+
+    private void calculateBMI(float weight, float height, int age) {
+        float bmiheight = height/100;
+        BMI = weight/(bmiheight*bmiheight);
+        displayBMI(age);
+    }
+
+    private void displayBMI(int age) {
+        String bmiString = String.format(Locale.getDefault(),getString(R.string.BMI_format), BMI);
+        txtBMI.setText(bmiString);
+        if(age<18){
+            txtBMIWarning.setText(R.string.bmi_warning);
+        }
+        else{
+            txtBMIWarning.setText("");
+        }
+        if(BMI<16){
+            txtDescription.setText(getString(R.string.severely_skinny));
+        }
+        else if(BMI<17){
+            txtDescription.setText(getString(R.string.moderately_skinny));
+        }
+        else if(BMI<18.5 && BMI >=17){
+            txtDescription.setText(getString(R.string.mildly_skinny));
+        }
+        else if(BMI<25 && BMI >=18.5){
+            txtDescription.setText(getString(R.string.normal));
+        }
+        else if(BMI<30 && BMI >=25){
+            txtDescription.setText(getString(R.string.overweight));
+        }
+        else if(BMI<34.9 && BMI >=30){
+            txtDescription.setText(getString(R.string.obese_class_I));
+        }
+        else{
+            txtDescription.setText(getString(R.string.obese_class_II));
+        }
+    }
+
     // get fragment result from arguments
     private void onFragmentResult() {
         int result;
@@ -237,13 +326,18 @@ public class ProfileFragment extends Fragment {
             Snackbar snackbar = null;
             if (bundle.containsKey("session_result")){
                 result = getArguments().getInt("session_result");
-                if(result == RESULT_SUCCESS){
+                if (result == RESULT_SUCCESS) {
                     snackbar = Snackbar.make(mainView, getString(R.string.ex_session_success),
                             Snackbar.LENGTH_SHORT);
-                }else if(result == RESULT_NOT_SUCCESS){
+//                    if (users != null) displayUserData(users);
+                } else if (result == RESULT_NOT_SUCCESS) {
                     snackbar = Snackbar.make(mainView, getString(R.string.ex_session_fail),
                             Snackbar.LENGTH_SHORT);
-                }else{
+                } else if (result == RESULT_INCOMPLETE) {
+                    // NOT ALL EXERCISES DONE
+                    snackbar = Snackbar.make(mainView, getString(R.string.ex_session_incomplete),
+                            Snackbar.LENGTH_SHORT);
+                } else {
                     snackbar = Snackbar.make(mainView, getString(R.string.ex_session_cancel),
                             Snackbar.LENGTH_SHORT);
                 }
@@ -267,33 +361,35 @@ public class ProfileFragment extends Fragment {
 
     // helper method for setting up listener for edit text
     private void listenForInput(TextInputLayout textInput) {
-        textInput.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if (textInput != null) {
+            textInput.getEditText().addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                textInput.setError(null);
-                validateAll(textInput);
-            }
-
-            private void validateAll(TextInputLayout textInput) {
-                if (textInput.equals(textInputName)) {
-                    validateName();
-                } else if (textInput.equals(textInputHeight)) {
-                    validateHeight();
-                } else if (textInput.equals(textInputWeight)) {
-                    validateWeight();
-                } else {
-                    validateAge();
                 }
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    textInput.setError(null);
+                    validateAll(textInput);
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                private void validateAll(TextInputLayout textInput) {
+                    if (textInput.equals(textInputName)) {
+                        validateName();
+                    } else if (textInput.equals(textInputHeight)) {
+                        validateHeight();
+                    } else if (textInput.equals(textInputWeight)) {
+                        validateWeight();
+                    } else {
+                        validateAge();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
     }
 
     // validate db<-->local fields
@@ -317,8 +413,11 @@ public class ProfileFragment extends Fragment {
 
         // if no field is different from current User data
         if (name.equals(oldName) && height == oldHeight && weight == oldWeight && age == oldAge) {
-            Snackbar.make(requireActivity().findViewById(R.id.mainView),
-                    getString(R.string.err_data_same), 5000).show();
+            Snackbar snackbar;
+            snackbar = Snackbar.make(requireActivity().findViewById(R.id.mainView),
+                    getString(R.string.err_data_same), 5000);
+            snackbar.setAnchorView(requireActivity().findViewById(R.id.bottomNavigationView));
+            snackbar.show();
             return false;
         }
         return true;
@@ -479,10 +578,10 @@ public class ProfileFragment extends Fragment {
 
     // validate & save to db
     private void onSave() {
-//        listenForInput(textInputHeight);
-//        listenForInput(textInputWeight);
-//        listenForInput(textInputName);
-//        listenForInput(textInputAge);
+        listenForInput(textInputHeight);
+        listenForInput(textInputWeight);
+        listenForInput(textInputName);
+        listenForInput(textInputAge);
 
         // save button click listener
         switch (profileStatus) {
@@ -495,8 +594,12 @@ public class ProfileFragment extends Fragment {
                 float height = Float.parseFloat(textInputHeight.getEditText().getText().toString().trim());
                 float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString().trim());
                 int age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
+
+                // set initial Units for User
+                String units = getPrefUnits();
+
                 // save data to db
-                User user = new User(name,height,weight,age);
+                User user = new User(name,height,weight,age,units);
                 userViewModel.insert(user);
                 Toast.makeText(getActivity(), getString(R.string.user_create_success), Toast.LENGTH_LONG)
                         .show();
@@ -526,8 +629,12 @@ public class ProfileFragment extends Fragment {
                 float height = Float.parseFloat(textInputHeight.getEditText().getText().toString().trim());
                 float weight = Float.parseFloat(textInputWeight.getEditText().getText().toString().trim());
                 int age = Integer.parseInt(textInputAge.getEditText().getText().toString().trim());
+
+                // set initial Units for User
+                String units = getPrefUnits();
+
                 // save updated data to db ...
-                User user = new User(name,height,weight,age);
+                User user = new User(name,height,weight,age,units);
                 user.setId(USER_ID+1);
                 userViewModel.update(user);
                 Toast.makeText(getActivity(), getString(R.string.user_update_success), Toast.LENGTH_LONG)
@@ -539,5 +646,19 @@ public class ProfileFragment extends Fragment {
 //        MenuInflater menu = requireActivity().getMenuInflater(); menu.inflate(R.menu.item1, menu);
 //        Menu menu =
 //        onCreateOptionsMenu(requireActivity(), requireActivity().getMenuInflater());
+    }
+
+    private String getPrefUnits() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        String units = sharedPreferences.getString("units","metric");
+        System.out.println("units: "+units);
+        return units;
+    }
+
+    private boolean getPrefUnitsPending() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        boolean units = sharedPreferences.getBoolean("units_pending",false);
+        System.out.println("units pending!: "+units);
+        return units;
     }
 }
