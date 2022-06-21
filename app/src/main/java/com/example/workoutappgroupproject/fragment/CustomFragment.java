@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,11 +60,21 @@ public class CustomFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                backToMain();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void backToMain() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        fragmentManager.popBackStack();
+        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+            fragmentManager.popBackStack();
+        }
     }
 
     @Override
@@ -81,7 +92,19 @@ public class CustomFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
             setHasOptionsMenu(true);
-            actionBar.setTitle(String.format(getString(R.string.title_custom_exercise),myType));
+            String title = "";
+            switch (myType) {
+                case "sixpack":
+                    title = getString(R.string.sixpack_exercises);
+                    break;
+                case "armsandchest":
+                    title = getString(R.string.armsandchest_exercises);
+                    break;
+                case "custom":
+                    title = getString(R.string.custom_exercises);
+                    break;
+            }
+            actionBar.setTitle(title);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -136,8 +159,9 @@ public class CustomFragment extends Fragment {
         myCoordinatorMain = view.findViewById(R.id.myCoordinatorMain);
 
         view.findViewById(R.id.fabNewExercise).setOnClickListener(view1 ->{
-            Intent intent = new Intent(requireActivity(), AddExercisesActivity.class);
-            activityResultLauncher.launch(intent);
+            replaceFragment(new AddExerciseFragment(), 2, true);
+//            Intent intent = new Intent(requireActivity(), AddExercisesActivity.class);
+//            activityResultLauncher.launch(intent);
         });
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_exercise_list);
@@ -155,6 +179,8 @@ public class CustomFragment extends Fragment {
             this.myList = exercises;
         });
 
+        onFragmentResult();
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -170,15 +196,60 @@ public class CustomFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
         adapter.setOnItemClickListener(exercise -> {
-            Intent intent = new Intent(requireActivity(), AddExercisesActivity.class);
-//            Bundle b = new Bundle();
-            intent.putExtra(AddExercisesActivity.EXTRA_NAME, exercise.getName());
-            intent.putExtra(AddExercisesActivity.EXTRA_TIME, exercise.getTime());
-            intent.putExtra(AddExercisesActivity.EXTRA_QUANTITY, exercise.getQuantity());
-            intent.putExtra(AddExercisesActivity.EXTRA_ID, exercise.getId());
-//            intent.putExtras(b);
-            activityResultLauncher.launch(intent);
+
+            AddExerciseFragment exerciseFragment = new AddExerciseFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(AddExerciseFragment.EXTRA_NAME, exercise.getName());
+            bundle.putInt(AddExerciseFragment.EXTRA_TIME, exercise.getTime());
+            bundle.putInt(AddExerciseFragment.EXTRA_QUANTITY, exercise.getQuantity());
+            bundle.putInt(AddExerciseFragment.EXTRA_ID, exercise.getId());
+
+            exerciseFragment.setArguments(bundle);
+            replaceFragment(exerciseFragment, 2, true);
         });
+    }
+
+    // get fragment result from arguments
+    private void onFragmentResult() {
+        View view = null;
+        if (getView() != null) view = getView();
+
+        int result;
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Snackbar snackbar = null;
+            if (bundle.containsKey("addexercise_result")){
+                result = getArguments().getInt("addexercise_result");
+                if(result == RESULT_SAVE){
+
+                    String name = bundle.getString(AddExerciseFragment.EXTRA_NAME);
+                    int quantity = bundle.getInt(AddExerciseFragment.EXTRA_QUANTITY, 1);
+                    int time = bundle.getInt(AddExerciseFragment.EXTRA_TIME, 1);
+
+                    Exercise exercise = new Exercise(name, quantity, time, myType.toLowerCase());
+                    exerciseViewModel.insert(exercise);
+                    Snackbar.make(view.findViewById(R.id.myCoordinatorMain), getString(R.string.save_db), Snackbar.LENGTH_SHORT).show();
+
+                } else if(result == RESULT_EDIT){
+
+                    int id = bundle.getInt(AddExerciseFragment.EXTRA_ID, -1);
+                    if(id == -1){
+                        Snackbar.make(view.findViewById(R.id.myCoordinatorMain), getString(R.string.exercise_err),
+                                Snackbar.LENGTH_SHORT).show();
+                    }
+                    String name = bundle.getString(AddExerciseFragment.EXTRA_NAME);
+                    int quantity = bundle.getInt(AddExerciseFragment.EXTRA_QUANTITY, 0);
+                    int time = bundle.getInt(AddExerciseFragment.EXTRA_TIME, 0);
+                    Exercise exercise = new Exercise(name,quantity,time,myType.toLowerCase());
+                    exercise.setId(id);
+                    exerciseViewModel.update(exercise);
+
+                } else {
+                    // error!
+                }
+                getArguments().clear();
+            }
+        }
     }
 
     // add menu
@@ -211,6 +282,18 @@ public class CustomFragment extends Fragment {
             exerciseViewModel.deleteAllExerciseByType(myType.toLowerCase());
             Snackbar.make(myCoordinatorMain, getString(R.string.exercises_deleted), Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    public void replaceFragment(Fragment fragment, int dir, boolean backStack){
+        FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (dir == 1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        else if (dir == -1) fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+        else if (dir == 2) fragmentTransaction.setCustomAnimations(R.anim.enter_from_top,R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_top);
+
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
+        if (backStack) fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 }

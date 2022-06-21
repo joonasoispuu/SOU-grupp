@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -59,6 +60,29 @@ public class TrainFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                backToMain();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    // back to home
+    private void backToMain() {
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        replaceFragment(new ProfileFragment(),-1,false);
+//        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+//        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
+        bottomNavigationView.setSelectedItemId(R.id.profileFragment); // select bottom nav bar item
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -70,11 +94,6 @@ public class TrainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
 
         ExerciseViewModel exerciseViewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
         // get Exercise List by Type -> save each list into variable
@@ -92,9 +111,14 @@ public class TrainFragment extends Fragment {
         ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
         if (actionBar != null) {
             setHasOptionsMenu(true);
-            actionBar.setTitle(R.string.train);
+            actionBar.setTitle(R.string.menu_train);
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
 
         mainView = binding.mainView;
         onFragmentResult();
@@ -137,6 +161,7 @@ public class TrainFragment extends Fragment {
     public void onChosenExercise(View view) {
         String tag = view.getTag().toString().toLowerCase();
         List<Exercise> myList = null;
+        System.out.println("EXERCISE TAG: "+tag);
         // set up myList based on TAG (Exercise Type)
         if (tag.equals(TAGS[0])) myList = exercisesSixpack;
         if (tag.equals(TAGS[1])) myList = exercisesArmsandChest;
@@ -147,17 +172,20 @@ public class TrainFragment extends Fragment {
             return;
         }
         // add custom
-        CustomFragment customFragment = new CustomFragment("Custom");
+        CustomFragment customFragment = new CustomFragment("custom");
         replaceFragment(customFragment, 1, true);
     }
 
     // select exercise session
     private void selectSession(List<Exercise> myList, String tag) {
         int id = 0;
+        System.out.println("SIZE: "+myList.size());
+
         if (myList.size() < 1) { // list empty
             Toast.makeText(requireContext(), R.string.err_session_empty,Toast.LENGTH_SHORT).show();
             // add custom
-            CustomFragment customFragment = new CustomFragment("Custom");
+            String myType = tag.toLowerCase();
+            CustomFragment customFragment = new CustomFragment(myType);
             replaceFragment(customFragment, 1, true);
             return;
         }

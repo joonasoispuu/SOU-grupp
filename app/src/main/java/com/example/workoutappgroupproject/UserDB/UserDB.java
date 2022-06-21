@@ -10,7 +10,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {User.class},version = 2,exportSchema = false)
+@Database(entities = {User.class},version = 4,exportSchema = false)
 public abstract class UserDB extends RoomDatabase {
     private static final String DB_NAME = "user_db";
     private static UserDB instance;

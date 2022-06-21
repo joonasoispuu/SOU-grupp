@@ -59,7 +59,7 @@ public class AddExercisesActivity extends AppCompatActivity {
             etQuantity.setText(String.valueOf(intent.getIntExtra(EXTRA_QUANTITY, 1)));
             ntPicker.setValue(intent.getIntExtra(EXTRA_TIME, 1));
         }else{
-            setTitle(getString(R.string.create));
+            setTitle(getString(R.string.create_exercise));
         }
     }
 
@@ -74,10 +74,10 @@ public class AddExercisesActivity extends AppCompatActivity {
         }
         String name = etName.getText().toString().trim();
         int quantity;
+
         if(etQuantity.getText().toString().isEmpty()){
             quantity = 0;
-        }
-        else{
+        } else{
             quantity = Integer.parseInt(etQuantity.getText().toString());
         }
         int time = ntPicker.getValue();
@@ -101,6 +101,24 @@ public class AddExercisesActivity extends AppCompatActivity {
             Toast.makeText(AddExercisesActivity.this, getString(R.string.exercise_values_missing), Toast.LENGTH_SHORT).show();
             return false;
         } else {
+            int quantity = 0;
+            boolean nfe_err = false;
+            try {
+                quantity = Integer.parseInt(etQuantity.getText().toString());
+            } catch (NumberFormatException nfe) {
+                nfe_err = true;
+                System.out.println(getString(R.string.err_nfe));
+            }
+
+            if (nfe_err) {
+                Toast.makeText(AddExercisesActivity.this, getString(R.string.err_field_nfe), Toast.LENGTH_SHORT).show();
+                etQuantity.setError("ERR");
+                return false;
+            }
+            if (quantity < 1) {
+                Toast.makeText(AddExercisesActivity.this, getString(R.string.err_incorrect_time_quantity), Toast.LENGTH_SHORT).show();
+                return false;
+            }
             return true;
         }
     }

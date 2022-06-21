@@ -24,6 +24,7 @@
 
         <TextView
             android:id="@+id/txtSixpack"
+            android:tag="sixpack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -31,10 +32,11 @@
             android:clickable="true"
             android:focusable="true"
             android:minHeight="48dp"
-            android:text="@string/sixpack_exercise" />
+            android:text="@string/sixpack_exercises" />
 
         <TextView
             android:id="@+id/txtArmsandChest"
+            android:tag="armsandchest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -43,10 +45,11 @@
             android:clickable="true"
             android:focusable="true"
             android:minHeight="48dp"
-            android:text="@string/armsandchest_exercise" />
+            android:text="@string/armsandchest_exercises" />
 
         <TextView
             android:id="@+id/txtCustom"
+            android:tag="custom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -57,6 +60,7 @@
 
         <TextView
             android:id="@+id/txtAddCustom"
+            android:tag="addcustom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
