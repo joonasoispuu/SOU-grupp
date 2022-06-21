@@ -48,10 +48,13 @@
 
     </PreferenceCategory>
 
-<!--    <Preference-->
-<!--        app:key="feedback"-->
-<!--        app:title="@string/pref_feedback_title"-->
-<!--        app:summary="@string/pref_feedback"/>-->
+    <ListPreference
+        android:defaultValue="English"
+        android:entries="@array/Language_names"
+        android:entryValues="@array/Language_values"
+        android:icon="@drawable/ic_language"
+        android:key="@string/pref_key_language"
+        android:title="@string/change_language" />
 
 </PreferenceScreen>
 

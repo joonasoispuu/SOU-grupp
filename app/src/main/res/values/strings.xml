@@ -5,8 +5,9 @@
         <item>English (en)</item>
         <item>Estonian (et)</item>
         <item>Finnish (fi)</item>
+
     </string-array>
-    <!--  Language_values  -->
+
     <string-array name="Language_values">
         <item>en</item>
         <item>et</item>
