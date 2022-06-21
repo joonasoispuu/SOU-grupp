@@ -1,8 +1,12 @@
 package com.example.workoutappgroupproject.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,12 +24,15 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.example.workoutappgroupproject.LocaleHelper;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.UserDB.User;
+import com.example.workoutappgroupproject.activity.MainActivity;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -89,8 +96,34 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         String key_theme = getString(R.string.pref_key_theme);
         String key_units = getString(R.string.pref_key_units);
+        String key_language = getString(R.string.pref_key_language);
         Preference themePref = findPreference(key_theme);
         Preference unitsPref = findPreference(key_units);
+        Preference language_pref = findPreference(key_language);
+
+        language_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                // Get selected language
+                String selectedLanguage = newValue.toString();
+                preference.setSummary(selectedLanguage);
+                LocaleHelper.setLocale(getContext(),selectedLanguage);
+
+                Resources resources = getResources();
+                DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+                Configuration configuration = resources.getConfiguration();
+                configuration.locale = new Locale(selectedLanguage);
+                resources.updateConfiguration(configuration,displayMetrics);
+
+
+                getActivity().finish();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+
+                return true;
+            }
+        });
 
         if (themePref != null) {
             themePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -107,6 +140,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         getPreferenceManager().getSharedPreferences().edit().putBoolean(key_theme, false).apply();
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     }
+
+                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+
                     return true;
                 }
             });
