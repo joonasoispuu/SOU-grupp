@@ -1,0 +1,159 @@
+<resources>
+
+    <string name="app_name">Treenigu Abistaja</string>
+
+    <string-array name="Language_names">
+        <item>English</item>
+        <item>Estonian</item>
+        <item>Finnish</item>
+    </string-array>
+
+    <string-array name="Language_values">
+        <item>en</item>
+        <item>et</item>
+        <item>fi</item>
+    </string-array>
+    <string name="current_language">Suomi keel</string>
+
+    <!--  Profile Fragment  -->
+    <string name="name">Nimi</string>
+    <string name="height">Korkeus</string>
+    <string name="weight">Paino</string>
+    <string name="age">Ikä</string>
+    <string name="save">Salvesta</string>
+    <string name="profile">Profiili</string>
+    <string name="btn_edit">Muokkaa tietoja</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Seuraava</string>
+    <string name="previous">Edellinen</string>
+    <string name="new_exercise">Lisää uusi harjoitus</string>
+    <string name="exercise_placeholder_name">Harjoituksen nimi</string>
+    <string name="exercise_placeholder_quantity">Harjoituksen määrä</string>
+    <string name="exercise_placeholder_time">Harjoitusaika</string>
+    <string name="edit_exercise">Muokkaa harjoitustietoja</string>
+    <string name="delete_all_exercises">Poista kaikki harjoitukset</string>
+    <string name="exercise_name_missing">Kirjoita harjoituksen nimi!</string>
+    <string name="exercise_values_missing">Valitse harjoituksen aika tai määrä!</string>
+    <string name="save_db">Harjoitus on tallennettu listaan!</string>
+    <string name="save_err">Harjoituksen tallentaminen luetteloon epäonnistui!</string>
+    <string name="exercises_deleted">Kaikki harjoitukset poistettu!</string>
+    <string name="exercise_deleted">Harjoitus poistettu listalta!</string>
+    <string name="exercise_err">Harjoitustietojen muutos epäonnistui!</string>
+    <string name="exercise_creator_closed">Harjoitusten valmistelu keskeytettiin</string>
+    <string name="updated">Harjoitus on päivitetty!</string>
+    <string name="severely_skinny">Vakavasti laiha</string>
+    <string name="moderately_skinny">Kohtalaisen laiha</string>
+    <string name="mildly_skinny">Hieman laiha</string>
+    <string name="normal">Terve</string>
+    <string name="overweight">Ylipainoinen</string>
+    <string name="obese_class_I">Vakavasti ylipainoinen</string>
+    <string name="obese_class_II">Jubedalt Kamala ylipaino!</string>
+    <string name="exercise">Harjoittele</string>
+    <string name="exercise_name">Harjoituksen nimi</string>
+    <string name="how_many_times">Kuinka monta!</string>
+    <string name="time">Aika (sekuntia)</string>
+    <string name="_10_x">10 X</string>
+    <string name="_10_sec">10 sec</string>
+    <string name="seconds">Sekuntia</string>
+    <string name="timer">Ajastin</string>
+    <string name="quantity_icon">X</string>
+    <string name="time_icon">sekuntia</string>
+    <string name="change_language">Vaihda kieltä</string>
+
+    <!--  Exercise Fragment  -->
+    <string name="done">Valmis</string>
+    <string name="pause">Tauko</string>
+    <string name="reset_timer">Nollaa</string>
+
+    <!--  Train Fragment  -->
+    <string name="sixpack">ABS</string>
+    <string name="armsandchest">Kädet ja rinnat</string>
+    <string name="custom">Sinun luomasi</string>
+
+    <!-- Preferences -->
+    <string name="pref_messages_header">Sinun luomasi</string>
+    <string name="pref_sync_header">Synkronoidaan</string>
+    <string name="pref_signature_title">Sinun allekirjoituksesi</string>
+    <string name="pref_reply_title">Normaali vastaustoiminto</string>
+    <string name="pref_sync_title">Synkronoi sähköposti säännöllisesti</string>
+    <string name="pref_feedback">Ilmoita teknisistä ongelmista tai ehdota uusia ominaisuuksia</string>
+    <string name="pref_units">Yksiköt</string>
+    <string name="pref_units_on">US</string>
+    <string name="pref_units_off">Metreissä</string>
+    <string name="pref_BMI_title">BMI-yksiköt</string>
+    <string name="pref_notifications">Ota viesti-ilmoitukset käyttöön</string>
+    <string name="pref_notifications_title">Ilmoitukset</string>
+    <string name="pref_feedback_title">Lähetä palautetta!</string>
+
+    <!-- Titles -->
+    <string name="title_here">Kouluta Apulainen</string>
+    <string name="create">Valmista harjoitus</string>
+    <string name="train">Kouluttaa</string>
+    <string name="exercises">Harjoitukset</string>
+    <string name="Settings">asetukset</string>
+    <string name="Train">Kouluttaa</string>
+    <string name="Profile">Profiili</string>
+    <string name="custom_exercises">Sinun luomia harjoituksia</string>
+    <string name="add_custom_exercises">Lisää omia harjoituksiasi</string>
+    <string name="sixpack_exercise">Vatsan harjoitus</string>
+    <string name="armsandchest_exercise">Käsi- ja rintaharjoituksia</string>
+    <string name="pref_key_theme" translatable="false">theme_night</string>
+    <string name="pref_key_units" translatable="false">units</string>
+    <string name="pref_key_language" translatable="false">language</string>
+    <string name="pref_key_clear" translatable="false">data_clear</string>
+    <string name="pref_theme_title">Sovelluksen teema</string>
+    <string name="pref_clear_title">Poista sovellustiedot</string>
+    <string name="pref_clear">Poista kaikki tallennetut tiedot</string>
+    <string name="pref_theme_on">Yömuoti sisällä</string>
+    <string name="pref_theme_off">Yömuoti ulkona</string>
+
+    <!-- UI -->
+    <string name="empty">Tyhjä</string>
+    <string name="edit">Muuttaa</string>
+    <string name="start">Aloittaa</string>
+    <string name="skip">Jätä se väliin</string>
+    <string name="cancel">Peruuttaa</string>
+
+    <!--  Other  -->
+    <string name="quantity_format">%1$d X</string>
+    <string name="BMI_format">BMI: %.1f</string>
+    <string name="timer_format">%02d:%02d</string>
+
+    <!-- Result -->
+    <string name="ex_session_fail">Harjoittelu epäonnistui!</string>
+    <string name="ex_session_cancel">Harjoitus keskeytetty!</string>
+    <string name="break_success">Loma ohi!</string>
+    <string name="no_data">Tietoja ei vastaanotettu!</string>
+    <string name="break_failed">Lomaonnettomuus</string>
+    <string name="break_canceled">Loma keskeytetty!</string>
+
+    <!-- Warning -->
+    <string name="dialog_holdup">Odota</string>
+    <string name="warning_fill_fields">Sinun tulee täyttää vaaditut kentät ennen sovelluksen käyttöä!</string>
+    <string name="bmi_warning">Tämä sovellus on tarkoitettu yli 18-vuotiaille\nTulokset voivat olla virheellisiä</string>
+
+    <!-- Error -->
+    <string name="err_data_same">Olemassa olevia tietoja ei voi tallentaa. Varmista, että ainakin yksi kenttä on muuttanut sinua vitun hirvi!</string>
+    <string name="err">ERROR</string>
+    <string name="err_nfe">Numeromuodon poikkeus: virheellinen syötemerkkijono</string>
+    <string name="err_weight_max">Liian lihava! Enimmäismäärä: 635kg</string>
+    <string name="err_field_empty">Kenttä ei saa olla tyhjä!</string>
+    <string name="err_name_max">Kentässä voi olla enintään 20 merkkiä!</string>
+    <string name="err_name_format">Nimeä ei ole muotoiltu oikein!</string>
+    <string name="err_age_max">Liian suuri luku!</string>
+    <string name="err_height_min">Pituus ei voi olla %.1f! minimi: 54.6cm</string>
+    <string name="err_height_max">liian pitkä! enimmäismäärä: 272cm</string>
+    <string name="err_weight_min">Liian laiha! minimi: 2.13kg</string>
+    <string name="err_age_min">Ikä ei voi olla %1d! minimi: 12</string>
+    <string name="ex_session_success">Harjoitus suoritettu!</string>
+    <string name="err_get_data">Tietoja ei saatu!</string>
+    <string name="err_session_empty">Istunto on tyhjä</string>
+    <string name="err_deleteall">Ei ole mitään poistettavaa!</string>
+    <string name="exercise_too_long">Harjoituksen nimi ei saa ylittää 20 merkkiä!</string>
+
+    <!-- Success -->
+    <string name="user_update_success">"Profiili päivitetty!</string>
+    <string name="user_create_success">Käyttäjän luominen onnistui!</string>
+
+</resources>

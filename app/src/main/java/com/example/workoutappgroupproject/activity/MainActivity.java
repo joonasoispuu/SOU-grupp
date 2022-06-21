@@ -6,8 +6,11 @@ import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import androidx.preference.PreferenceManager;
 
 import com.example.workoutappgroupproject.CustomDialog;
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
+import com.example.workoutappgroupproject.LocaleHelper;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.fragment.SettingsFragment;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
@@ -41,6 +45,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String getLocale = LocaleHelper.getLanguage(MainActivity.this);
+        System.out.println("Locale: "+ getLocale);
+
+        setLocale(getLocale);
+        updateTheme();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -151,6 +163,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public void setLocale(String selectedLanguage){
+        Resources resources = getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = new Locale(selectedLanguage);
+        resources.updateConfiguration(configuration,displayMetrics);
     }
 
 }

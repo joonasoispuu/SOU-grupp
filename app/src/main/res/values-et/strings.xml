@@ -1,0 +1,161 @@
+<resources>
+
+    <string name="app_name">Treenigu Abistaja</string>
+
+    <string-array name="Language_names">
+        <item>English (en)</item>
+        <item>Estonian (et)</item>
+        <item>Finnish (fi)</item>
+    </string-array>
+
+    <string-array name="Language_values">
+        <item>en</item>
+        <item>et</item>
+        <item>fi</item>
+    </string-array>
+    <string name="current_language">Eesti keel</string>
+
+    <!--  Profile Fragment  -->
+    <string name="name">Nimi</string>
+    <string name="height">Pikkus</string>
+    <string name="weight">Kehakaal</string>
+    <string name="age">Vanus</string>
+    <string name="save">Salvesta</string>
+    <string name="profile">Profiil</string>
+    <string name="btn_edit">Muuda andmeid</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Järgmine</string>
+    <string name="previous">Eelmine</string>
+    <string name="new_exercise">Lisa uus harjutus</string>
+    <string name="exercise_placeholder_name">Harjutuse nimi</string>
+    <string name="exercise_placeholder_quantity">Harjutuse kogus</string>
+    <string name="exercise_placeholder_time">Harjutuse aeg</string>
+    <string name="edit_exercise">Muuda harjutuse andmeid</string>
+    <string name="delete_all_exercises">Kustuta kõik harjutused</string>
+    <string name="exercise_name_missing">Palun sisesta harjutuse nimi!</string>
+    <string name="exercise_values_missing">Palun vali harjutusel kas aeg või kogus!</string>
+    <string name="save_db">Harjutus on listi salvestatud!</string>
+    <string name="save_err">Harjutuse salvestamine listi ebaõnnestus!</string>
+    <string name="exercises_deleted">Kõik harjutused kustutati!</string>
+    <string name="exercise_deleted">Harjutus kustutati listist!</string>
+    <string name="exercise_err">Harjutuse andmete muutmine ebaõnnestus!</string>
+    <string name="exercise_creator_closed">Harjutuste valmistamine lõpetati</string>
+    <string name="updated">Harjutus on uuendatud!</string>
+    <string name="severely_skinny">Tõsiselt kõhn</string>
+    <string name="moderately_skinny">Mõõdukalt kõhn</string>
+    <string name="mildly_skinny">Kergelt kõhn</string>
+    <string name="normal">Tervislik</string>
+    <string name="overweight">Ülekaaluline</string>
+    <string name="obese_class_I">Tõsiselt ülekaaluline</string>
+    <string name="obese_class_II">Jubedalt ülekaaluline!</string>
+    <string name="exercise">Harjutus</string>
+    <string name="exercise_name">Harjutuse nimi</string>
+    <string name="how_many_times">Mitu tükki!</string>
+    <string name="time">Aeg (sekundit)</string>
+    <string name="_10_x">10 X</string>
+    <string name="_10_sec">10 sec</string>
+    <string name="seconds">Sekundit</string>
+    <string name="timer">Taimer</string>
+    <string name="quantity_icon">X</string>
+    <string name="time_icon">sekundit</string>
+    <string name="change_language">Vaheta keelt</string>
+
+    <!--  Exercise Fragment  -->
+    <string name="done">Lõpetatud</string>
+    <string name="pause">Paus</string>
+    <string name="reset_timer">Reset</string>
+
+    <!--  Train Fragment  -->
+    <string name="sixpack">Kõhulihased</string>
+    <string name="armsandchest">Käed ja Rinnad</string>
+    <string name="custom">Sinu poolt loodud</string>
+
+    <!-- Preferences -->
+    <string name="pref_messages_header">Sõnumid</string>
+    <string name="pref_sync_header">Sünkroonimine</string>
+    <string name="pref_signature_title">Sinu allkiri</string>
+    <string name="pref_reply_title">Tavaline vastamise toiming</string>
+    <string name="pref_sync_title">Emaili sünkroreerimine perioodiliselt</string>
+    <string name="pref_feedback">Report technical issues or suggest new features</string>
+    <string name="pref_units">Ühikud</string>
+    <string name="pref_units_on">US</string>
+    <string name="pref_units_off">Meetrites</string>
+    <string name="pref_BMI_title">BMI Ühikud</string>
+    <string name="pref_notifications">Luba sõnumite märguanded</string>
+    <string name="pref_notifications_title">Teatised</string>
+    <string name="pref_feedback_title">Saada tagasisidet!</string>
+
+
+    <!-- Titles -->
+    <string name="title_here">Treenigu Abistaja</string>
+    <string name="create">Valmista harjutus</string>
+    <string name="train">Treeni</string>
+    <string name="Settings">Seaded</string>
+    <string name="Train">Treening</string>
+    <string name="Profile">Profiil</string>
+    <string name="exercises">Harjutused</string>
+    <string name="custom_exercises">Sinu poolt loodud harjutused</string>
+    <string name="add_custom_exercises">Lisa enda harjutused</string>
+    <string name="sixpack_exercise">Kõhulihaste harjutus</string>
+    <string name="armsandchest_exercise">Käte ja rinna harjutused</string>
+    <string name="pref_key_theme" translatable="false">theme_night</string>
+    <string name="pref_key_units" translatable="false">units</string>
+    <string name="pref_key_language" translatable="false">language</string>
+    <string name="pref_key_clear" translatable="false">data_clear</string>
+    <string name="pref_theme_title">Rakenduse teema</string>
+    <string name="pref_clear_title">Kustuta rakenduse andmed</string>
+    <string name="pref_clear">Kustuta kõik salvestatud admed</string>
+    <string name="pref_theme_on">Öö mood sees</string>
+    <string name="pref_theme_off">Öö mood väljas</string>
+
+
+    <!-- UI -->
+    <string name="empty">Tühi</string>
+    <string name="edit">Muuda</string>
+    <string name="start">Alusta</string>
+    <string name="skip">Jätta vahele</string>
+    <string name="cancel">Katkestada</string>
+
+    <!--  Other  -->
+    <string name="quantity_format">%1$d X</string>
+    <string name="BMI_format">BMI: %.1f</string>
+    <string name="timer_format">%02d:%02d</string>
+
+    <!-- Result -->
+    <string name="ex_session_fail">Treeningu sesioon ebaõnnestus!</string>
+    <string name="ex_session_cancel">Treeningu sesioon katkestati!</string>
+    <string name="break_success">Puhkus läbi!</string>
+    <string name="no_data">Ei saanud andmed kätte!</string>
+    <string name="break_failed">Puhkus ebaõnnetus</string>
+    <string name="break_canceled">Puhkus katkestati!</string>
+
+    <!-- Warning -->
+    <string name="dialog_holdup">Oota</string>
+    <string name="warning_fill_fields">Enne rakenduse kasutamist peate täitma kohustuslikud väljad!</string>
+    <string name="bmi_warning">See rakendus on mõeldud üle 18-aastastele inimestele\nTulemused võivad olla valed</string>
+
+    <!-- Error -->
+    <string name="err_data_same">Olemasolevaid andmeid ei saa salvestada. Veenduge, et vähemalt üks väli oleks muutetud!</string>
+    <string name="err">ERROR</string>
+    <string name="err_nfe">Numbrivormingu erand: vale sisendstring</string>
+    <string name="err_weight_max">Liiga paks! Maksimum: 635kg</string>
+    <string name="err_field_empty">Väli ei tohi tühi olla!</string>
+    <string name="err_name_max">Väli ei tohi sisaldada üle 20 tähemärgi!</string>
+    <string name="err_name_format">Nimi pole õigesti formeeritud!</string>
+    <string name="err_age_max">Liiga suur number!</string>
+    <string name="err_height_min">Pikkus ei saa olla %.1f! miinimum: 54.6cm</string>
+    <string name="err_height_max">liiga pikk! maksimum: 272cm</string>
+    <string name="err_weight_min">Liiga kõhn! min: 2.13kg</string>
+    <string name="err_age_min">Vanus ei saa olla %1d! min: 12</string>
+    <string name="ex_session_success">Harjutuse session läbitud!</string>
+    <string name="err_get_data">Andmeid ei saadud kätte!</string>
+    <string name="err_session_empty">Session on tühi</string>
+    <string name="err_deleteall">Midagi pole kustutada!</string>
+    <string name="exercise_too_long">Harjutuse nimi ei tohi sisaldada üle 20 tähemärgi!</string>
+
+    <!-- Success -->
+    <string name="user_update_success">"Profiil uuendatud!</string>
+    <string name="user_create_success">Kasutaja loomine õnnestus!</string>
+
+</resources>
