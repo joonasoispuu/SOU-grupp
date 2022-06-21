@@ -11,10 +11,10 @@
         android:id="@+id/gridLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="16sp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/train_layout_dims"
+        android:layout_marginStart="@dimen/common_margin2"
+        android:layout_marginEnd="@dimen/common_margin2"
+        android:layout_marginBottom="@dimen/common_margin2"
         android:columnCount="3"
         android:rowCount="1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,7 +31,7 @@
             android:layout_column="0"
             android:clickable="true"
             android:focusable="true"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/train_layout_dims_min"
             android:text="@string/sixpack_exercises" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_gravity="center_vertical"
             android:clickable="true"
             android:focusable="true"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/train_layout_dims_min"
             android:text="@string/armsandchest_exercises" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_row="0"
             android:layout_column="0"
             android:layout_gravity="bottom"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/train_layout_dims_min"
             android:text="@string/custom_exercises" />
 
         <TextView
@@ -63,14 +63,15 @@
             android:tag="addcustom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/common_margin2"
             android:layout_row="0"
             android:layout_column="0"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="225dp"
+            android:layout_gravity="bottom|right"
             android:clickable="true"
             android:focusable="true"
-            android:minHeight="48dp"
-            android:text="@string/add_custom_exercises" />
+            android:minHeight="@dimen/train_layout_dims_min"
+            android:text="@string/add_custom_exercises"
+            tools:ignore="RtlHardcoded" />
 
     </GridLayout>
 

@@ -9,10 +9,10 @@
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/common_margin2"
+        android:layout_marginEnd="@dimen/common_margin2"
         android:gravity="left"
-        android:hint="Name"
+        android:hint=""
         android:minHeight="48dp"
         app:backgroundTint="@color/purple_500" />
 

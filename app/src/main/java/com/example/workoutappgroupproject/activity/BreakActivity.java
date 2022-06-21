@@ -52,6 +52,7 @@ public class BreakActivity extends AppCompatActivity {
         if (actionBar != null) {
             int color = getResources().getColor(R.color.purple_500);
             setActionBarColor(color);
+            actionBar.setTitle("");
         }
 
         if (savedInstanceState != null) {
