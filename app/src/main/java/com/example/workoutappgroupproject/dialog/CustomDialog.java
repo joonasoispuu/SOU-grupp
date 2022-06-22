@@ -1,4 +1,4 @@
-package com.example.workoutappgroupproject;
+package com.example.workoutappgroupproject.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.example.workoutappgroupproject.R;
 
 public class CustomDialog extends AppCompatDialogFragment {
     @NonNull

@@ -39,22 +39,30 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="@string/pref_clear_title"
-        android:icon="@drawable/ic_delete">
+        app:title="@string/pref_title_language"
+        android:icon="@drawable/ic_language">
 
-        <Preference
-            android:key="@string/pref_key_clear"
-            app:title="@string/pref_clear" />
+        <ListPreference
+            android:defaultValue="en"
+            android:entries="@array/Language_names"
+            android:entryValues="@array/Language_values"
+            android:key="@string/pref_key_language"
+            android:title="@string/change_language" />
 
     </PreferenceCategory>
 
-    <ListPreference
-        android:defaultValue="English"
-        android:entries="@array/Language_names"
-        android:entryValues="@array/Language_values"
-        android:icon="@drawable/ic_language"
-        android:key="@string/pref_key_language"
-        android:title="@string/change_language" />
+    <PreferenceCategory
+        app:title="@string/pref_clear_title"
+        android:icon="@drawable/ic_delete">
+
+        <com.example.workoutappgroupproject.dialog.CustomDialogPreference
+            android:key="@string/pref_key_clear"
+            app:title="@string/pref_clear"
+            android:dialogMessage="@string/pref_clear_ask"
+            android:positiveButtonText="@string/pref_clear_yes"
+            android:negativeButtonText="@string/pref_clear_no"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
 

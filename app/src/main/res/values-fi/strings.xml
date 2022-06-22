@@ -1,16 +1,22 @@
 <resources>
 
     <string name="app_name">Harjoitusapulainen</string>
-
+    <string name="pref_title_language">Kieli</string>
+    <string name="en">Englanti (en)</string>
+    <string name="et">Virolainen (et)</string>
+    <string name="fi">Suomalainen (fi)</string>
     <string name="current_language">Suomi keel</string>
 
     <!--  Profile Fragment  -->
     <string name="name">Nimi</string>
     <string name="height">Korkeus</string>
     <string name="weight">Paino</string>
+    <string name="height_cm">Korkeus (cm)</string>
+    <string name="weight_kg">Paino (kg)</string>
+    <string name="height_inch">Korkeus (″)</string>
+    <string name="weight_pound">Paino (lb)</string>
     <string name="age">Ikä</string>
     <string name="save">Tallentaa</string>
-    <string name="profile">Profiili</string>
     <string name="btn_edit">Muokkaa tietoja</string>
 
     <!-- Strings used for fragments for navigation -->
@@ -75,6 +81,10 @@
     <string name="pref_theme_on">Yömuoti sisällä</string>
     <string name="pref_theme_off">Yömuoti ulkona</string>
 
+    <string name="pref_clear_ask">Haluatko varmasti poistaa kaikki tiedot?</string>
+    <string name="pref_clear_yes">Joo</string>
+    <string name="pref_clear_no">Ei</string>
+
     <!-- Titles -->
     <string name="title_here">Kouluta Apulainen</string>
     <string name="create_exercise">Luoda harjoitus</string>
@@ -120,14 +130,14 @@
     <string name="err_data_same">Olemassa olevia tietoja ei voi tallentaa. Varmista, että ainakin yksi kenttä on muuttanut sinua vitun hirvi!</string>
     <string name="err">ERROR</string>
     <string name="err_nfe">Numeromuodon poikkeus: virheellinen syötemerkkijono</string>
-    <string name="err_weight_max">Liian raskas! Enimmäismäärä: 635kg</string>
     <string name="err_field_empty">Kenttä ei saa olla tyhjä!</string>
     <string name="err_name_max">Kentässä voi olla enintään 20 merkkiä!</string>
     <string name="err_name_format">Nimeä ei ole muotoiltu oikein!</string>
     <string name="err_age_max">Liian suuri luku!</string>
-    <string name="err_height_min">Pituus ei voi olla %.1f! minimi: 54.6cm</string>
-    <string name="err_height_max">liian pitkä! enimmäismäärä: 272cm</string>
-    <string name="err_weight_min">Liian laiha! minimi: 2.13kg</string>
+    <string name="err_height_min">Pituus ei voi olla %.1f! minimi: %.1f</string>
+    <string name="err_height_max">liian pitkä! enimmäismäärä: %.1f</string>
+    <string name="err_weight_min">Liian laiha! minimi: %.1f</string>
+    <string name="err_weight_max">Liian raskas! Enimmäismäärä: %.1f</string>
     <string name="err_age_min">Ikä ei voi olla %1d! minimi: 12</string>
     <string name="ex_session_success">Harjoitus suoritettu!</string>
     <string name="err_get_data">Tietoja ei saatu!</string>

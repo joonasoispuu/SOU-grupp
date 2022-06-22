@@ -1,4 +1,4 @@
-package com.example.workoutappgroupproject;
+package com.example.workoutappgroupproject.locale;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -9,6 +9,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.util.List;
+
 @Database(entities = {Exercise.class},version = 2,exportSchema = false)
 public abstract class ExerciseDB extends RoomDatabase {
     private static final String DB_NAME = "exercise_db";
@@ -18,7 +20,7 @@ public abstract class ExerciseDB extends RoomDatabase {
     public static synchronized ExerciseDB getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    ExerciseDB.class,DB_NAME).fallbackToDestructiveMigration().
+                            ExerciseDB.class,DB_NAME).fallbackToDestructiveMigration().
                     addCallback(roomCallback).build();
         }
         return instance;
@@ -38,15 +40,33 @@ public abstract class ExerciseDB extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            exerciseDao.insert(new Exercise("Push-ups",20,0,"armsandchest"));
-            exerciseDao.insert(new Exercise("Reps",10,0,"armsandchest"));
-            exerciseDao.insert(new Exercise("V-ups",15,0,"sixpack"));
-            exerciseDao.insert(new Exercise("Plank",2,20,"sixpack"));
-            exerciseDao.insert(new Exercise("Sit-ups",8,0,"sixpack"));
-            exerciseDao.insert(new Exercise("Heel touch",8,0,"armsandchest"));
-            for (int i = 0; i<2; i++) {
-                exerciseDao.insert(new Exercise("Squats",3,2,"custom"));
-            }
+
+            // Sixpack Exercises
+            exerciseDao.insert(new Exercise("Jumping Jacks",0,30,"sixpack"));                           // no sensor
+            exerciseDao.insert(new Exercise("Heel touch",30,0,"sixpack"));                              // no sensor
+            exerciseDao.insert(new Exercise("V-up",16,0,"sixpack"));                                    // sensor
+            exerciseDao.insert(new Exercise("Crunches",30,0,"sixpack"));                                // proximity sensor pea alla
+            exerciseDao.insert(new Exercise("Flutter kicks",0,40,"sixpack"));                           // no sensor
+            exerciseDao.insert(new Exercise("alt V-up",16,0,"sixpack"));                                // sensor
+            exerciseDao.insert(new Exercise("Push-up & Rotation",24,0,"sixpack"));                       // sensor
+            exerciseDao.insert(new Exercise("Mountain Climber",0,30,"sixpack"));                        // no sensor
+            exerciseDao.insert(new Exercise("V-cruch",10,0,"sixpack"));                                 // sensor
+            exerciseDao.insert(new Exercise("Seated abs clockwise circles",16,0,"sixpack"));            // sensor
+            exerciseDao.insert(new Exercise("Seated abs counterclockwise circles",16,0,"sixpack"));            // sensor
+            exerciseDao.insert(new Exercise("Plank",0,60,"sixpack"));            // no sensor
+
+            // Arms & Chest Exercises
+            exerciseDao.insert(new Exercise("Jumping Jacks",0,30,"armsandchest"));
+            exerciseDao.insert(new Exercise("Arm Circles Clockwise",0,30,"armsandchest"));
+            exerciseDao.insert(new Exercise("Arm Circles CounterClockwise",0,30,"armsandchest"));
+            exerciseDao.insert(new Exercise("Burpees",10,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Staggered push-ups",10,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Push-up & Rotation",12,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Diamond push-ups",10,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Regular push-ups",12,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Wide arm push-ups",16,0,"armsandchest"));
+            exerciseDao.insert(new Exercise("Plank",0,60,"armsandchest"));            // no sensor
+
             return null;
         }
     }

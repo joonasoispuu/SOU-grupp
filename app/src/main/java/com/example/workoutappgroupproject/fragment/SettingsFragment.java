@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -16,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,10 +24,13 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import com.example.workoutappgroupproject.LocaleHelper;
+import com.example.workoutappgroupproject.dialog.CustomDialogPreference;
+import com.example.workoutappgroupproject.dialog.DialogPrefFragCompat;
+import com.example.workoutappgroupproject.locale.LocaleHelper;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.UserDB.User;
 import com.example.workoutappgroupproject.activity.MainActivity;
+import com.example.workoutappgroupproject.viewmodel.ExerciseViewModel;
 import com.example.workoutappgroupproject.viewmodel.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -97,36 +100,51 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         String key_theme = getString(R.string.pref_key_theme);
         String key_units = getString(R.string.pref_key_units);
         String key_language = getString(R.string.pref_key_language);
-        Preference themePref = findPreference(key_theme);
-        Preference unitsPref = findPreference(key_units);
+        String key_clear = getString(R.string.pref_key_clear);
+        Preference theme_pref = findPreference(key_theme);
+        Preference units_pref = findPreference(key_units);
         Preference language_pref = findPreference(key_language);
+        CustomDialogPreference clear_pref = findPreference(key_clear);
 
-        language_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        String selectedLanguage = sharedPreferences.getString(key_language,"en");
+        // change app language
+        if (language_pref != null) {
 
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                // Get selected language
-                String selectedLanguage = newValue.toString();
-                preference.setSummary(selectedLanguage);
-                LocaleHelper.setLocale(getContext(),selectedLanguage);
+            String[] array_names = getResources().getStringArray(R.array.Language_names);
+            String[] array_values = getResources().getStringArray(R.array.Language_values);
+            // get each string position
+            int array_pos = -1;
+            for(int i=0; i < array_values.length; i++)
+                if(array_values[i].contains(selectedLanguage))
+                    array_pos = i;
 
-                Resources resources = getResources();
-                DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-                Configuration configuration = resources.getConfiguration();
-                configuration.locale = new Locale(selectedLanguage);
-                resources.updateConfiguration(configuration,displayMetrics);
+            language_pref.setSummary(array_names[array_pos]);
+            language_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    // Get selected language
+                    String selectedLanguage = newValue.toString();
+//                    preference.setSummary(selectedLanguage);
+                    LocaleHelper.setLocale(getContext(),selectedLanguage);
 
+                    Resources resources = getResources();
+                    DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+                    Configuration configuration = resources.getConfiguration();
+                    configuration.locale = new Locale(selectedLanguage);
+                    resources.updateConfiguration(configuration,displayMetrics);
 
-                getActivity().finish();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                    requireActivity().finish();
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
 
-                return true;
-            }
-        });
-
-        if (themePref != null) {
-            themePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    return true;
+                }
+            });
+        }
+        // app theme listener
+        if (theme_pref != null) {
+            theme_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     boolean isChecked = false;
@@ -141,7 +159,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     }
 
-                    getActivity().finish();
+                    requireActivity().finish();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
 
@@ -149,9 +167,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
             });
         }
-
-        if (unitsPref != null) {
-            unitsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        // BMI units listener
+        if (units_pref != null) {
+            units_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                     boolean isChecked = false;
@@ -173,11 +191,36 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
             });
         }
+//        // clear app data
+//        if (clear_pref != null) {
+//            clear_pref.setOnPreferenceClickListener(preference -> {
+//                userViewModel.deleteAllUsers();
+//                exerciseViewModel.deleteAllExerciseByType("custom");
+//
+//                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(requireContext());
+//                settings.edit().clear().apply();
+//
+//                requireActivity().finish();
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                startActivity(intent);
+//
+//                return true;
+//            });
+//        }
 
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         bottomNavigationView.getMenu().getItem(0).setEnabled(true);
         bottomNavigationView.getMenu().getItem(1).setEnabled(true);
         bottomNavigationView.getMenu().getItem(2).setEnabled(true);
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+        if (preference instanceof CustomDialogPreference) {
+            DialogFragment dialogFragment = DialogPrefFragCompat.newInstance(preference.getKey());
+            dialogFragment.setTargetFragment(this, 0);
+            dialogFragment.show(getFragmentManager(), null);
+        } else super.onDisplayPreferenceDialog(preference);
     }
 
     // change user data (units)
