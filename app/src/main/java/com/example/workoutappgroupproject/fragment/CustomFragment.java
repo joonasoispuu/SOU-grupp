@@ -102,11 +102,6 @@ public class CustomFragment extends Fragment {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
-        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
-        bottomNavigationView.getMenu().getItem(2).setEnabled(false);
-
         myCoordinatorMain = view.findViewById(R.id.myCoordinatorMain);
 
         view.findViewById(R.id.fabNewExercise).setOnClickListener(view1 ->{
@@ -156,6 +151,11 @@ public class CustomFragment extends Fragment {
             exerciseFragment.setArguments(bundle);
             replaceFragment(exerciseFragment, 2, true);
         });
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(false);
     }
 
     // get fragment result from arguments

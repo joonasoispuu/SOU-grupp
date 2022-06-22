@@ -1,13 +1,20 @@
 <resources>
 
     <string name="app_name">Treenigu Abistaja</string>
-
+    <string name="pref_title_language">Keel</string>
+    <string name="en">Inglise (en)</string>
+    <string name="et">Eesti (et)</string>
+    <string name="fi">Soome (fi)</string>
     <string name="current_language">Eesti keel</string>
 
     <!--  Profile Fragment  -->
     <string name="name">Nimi</string>
     <string name="height">Pikkus</string>
     <string name="weight">Kehakaal</string>
+    <string name="height_cm">Pikkus (cm)</string>
+    <string name="weight_kg">Kehakaal (kg)</string>
+    <string name="height_inch">Pikkus (″)</string>
+    <string name="weight_pound">Kehakaal (lb)</string>
     <string name="age">Vanus</string>
     <string name="save">Salvesta</string>
     <string name="btn_edit">Muuda andmeid</string>
@@ -64,7 +71,7 @@
     <string name="pref_units">Ühikud</string>
     <string name="pref_units_on">US</string>
     <string name="pref_units_off">Meetrites</string>
-    <string name="pref_BMI_title">BMI Ühikud</string>
+    <string name="pref_BMI_title">BMI ühikud</string>
     <string name="pref_notifications">Luba sõnumite märguanded</string>
     <string name="pref_notifications_title">Teatised</string>
     <string name="pref_feedback_title">Saada tagasisidet!</string>
@@ -73,6 +80,10 @@
     <string name="pref_clear">Kustuta kõik salvestatud admed</string>
     <string name="pref_theme_on">Öö mood sees</string>
     <string name="pref_theme_off">Öö mood väljas</string>
+
+    <string name="pref_clear_ask">Oled kindel et tahad kustutada kõik äppi andmed?</string>
+    <string name="pref_clear_yes">Jah</string>
+    <string name="pref_clear_no">Ei</string>
 
     <!-- Titles -->
     <string name="title_here">Treenigu Abistaja</string>
@@ -119,14 +130,14 @@
     <string name="err_data_same">Olemasolevaid andmeid ei saa salvestada. Veenduge, et vähemalt üks väli oleks muutetud!</string>
     <string name="err">ERROR</string>
     <string name="err_nfe">Numbrivormingu erand: vale sisendstring</string>
-    <string name="err_weight_max">Liiga raske! Maksimum: 635kg</string>
     <string name="err_field_empty">Väli ei tohi tühi olla!</string>
     <string name="err_name_max">Väli ei tohi sisaldada üle 20 tähemärgi!</string>
     <string name="err_name_format">Nimi pole õigesti formeeritud!</string>
     <string name="err_age_max">Liiga suur number!</string>
-    <string name="err_height_min">Pikkus ei saa olla %.1f! miinimum: 54.6cm</string>
-    <string name="err_height_max">liiga pikk! maksimum: 272cm</string>
-    <string name="err_weight_min">Liiga kõhn! min: 2.13kg</string>
+    <string name="err_height_min">Pikkus ei saa olla %.1f! miinimum: %.1f</string>
+    <string name="err_height_max">liiga pikk! maksimum: %.1f</string>
+    <string name="err_weight_min">Liiga kõhn! min: %.1f</string>
+    <string name="err_weight_max">Liiga raske! Maksimum: %.1f</string>
     <string name="err_age_min">Vanus ei saa olla %1d! min: 12</string>
     <string name="ex_session_success">Harjutuse session läbitud!</string>
     <string name="err_get_data">Andmeid ei saadud kätte!</string>

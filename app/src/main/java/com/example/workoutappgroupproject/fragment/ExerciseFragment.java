@@ -4,6 +4,7 @@ import static android.content.Context.SENSOR_SERVICE;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.workoutappgroupproject.ExerciseDB.Exercise;
 import com.example.workoutappgroupproject.R;
@@ -335,9 +337,9 @@ public class ExerciseFragment extends Fragment {
         Sensor proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         if (proximityListener == null) {
             proximityListener = new ProximityListener(
-                        requireActivity(),
-                        requireActivity().findViewById(android.R.id.content).getRootView(),
-                        proximitySensor);
+                    requireActivity(),
+                    requireActivity().findViewById(android.R.id.content).getRootView(),
+                    proximitySensor);
 
             sensorManager.registerListener(proximityListener,proximitySensor,
                     1000 * 1000);
@@ -397,6 +399,11 @@ public class ExerciseFragment extends Fragment {
         cancelTimer();
         unregisterSensors();
 
+//        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+//        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+//            fragmentManager.popBackStack();
+//        }
+
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         SettingsFragment settingsFragment = new SettingsFragment();
         ProfileFragment profileFragment = new ProfileFragment();
@@ -421,8 +428,13 @@ public class ExerciseFragment extends Fragment {
             // session canceled
             bundle.putInt("session_result", RESULT_CANCELED);
         }
+
         // set session result for fragment
         int result = bundle.getInt("session_result");
+        if (result == RESULT_SUCCESS) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+            sharedPreferences.edit().putBoolean("user_pending", true).apply();
+        }
         if (result == RESULT_SUCCESS || result == RESULT_INCOMPLETE) {
             profileFragment.setArguments(bundle); // set arguments
             replaceFragment(profileFragment,-1,false);
@@ -435,6 +447,7 @@ public class ExerciseFragment extends Fragment {
             replaceFragment(trainFragment,-1,false);
         }
     }
+
 
     private void cancelTimer() {
         if(countDownTimer!=null){
@@ -470,23 +483,17 @@ public class ExerciseFragment extends Fragment {
     }
 
     private void decreaseQuantity() {
+        boolean canStartBreak = true;
+        String text = "";
         // check quantity value
+        quantity -= 1;
         if (quantity > 0) {
-            quantity -= 1;
-        } else {
-            return;
-        }
-        String text = String.format(Locale.getDefault(), getString(R.string.quantity_format), quantity);
-        if (quantity > 0) {
+            text = String.format(Locale.getDefault(), getString(R.string.quantity_format), quantity);
+            txtQuantity.setText(text);
+            time = maxTime;
+            mySavedInstanceState = null;
             if (time != 0) {
-                txtQuantity.setText(text);
-                time = maxTime;
-                mySavedInstanceState = null;
                 setupTimer();
-            } else {
-                txtQuantity.setText(text);
-                time = maxTime;
-                mySavedInstanceState = null;
             }
         } else {
             text = String.format(Locale.getDefault(), getString(R.string.quantity_format), 0);

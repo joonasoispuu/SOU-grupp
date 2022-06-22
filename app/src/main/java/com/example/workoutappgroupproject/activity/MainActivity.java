@@ -22,8 +22,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-import com.example.workoutappgroupproject.CustomDialog;
-import com.example.workoutappgroupproject.LocaleHelper;
+import com.example.workoutappgroupproject.dialog.CustomDialog;
+import com.example.workoutappgroupproject.locale.LocaleHelper;
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.ActivityMainBinding;
 import com.example.workoutappgroupproject.fragment.ProfileFragment;
@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        updateTheme();
-
         actionBar = getSupportActionBar();
 //        int color = getResources().getColor(R.color.purple_500);
 //        setActionBarColor(color);
@@ -135,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setLocale(String selectedLanguage){
+        Resources resources = getResources();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = new Locale(selectedLanguage);
+        resources.updateConfiguration(configuration,displayMetrics);
+    }
+
     private void openDialog() {
         bottomNavigationView.setSelectedItemId(R.id.profileFragment);
         CustomDialog exampleDialog = new CustomDialog();
@@ -150,13 +156,5 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
         if (backStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    public void setLocale(String selectedLanguage){
-        Resources resources = getResources();
-        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = new Locale(selectedLanguage);
-        resources.updateConfiguration(configuration,displayMetrics);
     }
 }

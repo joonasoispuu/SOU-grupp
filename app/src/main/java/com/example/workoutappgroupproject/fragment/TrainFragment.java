@@ -109,11 +109,6 @@ public class TrainFragment extends Fragment {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
 
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
-
         mainView = binding.mainView;
         onFragmentResult();
 
@@ -122,6 +117,11 @@ public class TrainFragment extends Fragment {
             textView.setTag(TAGS[i]);
             textView.setOnClickListener(this::onChosenExercise);
         }
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
     }
 
     // get fragment result from arguments

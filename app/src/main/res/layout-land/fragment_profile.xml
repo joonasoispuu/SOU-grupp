@@ -156,21 +156,22 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/BMI"
                     app:layout_constraintEnd_toEndOf="@+id/BMI"
-                    app:layout_constraintTop_toBottomOf="@+id/BMI"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/BMI" />
 
                 <TextView
                     android:id="@+id/BMIWarning"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="@dimen/common_margin2"
+                    android:layout_marginStart="@dimen/common_margin3"
                     android:layout_marginEnd="@dimen/common_margin3"
+                    android:layout_marginBottom="@dimen/common_margin"
                     android:gravity="center_horizontal"
                     android:textStyle="italic"
-                    app:layout_constraintBottom_toBottomOf="@+id/BMIDescription"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/BMI"
-                    app:layout_constraintTop_toTopOf="@+id/BMI" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/BMIDescription"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

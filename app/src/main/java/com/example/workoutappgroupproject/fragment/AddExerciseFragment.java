@@ -1,7 +1,13 @@
 package com.example.workoutappgroupproject.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,14 +17,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.example.workoutappgroupproject.R;
 import com.example.workoutappgroupproject.databinding.FragmentAddExerciseBinding;
@@ -89,17 +87,31 @@ public class AddExerciseFragment extends Fragment {
     }
 
     private void saveExercise(){
-        if (!validateName() || !validateQuantityTime()){
+        if (!validateName() | !validateQuantityTime()){
             // cancel
             return;
         }
         String name = etName.getText().toString().trim();
-        int quantity;
 
+        int quantity;
         if(etQuantity.getText().toString().isEmpty()){
             quantity = 0;
         } else{
-            quantity = Integer.parseInt(etQuantity.getText().toString());
+            try {
+                quantity = Integer.parseInt(etQuantity.getText().toString());
+            } catch (NumberFormatException nfe) {
+                quantity = -1;
+                System.out.println(getString(R.string.err_nfe));
+            }
+        }
+        // prevent time 0 and quantity 0 <- bug fixed
+        if (ntPicker.getValue() == 0 && quantity == 0) {
+            Toast.makeText(requireContext(), getString(R.string.err_incorrect_time_quantity), Toast.LENGTH_SHORT).show();
+            return;
+        } else if (quantity == -1) {
+            etQuantity.setError(getString(R.string.err_field_nfe));
+            Toast.makeText(requireContext(), getString(R.string.err_field_nfe), Toast.LENGTH_SHORT).show();
+            return;
         }
         int time = ntPicker.getValue();
 
@@ -125,20 +137,6 @@ public class AddExerciseFragment extends Fragment {
         System.out.println("addexercise_result: "+bundle.getInt("addexercise_result"));
         customFragment.setArguments(bundle);
         replaceFragment(customFragment,2,true);
-//        Intent data = new Intent();
-//        data.putExtra(EXTRA_NAME, name);
-//        data.putExtra(EXTRA_QUANTITY, quantity);
-//        data.putExtra(EXTRA_TIME, time);
-
-//        int id = getIntent().getIntExtra(EXTRA_ID, -1);
-//        // got id from intent getIntExtra()
-//        if (id != -1) {
-//            data.putExtra(EXTRA_ID, id);
-//            setResult(RESULT_EDIT, data);
-//        } else {
-//            setResult(RESULT_SAVE, data);
-//        }
-//        finish();
     }
 
     private boolean validateQuantityTime() {
@@ -146,24 +144,6 @@ public class AddExerciseFragment extends Fragment {
             Toast.makeText(requireContext(), getString(R.string.exercise_values_missing), Toast.LENGTH_SHORT).show();
             return false;
         } else {
-            int quantity = 0;
-            boolean nfe_err = false;
-            try {
-                quantity = Integer.parseInt(etQuantity.getText().toString());
-            } catch (NumberFormatException nfe) {
-                nfe_err = true;
-                System.out.println(getString(R.string.err_nfe));
-            }
-
-            if (nfe_err) {
-                Toast.makeText(requireContext(), getString(R.string.err_field_nfe), Toast.LENGTH_SHORT).show();
-                etQuantity.setError("ERR");
-                return false;
-            }
-            if (quantity < 1) {
-                Toast.makeText(requireContext(), getString(R.string.err_incorrect_time_quantity), Toast.LENGTH_SHORT).show();
-                return false;
-            }
             return true;
         }
     }

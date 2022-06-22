@@ -125,7 +125,6 @@ public class ProfileFragment extends Fragment {
         }
 
         mainView = binding.mainView;
-        onFragmentResult();
 
         textInputName = binding.textInputName;
         textInputHeight = binding.textInputHeight;
@@ -144,16 +143,15 @@ public class ProfileFragment extends Fragment {
         txtBMI.setVisibility(View.GONE);
         txtDescription.setVisibility(View.GONE);
 
+        String unit = getPrefUnits();
+//        Toast.makeText(requireContext(),unit,Toast.LENGTH_SHORT).show();
+        refreshFieldHints(true);
+
         // init view model
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getAllUsers().observe(getViewLifecycleOwner(), users -> {
             this.users = users;
         });
-
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
 
         // save profileStatus to savedInstanceState key value set
         if (savedInstanceState != null) {
@@ -161,7 +159,6 @@ public class ProfileFragment extends Fragment {
         }
 
         // check if data already there
-
         userViewModel.getIsExists().observe(getViewLifecycleOwner(), isExists -> {
             if (!isExists) {
                 // no users in db
@@ -181,6 +178,13 @@ public class ProfileFragment extends Fragment {
                 setup_TextInput(true);
             }
         });
+
+        onFragmentResult();
+
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().getItem(0).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(true);
     }
 
     // load data from db
@@ -193,14 +197,12 @@ public class ProfileFragment extends Fragment {
                 txtDescription.setVisibility(View.VISIBLE);
 
                 int id = USER_ID; // <-- first User object in list
+                loadUserFields(true);
+
                 String name = users.get(id).getName();
-                textInputName.getEditText().setText(name);
                 float height = users.get(id).getHeight();
-                textInputHeight.getEditText().setText(String.valueOf(height));
                 float weight = users.get(id).getWeight();
-                textInputWeight.getEditText().setText(String.valueOf(weight));
                 int age = users.get(id).getAge();
-                textInputAge.getEditText().setText(String.valueOf(age));
 
                 progressBar.setVisibility(View.GONE);
                 textInputName.setVisibility(View.VISIBLE);
@@ -208,26 +210,32 @@ public class ProfileFragment extends Fragment {
                 textInputWeight.setVisibility(View.VISIBLE);
                 textInputAge.setVisibility(View.VISIBLE);
 
+                refreshFieldHints(true);
+
                 // refresh inputs
                 setup_TextInput(false);
                 profileStatus = "Saved";
 
                 // reload all BMI stuff
-//                String units_db = users.get(id).getUnits();
                 boolean units_pending = getPrefUnitsPending();
                 if (units_pending){
-                    Toast.makeText(requireContext(),"units recalculated!",Toast.LENGTH_SHORT).show();
-//                    System.out.println("BMI: different - recalculate BMI");
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
                     sharedPreferences.edit().putBoolean("units_pending", false).apply();
-                    units_pending = false;
-//
                     String units = getPrefUnits();
-                    reCalculateBMI(units,name,height,weight,age);
-//                    Toast.makeText(requireContext(),"units recalculated!",Toast.LENGTH_SHORT).show();
-                    return;
+
+                    saveUpdatedUnitData(units,name,height,weight,age);
                 } else {
-                    calculateBMI(weight,height,age);
+                    String units = users.get(id).getUnits();;
+                    calculateBMI(units,weight,height,age);
+                }
+
+                // edit user mode
+                boolean user_edit = getPrefUserPending();
+                if (user_edit) {
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    sharedPreferences.edit().putBoolean("user_pending", false).apply();
+
+                    onSave();
                 }
 
             } else {
@@ -240,49 +248,49 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void reCalculateBMI(String units, String name, float height, float weight, int age) {
-//        // re-calculate BMI
-////        BMI = weight/(bmiheight*bmiheight);
-//
-//        float new_height = 0;
-//        float new_weight = 0;
-//        if (units.equals("metric")){
-//
-//            // metric -> us
-//            float bmiheight = height/100; // meters
-//
-//            float inch_height = (float) (bmiheight / 0.0254); // inches
-//            new_weight = (float) (weight / 0.45359237); // kg -> lb
-//            new_height = (float) ((inch_height*inch_height)); // '2
-//
-//            BMI = (new_weight / new_height) * 703;
-//
-//        } else {
-//
-//            // us -> metric
-//            float bmiheight = height; // inches
-//            float meters_height = (float) (bmiheight * 0.0254); // inches
-//            new_weight = (float) (weight * 0.45359237); // lb -> kg
-//            new_height = (float) ((meters_height*meters_height)); // '2
-//
-//            BMI = (new_weight / new_height) / 703;
-//
-//        }
-//        System.out.println("BMI: "+BMI);
-//        displayBMI(age);
-//
-////        // set initial Units for User
-////        String units = getPrefUnits();
-//
-        // save updated data to db ...
-        User user = new User(name,height,weight,age,units);
-        user.setId(USER_ID+1);
-        userViewModel.update(user);
+    private void saveUpdatedUnitData(String units, String name, float height, float weight, int age) {
+        // re-calculate BMI
+
+        if (units.equals("metric")) {
+            // us -> metric
+
+            float metric_height = (float) (height / 39.37) * 100; // inches -> m -> cm  - correct
+            float metric_weight = (float) (weight * 0.45359237); // lb -> kg - correct
+
+            // save updated data to db ...
+            User user = new User(name,metric_height,metric_weight,age,units);
+            user.setId(USER_ID+1);
+            userViewModel.update(user);
+
+        } else {
+            // metric -> us
+
+            float bmiheight = height/100; // cm -> m - correct
+            float us_height = (float) (bmiheight * 39.37); // m -> inches - correct
+            float us_weight = (float) (weight / 0.45359237); // kg -> lb - correct
+
+            // save updated data to db ...
+            User user = new User(name,us_height,us_weight,age,units);
+            user.setId(USER_ID+1);
+            userViewModel.update(user);
+
+        }
     }
 
-    private void calculateBMI(float weight, float height, int age) {
-        float bmiheight = height/100;
-        BMI = weight/(bmiheight*bmiheight);
+    private void calculateBMI(String units, float weight, float height, int age) {
+        System.out.println("calculateInitialBMI!");
+
+        if (units.equals("metric")) {
+            // us -> metric
+            float bmiheight = height/100; // cm -> m
+            BMI = weight/(bmiheight*bmiheight); // metric BMI
+
+        } else {
+            // metric -> us
+            BMI = (weight/(height*height))*703;
+            System.out.println("BMI: "+BMI); // US BMI
+
+        }
         displayBMI(age);
     }
 
@@ -329,6 +337,8 @@ public class ProfileFragment extends Fragment {
                 if (result == RESULT_SUCCESS) {
                     snackbar = Snackbar.make(mainView, getString(R.string.ex_session_success),
                             Snackbar.LENGTH_SHORT);
+                    Toast.makeText(requireContext(),"Edit Profile?",Toast.LENGTH_SHORT).show();
+//                    onSave();
 //                    if (users != null) displayUserData(users);
                 } else if (result == RESULT_NOT_SUCCESS) {
                     snackbar = Snackbar.make(mainView, getString(R.string.ex_session_fail),
@@ -370,10 +380,10 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     textInput.setError(null);
-                    validateAll(textInput);
+                    validate(textInput);
                 }
 
-                private void validateAll(TextInputLayout textInput) {
+                private void validate(TextInputLayout textInput) {
                     if (textInput.equals(textInputName)) {
                         validateName();
                     } else if (textInput.equals(textInputHeight)) {
@@ -432,18 +442,37 @@ public class ProfileFragment extends Fragment {
         } catch (NumberFormatException nfe) {
             System.out.println(getString(R.string.err_nfe));
         }
+        textInputWeight.setErrorEnabled(true);
         if (weightInput.isEmpty()) {
             textInputWeight.setError(getString(R.string.err_field_empty));
             return false;
         } else {
-            if (weight < 2.13f) {
-                textInputWeight.setError(getString(R.string.err_weight_min));
+            float min = 2.13f;
+            float max = 635f;
+
+            String units = getPrefUnits();
+            String unit_weight;
+            if (units.equals("metric")) {
+                unit_weight = "kg";
+            } else {
+                min = (float) (min / 0.45359237);
+                max = (float) (max / 0.45359237);
+                unit_weight = "lb";
+            }
+            min = roundValue(min,1);
+            System.out.println("MIN: "+min);
+            max = roundValue(max,1);
+            System.out.println("MAX: "+max);
+
+            if (weight < min) {
+                textInputWeight.setError(String.format(getString(R.string.err_weight_min)+unit_weight,min));
                 return false;
             }
-            if (weight > 635f) {
-                textInputWeight.setError(getString(R.string.err_weight_max));
+            if (weight > max) {
+                textInputWeight.setError(String.format(getString(R.string.err_weight_max)+unit_weight,max));
                 return false;
             }
+            textInputWeight.setErrorEnabled(false);
             textInputWeight.setError(null);
             return true;
         }
@@ -458,26 +487,52 @@ public class ProfileFragment extends Fragment {
         } catch (NumberFormatException nfe) {
             System.out.println(getString(R.string.err_nfe));
         }
+        textInputHeight.setErrorEnabled(true);
         if (heightInput.isEmpty()) {
             textInputHeight.setError(getString(R.string.err_field_empty));
             return false;
         } else {
-            if (height < 54.6f) {
-                textInputHeight.setError(String.format(getString(R.string.err_height_min),height));
+            float min = 50.6f;
+            float max = 272f;
+
+            String units = getPrefUnits();
+            String unit_height;
+            if (units.equals("metric")) {
+                unit_height = "cm";
+            } else {
+                min = (float) (min / 2.54);
+                max = (float) (max / 2.54);
+                unit_height = "″";
+            }
+            min = roundValue(min,1);
+            System.out.println("MIN: "+min);
+            max = roundValue(max,1);
+            System.out.println("MAX: "+max);
+
+            if (height < min) {
+                textInputHeight.setError(String.format(getString(R.string.err_height_min)+unit_height,height,min));
                 return false;
             }
-            if (height > 272f) {
-                textInputHeight.setError(getString(R.string.err_height_max));
+            if (height > max) {
+                textInputHeight.setError(String.format(getString(R.string.err_height_max)+unit_height,max));
                 return false;
             }
+            textInputHeight.setErrorEnabled(false);
             textInputHeight.setError(null);
             return true;
         }
     }
 
+    // rounder helper
+    private float roundValue(float value, int amount) {
+        int places = (int) Math.pow(10,amount);
+        return (float)Math.round(value * places) / places;
+    }
+
     // validate name
     private boolean validateName() {
         String nameInput = textInputName.getEditText().getText().toString().trim();
+        textInputName.setErrorEnabled(true);
         if (nameInput.isEmpty()) {
             textInputName.setError(getString(R.string.err_field_empty));
             return false;
@@ -488,6 +543,7 @@ public class ProfileFragment extends Fragment {
             textInputName.setError(getString(R.string.err_name_format));
             return false;
         } else {
+            textInputName.setErrorEnabled(false);
             textInputName.setError(null);
             return true;
         }
@@ -508,6 +564,7 @@ public class ProfileFragment extends Fragment {
         } catch (NumberFormatException nfe) {
             System.out.println(getString(R.string.err_nfe));
         }
+        textInputAge.setErrorEnabled(true);
         if (ageInput.isEmpty()) {
             textInputAge.setError(getString(R.string.err_field_empty));
             return false;
@@ -520,6 +577,7 @@ public class ProfileFragment extends Fragment {
                 textInputAge.setError(String.format(getString(R.string.err_age_min),age));
                 return false;
             }
+            textInputAge.setErrorEnabled(false);
             textInputAge.setError(null);
             return true;
         }
@@ -578,11 +636,6 @@ public class ProfileFragment extends Fragment {
 
     // validate & save to db
     private void onSave() {
-        listenForInput(textInputHeight);
-        listenForInput(textInputWeight);
-        listenForInput(textInputName);
-        listenForInput(textInputAge);
-
         // save button click listener
         switch (profileStatus) {
             case "Empty": {
@@ -614,8 +667,12 @@ public class ProfileFragment extends Fragment {
                 textInputHeight.setEnabled(true);
                 textInputWeight.setEnabled(true);
                 textInputAge.setEnabled(true);
+
+                refreshFieldHints(true);
+
                 profileStatus = "Editing";
                 System.out.println("current profileStatus: "+ profileStatus);
+                loadUserFields(false);
                 break;
             }
             case "Editing": {
@@ -648,6 +705,61 @@ public class ProfileFragment extends Fragment {
 //        onCreateOptionsMenu(requireActivity(), requireActivity().getMenuInflater());
     }
 
+    private void refreshFieldHints(boolean showUnits) {
+        String units = getPrefUnits();
+        if (showUnits) {
+            if (units.equals("metric")) {
+                textInputHeight.setHint(R.string.height_cm);
+                textInputWeight.setHint(R.string.weight_kg);
+            } else {
+                textInputHeight.setHint(R.string.height_inch);
+                textInputWeight.setHint(R.string.weight_pound);
+            }
+        } else {
+            textInputHeight.setHint(R.string.height);
+            textInputWeight.setHint(R.string.weight);
+        }
+    }
+
+    private void loadUserFields(boolean rounding) {
+        if (rounding) {
+            int id = USER_ID; // <-- first User object in list
+            String current_unit_height = "";
+            String current_unit_weight = "";
+            String metric_height = "cm";
+            String metric_weight = "kg";
+            String us_height = "″";
+            String us_weight = "lb";
+            if (users.get(id).getUnits().equals("us")) {
+                current_unit_height = us_height;
+                current_unit_weight = us_weight;
+            } else {
+                current_unit_height = metric_height;
+                current_unit_weight = metric_weight;
+            }
+            String name = users.get(id).getName();
+            textInputName.getEditText().setText(name);
+            float height = users.get(id).getHeight();
+            String height_str = String.format(Locale.getDefault(),"%.1f "+current_unit_height,height);
+            textInputHeight.getEditText().setText(String.valueOf(height_str));
+            float weight = users.get(id).getWeight();
+            String weight_str = String.format(Locale.getDefault(),"%.1f "+current_unit_weight,weight);
+            textInputWeight.getEditText().setText(String.valueOf(weight_str));
+            int age = users.get(id).getAge();
+            textInputAge.getEditText().setText(String.valueOf(age));
+        } else {
+            int id = USER_ID; // <-- first User object in list
+            String name = users.get(id).getName();
+            textInputName.getEditText().setText(name);
+            float height = users.get(id).getHeight();
+            textInputHeight.getEditText().setText(String.valueOf(height));
+            float weight = users.get(id).getWeight();
+            textInputWeight.getEditText().setText(String.valueOf(weight));
+            int age = users.get(id).getAge();
+            textInputAge.getEditText().setText(String.valueOf(age));
+        }
+    }
+
     private String getPrefUnits() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String units = sharedPreferences.getString("units","metric");
@@ -660,5 +772,12 @@ public class ProfileFragment extends Fragment {
         boolean units = sharedPreferences.getBoolean("units_pending",false);
         System.out.println("units pending!: "+units);
         return units;
+    }
+
+    private boolean getPrefUserPending() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        boolean user_edit = sharedPreferences.getBoolean("user_pending",false);
+        System.out.println("user pending!: "+user_edit);
+        return user_edit;
     }
 }

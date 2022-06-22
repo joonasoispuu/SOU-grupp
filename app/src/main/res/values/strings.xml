@@ -1,18 +1,22 @@
 <resources>
     <string name="app_name">Workout Helper</string>
+    <string name="pref_title_language">Language</string>
     <!--  Language_names  -->
     <string-array name="Language_names">
-        <item>English (en)</item>
-        <item>Estonian (et)</item>
-        <item>Finnish (fi)</item>
-
+        <item>@string/en</item>
+        <item>@string/et</item>
+        <item>@string/fi</item>
     </string-array>
-
+    <!--  Language_values  -->
     <string-array name="Language_values">
         <item>en</item>
         <item>et</item>
         <item>fi</item>
     </string-array>
+
+    <string name="en">English (en)</string>
+    <string name="et">Estonian (et)</string>
+    <string name="fi">Finnish (fi)</string>
 
     <string name="current_language">English</string>
 
@@ -20,6 +24,10 @@
     <string name="name">Name</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
+    <string name="height_cm">Height (cm)</string>
+    <string name="weight_kg">Weight (kg)</string>
+    <string name="height_inch">Height (″)</string>
+    <string name="weight_pound">Weight (lb)</string>
     <string name="age">Age</string>
     <string name="save">Save</string>
     <string name="btn_edit">Edit</string>
@@ -81,10 +89,14 @@
     <string name="pref_units">Units</string>
     <string name="pref_units_on">US</string>
     <string name="pref_units_off">Metric</string>
-    <string name="pref_BMI_title">BMI Units</string>
+    <string name="pref_BMI_title">BMI units</string>
     <string name="pref_notifications">Enable message notifications</string>
     <string name="pref_notifications_title">Notifications</string>
     <string name="pref_feedback_title">Send feedback</string>
+
+    <string name="pref_clear_ask">Are you sure you want to delete all data?</string>
+    <string name="pref_clear_yes">Yes</string>
+    <string name="pref_clear_no">No</string>
 
     <string name="pref_key_theme" translatable="false">theme_night</string>
     <string name="pref_key_units" translatable="false">BMI_units</string>
@@ -142,14 +154,14 @@
     <string name="err_data_same">Can\'t save already existing data. Make sure at least 1 field is unique</string>
     <string name="err">ERROR</string>
     <string name="err_nfe">NumberFormat Exception: invalid input string</string>
-    <string name="err_weight_max">Too heavy! Max: 635kg</string>
     <string name="err_field_empty">Field cannot be empty!</string>
     <string name="err_name_max">Field cannot contain more than 20 characters!</string>
     <string name="err_name_format">Name not formatted correctly!</string>
     <string name="err_age_max">Too large number!</string>
-    <string name="err_height_min">Height cannot be %.1f! min: 54.6cm</string>
-    <string name="err_height_max">Too tall! max: 272cm</string>
-    <string name="err_weight_min">Too light! min: 2.13kg</string>
+    <string name="err_height_min">Height cannot be %.1f! min: %.1f</string>
+    <string name="err_height_max">Too tall! max: %.1f</string>
+    <string name="err_weight_min">Too light! min: %.1f</string>
+    <string name="err_weight_max">Too heavy! Max: %.1f</string>
     <string name="err_age_min">Age cannot be %1d! min: 12</string>
     <string name="ex_session_success">Exercise Session successful!</string>
     <string name="err_get_data">Did not get data!</string>
@@ -166,5 +178,6 @@
     <string name="x_sec_break">%1d second break!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="ex_session_incomplete">You skipped some exercises!</string>
+
 
 </resources>
